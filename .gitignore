@@ -1,0 +1,6 @@
+node_modules
+/node_modules/.cache
+/common/const.js
+src/common/.DS_Store
+.env
+src/.DS_Store
