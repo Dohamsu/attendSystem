@@ -4,11 +4,11 @@ svg {
 
 .NavBar {
   position: fixed;
-  bottom: -5px;
+  bottom: -20px;
   z-index: 100;
   text-align: center;
   width: 100%; /* 필요한 경우 */
-  left: 0; /* 화면 좌측과 정렬 */
+  left: 3px; /* 화면 좌측과 정렬 */
   /* 마진과 패딩 제거 */
   margin: 0;
   padding: 0;
@@ -24,7 +24,7 @@ svg {
 .centerButton {
   position: absolute;
   bottom: 55%; /* 중앙 버튼을 네비게이션 바 중앙에 위치시킵니다 */
-  left: 50%;
+  left: 49.5%;
   transform: translate(-50%, 50%);
 }
 
@@ -35,7 +35,7 @@ svg {
   height: 43px;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  box-shadow: 0 0 10px 1.3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
   z-index: -1;
   top: 26px;
   left: 30px;
@@ -47,11 +47,13 @@ svg {
   align-items: center; /* 아이콘들을 수직 중앙 정렬 */
   position: absolute;
   width: 100%; /* 네비게이션 바의 전체 너비를 차지하도록 */
-  bottom: 35px; /* 네비게이션 바 바닥에서의 위치 */
+  bottom: 45px; /* 네비게이션 바 바닥에서의 위치 */
 }
 
 .iconBox img {
   margin: 0 10px; /* 기본적으로 모든 아이콘에 적용되는 마진 */
+  width: 23px;
+  padding: 15px;
 }
 
 .iconBox img:nth-child(2) {

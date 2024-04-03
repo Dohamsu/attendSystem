@@ -17,10 +17,10 @@ export const NavBar = (): JSX.Element => {
   const [activeIcon, setActiveIcon] = useState<string>("");
 
   const icons = [
-    { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer },
     { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer },
     { name: "clock", defaultIcon: IconClock, activeIcon: IconClockPer },
     { name: "alarm", defaultIcon: IconAlarm, activeIcon: IconAlarmPer },
+    { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer },
   ];
 
   return (
