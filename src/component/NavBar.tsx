@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/navBar.css";
 import WhiteNav from "../images/nav/white-nav.svg";
-import CenterButton from "../images/nav/centerButton2.png";
+import CenterButton from "../images/nav/centerButton.png";
 // 기본 아이콘
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
