@@ -1,8 +1,9 @@
 // GoogleSignInButton.tsx
 import React from 'react';
 import { signInWithGoogle } from './authService'; // 로그인 함수 임포트
-
-const GoogleSignInButton: React.FC = () => {
+import googleLoginButton from '../images/google_login.png'
+import { Box } from '@mui/material';
+const GoogleLoginButton: React.FC = () => {
   const handleSignIn = async () => {
     try {
       const user = await signInWithGoogle();
@@ -14,8 +15,10 @@ const GoogleSignInButton: React.FC = () => {
   };
 
   return (
-    <button onClick={handleSignIn}>구글 로그인</button>
+    <Box>
+      <img width={200} src={googleLoginButton} onClick={handleSignIn} alt='구글로그인 버튼 '></img>
+    </Box>
   );
 };
 
-export default GoogleSignInButton;
+export default GoogleLoginButton;

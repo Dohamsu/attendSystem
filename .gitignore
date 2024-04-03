@@ -4,3 +4,4 @@ node_modules
 src/common/.DS_Store
 .env
 src/.DS_Store
+/node_modules

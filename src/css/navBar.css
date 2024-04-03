@@ -1,0 +1,42 @@
+.NavBar {
+  position: fixed; /* 스크롤 시에도 같이 이동하도록 fixed로 변경 */
+  bottom: 0;
+  left: 0;
+  width: 100%; /* 전체 너비를 차지하도록 */
+  z-index: 100; /* 다른 요소 위에 보이도록 */
+  text-align: center; /* 아이콘들을 중앙 정렬하기 위해 */
+}
+
+.whiteNav {
+  position: absolute;
+  width: 100%; /* 백그라운드 이미지가 전체 너비를 차지하도록 */
+  bottom: 0;
+}
+
+.centerButton {
+  position: absolute;
+  bottom: 55%; /* 중앙 버튼을 네비게이션 바 중앙에 위치시킵니다 */
+  left: 50%;
+  transform: translate(-50%, 50%); /* 중앙 정렬 보정 */
+}
+
+.iconBox {
+  display: flex; /* 아이콘들을 가로로 배열 */
+  justify-content: space-around; /* 아이콘들 사이의 공간을 균등하게 분배 */
+  align-items: center; /* 아이콘들을 수직 중앙 정렬 */
+  position: absolute;
+  width: 100%; /* 네비게이션 바의 전체 너비를 차지하도록 */
+  bottom: 35px; /* 네비게이션 바 바닥에서의 위치 */
+}
+
+.iconBox img {
+  margin: 0 10px; /* 기본적으로 모든 아이콘에 적용되는 마진 */
+}
+
+.iconBox img:nth-child(2) {
+  margin-right: 50px; /* 두 번째 아이콘의 오른쪽 마진을 넓게 설정 */
+}
+
+.iconBox img:nth-child(3) {
+  margin-left: 50px; /* 세 번째 아이콘의 왼쪽 마진을 넓게 설정 */
+}

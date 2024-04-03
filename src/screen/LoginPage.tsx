@@ -12,8 +12,8 @@ import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
-import GoogleSignInButton from '../component/googleLogin';
-import KakaoLoginButton from '../component/kakaoLogin'
+import GoogleLoginButton from '../component/GoogleLogin';
+import KakaoLoginButton from '../component/KakaoLogin'
 import { Box } from '@mui/material';
 // import MainScreen from './MainScreen';
 
@@ -87,7 +87,7 @@ const LoginPage: React.FC = (): ReactElement => {
       </Drawer> */}
 
       <Box>
-      <GoogleSignInButton></GoogleSignInButton>
+      <GoogleLoginButton></GoogleLoginButton>
       <KakaoLoginButton></KakaoLoginButton>
       </Box>
       {/* <MainScreen></MainScreen> */}

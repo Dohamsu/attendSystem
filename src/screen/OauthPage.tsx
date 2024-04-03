@@ -5,13 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const OAuthPage = () => {
   const navigate = useNavigate();
 
-  console.log("오스 페이지 호출 ");
   useEffect(() => {
     const handleKakaoAuth = async () => {
       // URL에서 인증 코드 추출
       const code = new URLSearchParams(window.location.search).get('code');
       
-      console.log("request 두번이냐?");
       if (code) {
         try {
           // 백엔드로 인증 코드 전송 및 결과 받기
@@ -20,7 +18,9 @@ const OAuthPage = () => {
           // 백엔드 응답에 따라 다른 페이지로 리다이렉션
           if (response.data.success) {
             // 인증 성공 시
-            localStorage.setItem('name', response.data.user_name); // 일단 이름만 저장했다.
+
+            console.log(response.data.data);
+            localStorage.setItem('name', response.data.data.properties.nickname); // 일단 이름만 저장했다.
             console.log(response.data.data.properties); // 일단 이름만 저장했다.
 
             navigate('/'); // 성공 페이지로 리다이렉션

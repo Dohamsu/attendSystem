@@ -20,7 +20,7 @@ const KakaoLoginButton: React.FC = () => { // 함수 컴포넌트에 대한 타�
   };
 
   return (
-    <Box sx={{ width: 300, height: 300 }}>
+    <Box pb={2}>
     <img  onClick={handleKakaoLogin} src={kakaoLoginImage} alt="description"/>
   </Box>
   );
