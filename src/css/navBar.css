@@ -1,11 +1,19 @@
-.NavBar {
-  position: fixed; /* 스크롤 시에도 같이 이동하도록 fixed로 변경 */
-  bottom: 0;
-  left: 0;
-  width: 100%; /* 전체 너비를 차지하도록 */
-  z-index: 100; /* 다른 요소 위에 보이도록 */
-  text-align: center; /* 아이콘들을 중앙 정렬하기 위해 */
+svg {
+  image-rendering: optimizeQuality;
 }
+
+.NavBar {
+  position: fixed;
+  bottom: -5px;
+  z-index: 100;
+  text-align: center;
+  width: 100%; /* 필요한 경우 */
+  left: 0; /* 화면 좌측과 정렬 */
+  /* 마진과 패딩 제거 */
+  margin: 0;
+  padding: 0;
+}
+
 
 .whiteNav {
   position: absolute;
@@ -17,7 +25,20 @@
   position: absolute;
   bottom: 55%; /* 중앙 버튼을 네비게이션 바 중앙에 위치시킵니다 */
   left: 50%;
-  transform: translate(-50%, 50%); /* 중앙 정렬 보정 */
+  transform: translate(-50%, 50%);
+}
+
+
+.centerButtonShadow {
+  position: absolute;
+  width: 43px;
+  height: 43px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 1.3px rgba(0, 0, 0, 0.5);
+  z-index: -1;
+  top: 26px;
+  left: 30px;
 }
 
 .iconBox {

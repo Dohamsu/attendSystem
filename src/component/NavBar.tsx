@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/navBar.css";
 import WhiteNav from "../images/nav/white-nav.svg";
-import CenterButton from "../images/nav/centerButton.svg";
+import CenterButton from "../images/nav/centerButton2.png";
 // 기본 아이콘
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
@@ -26,7 +26,8 @@ export const NavBar = (): JSX.Element => {
   return (
     <div className="NavBar">
         <div className="centerButton">
-            <img  alt="Center Button" src={CenterButton} />
+            <div className="centerButtonShadow"> </div>
+            <img width={100} alt="Center Button" src={CenterButton} />
         </div>
         <div className="iconBox">
           {icons.map((icon) => (
@@ -38,7 +39,7 @@ export const NavBar = (): JSX.Element => {
             />
           ))}
         </div>
-        <img className="shape" alt="White Navigation Bar" src={WhiteNav} />
+        <img className="navBarBackground" alt="White Navigation Bar" src={WhiteNav} />
     </div>
   );
 };
