@@ -6,15 +6,23 @@ import SuccessPage from './screen/SuccessPage';
 import FailurePage from './screen/FailurePage';
 import IntroPage from './screen/IntroPage';
 
+
+import { NavBar } from "./component/NavBar";
+
+
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<IntroPage />} /> 
-      <Route path="/home" element={<MainScreen />} />
-      <Route path="/auth" element={<OauthPage />} />
-      <Route path="/success" element={<SuccessPage />} />
-      <Route path="/failure" element={<FailurePage />} />
-    </Routes>
+    <>
+      <NavBar/>
+
+      <Routes>
+        <Route path="/" element={<IntroPage />} /> 
+        <Route path="/home" element={<MainScreen />} />
+        <Route path="/auth" element={<OauthPage />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/failure" element={<FailurePage />} />
+      </Routes>
+    </>
   );
 };
 

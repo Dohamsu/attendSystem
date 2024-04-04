@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import "../css/navBar.css";
+
 import WhiteNav from "../images/nav/white-nav.svg";
 import CenterButton from "../images/nav/centerButton.png";
 // 기본 아이콘
@@ -13,7 +15,10 @@ import IconCalPer from "../images/nav/calendar_per.svg";
 import IconClockPer from "../images/nav/clock_per.svg";
 import IconAlarmPer from "../images/nav/alarm_per.svg";
 
-export const NavBar = (): JSX.Element => {
+export const NavBar = (): JSX.Element | null => {
+  
+  const location = useLocation();
+
   const [activeIcon, setActiveIcon] = useState<string>("");
 
   const icons = [
@@ -22,6 +27,10 @@ export const NavBar = (): JSX.Element => {
     { name: "alarm", defaultIcon: IconAlarm, activeIcon: IconAlarmPer },
     { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer },
   ];
+
+  if (location.pathname === "/") {
+    return null; // 인트로 페이지에서는 NavBar를 렌더링하지 않음
+  }
 
   return (
     <div className="NavBar">
