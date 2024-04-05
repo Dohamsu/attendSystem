@@ -23,7 +23,7 @@ const OAuthPage = () => {
             localStorage.setItem('name', response.data.data.properties.nickname); // 일단 이름만 저장했다.
             console.log(response.data.data.properties); // 일단 이름만 저장했다.
 
-            navigate('/'); // 성공 페이지로 리다이렉션
+            navigate('/myinfo'); // 성공 페이지로 리다이렉션
           } else {
             // 인증 실패 또는 기타 조건 시
             navigate('/failure'); // 실패 페이지로 리다이렉션
