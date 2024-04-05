@@ -1,0 +1,68 @@
+.task-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    max-width: 357px;
+    padding: 19px 68px 19px 14px;
+    overflow: hidden;
+    color: #8f9bb3;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.75px;
+    line-height: 117%;
+    aspect-ratio: 3.76;
+    fill: #fff;
+    filter: drop-shadow(0px 3px 30px rgba(0, 0, 0, 0.06));
+  }
+
+  .scheduleBoxCircle {
+    position: absolute;
+  }
+
+  .time-container {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .clock-icon {
+    width: 10px;
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    fill: #00b383;
+  }
+
+  .time {
+    font-family: SF UI Text, sans-serif;
+    flex: 1;
+  }
+
+  .title {
+    margin-top: 8px;
+    color: #222b45;
+    letter-spacing: 1px;
+  }
+
+  .description {
+    margin-top: 0px;
+    font-family: SF UI Text, sans-serif;
+    font-weight: 400;
+  }
+
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.more-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 10px; /* 클릭 영역 확장 */
+  cursor: pointer; /* 마우스 오버 시 포인터 표시 */
+}
