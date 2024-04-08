@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainScreen from './screen/MainScreen';
-import OauthPage from './screen/OauthPage';
+import CheckPage from './screen/CheckPage';
 import MyInfoPage from './screen/MyInfoPage';
-import FailurePage from './screen/FailurePage';
+import NoticePage from './screen/NoticePage';
 import IntroPage from './screen/IntroPage';
 
 
@@ -18,9 +18,9 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<IntroPage />} /> 
         <Route path="/home" element={<MainScreen />} />
-        <Route path="/auth" element={<OauthPage />} />
+        <Route path="/check" element={<CheckPage />} />
         <Route path="/myinfo" element={<MyInfoPage />} />
-        <Route path="/failure" element={<FailurePage />} />
+        <Route path="/notice" element={<NoticePage />} />
       </Routes>
     </>
   );

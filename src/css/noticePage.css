@@ -1,0 +1,67 @@
+/* noticePage.css */
+.notice-page {
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+/* noticePage.css */
+.notice-date {
+  font-size: 14px;
+  color: #999; /* 색상을 회색으로 설정하여 제목과 차별화 */
+  margin-right: 10px; /* 제목과의 간격 */
+  font-weight: 500; /* 약간 두꺼운 폰트로 설정 */
+}
+
+.notice-heading {
+  font-size: 16px; /* 제목의 폰트 크기를 설정 */
+  font-weight: bold; /* 제목을 두껍게 */
+  color: #222; /* 제목의 색상을 진하게 */
+  flex-grow: 1; /* 제목이 남은 공간을 모두 채우도록 */
+}
+
+/* 기존 CSS 스타일링을 그대로 사용하고 필요한 부분만 변경 또는 추가 */
+
+.notice-title {
+  font-size: 24px;
+  font-weight: bold !important;
+  color: #333;
+}
+
+.notice-list {
+  width: 100%;
+}
+
+.notice-card {
+  background-color: white;
+  border-radius: 15px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.notice-time {
+  font-size: 14px;
+  color: #666;
+}
+
+.notice-heading {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+}
+
+.notice-description {
+  color: #444;
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+.mui-accordion-summary-root {
+  padding: 0;
+}
+
+.mui-accordion-details-root {
+  padding: 16px;
+}
+
+/* 추가로 필요한 스타일링은 여기에 작성하세요 */

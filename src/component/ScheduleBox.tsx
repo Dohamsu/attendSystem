@@ -5,7 +5,6 @@ import IconClockPerSub from "../images/scheduleBoxCircle2.svg";
 import IconClockPerAdd from "../images/scheduleBoxCircle3.svg";
 import moreIconUrl from "../images/scheduleMoreUrl.svg";
 
-
 interface ScheduleBoxProps {
   time: string;
   title: string;

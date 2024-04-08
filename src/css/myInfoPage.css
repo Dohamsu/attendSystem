@@ -1,0 +1,53 @@
+/* myInfoPage.css */
+.my-info-page {
+  padding: 20px;
+  background-color: #f7f7f7; /* Or any theme color */
+}
+
+.user-info-section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.user-info-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.info-title {
+  font-weight: 600;
+  color: #666; /* Subdued text color for titles */
+}
+
+.info {
+  font-weight: 400;
+}
+
+.settings-section {
+  text-align: center; /* Center the settings button */
+}
+
+.settings-btn {
+  padding: 10px 20px;
+  border: 2px solid #666; /* Subdued border color for the button */
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.settings-btn:hover {
+  background-color: #666; /* Subdued background color for hover */
+  color: #fff;
+}
+
+/* Add more styles as needed */
