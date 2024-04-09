@@ -20,5 +20,4 @@ const signInWithGoogle = async () => {
     throw error;
   }
 };
-
-export { signInWithCustomToken, signInWithGoogle };
+export { signInWithGoogle };

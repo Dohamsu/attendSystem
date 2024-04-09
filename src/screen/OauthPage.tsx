@@ -2,8 +2,18 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../stores/authSlice';
+
+interface User {
+  name: string;
+  email: string;
+  platform: string;
+}
+
 const OAuthPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleKakaoAuth = async () => {
@@ -22,6 +32,15 @@ const OAuthPage = () => {
             console.log(response.data.data);
             localStorage.setItem('name', response.data.data.properties.nickname); // 일단 이름만 저장했다.
             console.log(response.data.data.properties); // 일단 이름만 저장했다.
+
+            const user: User = {
+              name: response.data.data.properties.name || '익명', // displayName이 없는 경우 '익명'으로 처리
+              email: response.data.data.properties.email || '', // email이 없는 경우 빈 문자열로 처리
+              platform: 'kakao', // email이 없는 경우 빈 문자열로 처리
+            };
+      
+            console.log('로그인 성공:', user);
+            dispatch(loginUser(user));
 
             navigate('/myinfo'); // 성공 페이지로 리다이렉션
           } else {

@@ -14,7 +14,7 @@
 
 .notice-heading {
   font-size: 16px; /* 제목의 폰트 크기를 설정 */
-  font-weight: bold; /* 제목을 두껍게 */
+  font-weight: bold !important; /* 제목을 두껍게 */
   color: #222; /* 제목의 색상을 진하게 */
   flex-grow: 1; /* 제목이 남은 공간을 모두 채우도록 */
 }

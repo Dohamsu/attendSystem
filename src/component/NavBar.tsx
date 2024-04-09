@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../css/navBar.css";
 
@@ -19,7 +19,7 @@ import IconAlarmPer from "../images/nav/alarm_per.svg";
 export const NavBar = (): JSX.Element | null => {
   
   const location = useLocation();
-  const navigate = useNavigate(); // useNavigate 훅 추가
+  const navigate = useNavigate();
 
   const [activeIcon, setActiveIcon] = useState<string>("");
 
@@ -30,6 +30,14 @@ export const NavBar = (): JSX.Element | null => {
     { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer, path: "/myinfo" },
   ];
 
+  useEffect(() => {
+    // 현재 경로(location.pathname)에 해당하는 아이콘을 활성화합니다.
+    const currentIcon = icons.find(icon => icon.path === location.pathname)?.name;
+    if (currentIcon) {
+      setActiveIcon(currentIcon);
+    }
+  }, [location.pathname]); // location.pathname이 변경될 때마다 이 로직을 실행합니다.
+
   if (location.pathname === "/") {
     return null; // 인트로 페이지에서는 NavBar를 렌더링하지 않음
   }
@@ -38,7 +46,6 @@ export const NavBar = (): JSX.Element | null => {
     setActiveIcon(iconName); // 현재 활성화된 아이콘 업데이트
     navigate(path); // 경로 이동
   };
-
 
   return (
     <div className="NavBar">
@@ -52,7 +59,7 @@ export const NavBar = (): JSX.Element | null => {
               key={icon.name}
               alt={`${icon.name} icon`}
               src={activeIcon === icon.name ? icon.activeIcon : icon.defaultIcon}
-              onClick={() => handleIconClick(icon.name, icon.path)} // 클릭 이벤트 핸들러 추가
+              onClick={() => handleIconClick(icon.name, icon.path)}
             />
           ))}
         </div>
