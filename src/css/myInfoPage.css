@@ -23,6 +23,9 @@
   font-size: 16px;
 }
 
+.info-item-center{
+  text-align: center;
+}
 .info-title {
   font-weight: 600;
   color: #666; /* Subdued text color for titles */

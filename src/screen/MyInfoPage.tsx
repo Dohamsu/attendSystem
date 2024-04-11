@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUser } from '../stores/userSlice'; // 상태 업데이트를 위한 액션
+import { updateUser } from '../stores/userSlice';
 import axios from 'axios';
 import "../css/myInfoPage.css";
-import { RootState } from '../stores/store'; // 상태 타입 임포트 경로 확인 필요
-
+import { RootState } from '../stores/store';
+import {GoogleLogoutButton } from '../component/GoogleLogin';
 interface User {
   socialLogin: string;
   name: string;
@@ -76,13 +76,16 @@ const MyInfoPage: React.FC = () => {
               <span className="info">{part}</span>
             )}
           </div>
+          <div className="info-item-center">
+            <GoogleLogoutButton></GoogleLogoutButton>
+          </div>
         </div>
       </div>
       <div className="settings-section">
         {editMode ? (
-          <button onClick={handleSave}>확인</button>
+          <button className='settings-btn' onClick={handleSave}>확인</button>
         ) : (
-          <button onClick={() => setEditMode(true)}>설정</button>
+          <button className='settings-btn' onClick={() => setEditMode(true)}>설정</button>
         )}
       </div>
     </div>

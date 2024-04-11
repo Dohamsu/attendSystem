@@ -2,7 +2,6 @@ import React from "react";
 import "../css/mainScreen.css";
 
 import LoginPage from './LoginPage'
-import Calendar from '../component/Calendar'
 
 const MainScreen = () => {
 

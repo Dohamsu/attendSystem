@@ -6,7 +6,7 @@ import Path6 from "../images/path-6.svg";
 import OvalCopy2 from "../images/oval-copy-2.svg";
 import Slider from "../images/slider.png";
 import KakaoLoginButton from '../component/KakaoLogin'
-import GoogleLoginButton from '../component/GoogleLogin'
+import { GoogleLoginButton } from '../component/GoogleLogin'
 import { Box } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../stores/type'; // 상태 타입 임포트

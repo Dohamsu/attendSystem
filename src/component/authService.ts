@@ -1,5 +1,5 @@
 // authService.ts
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithCustomToken } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, signInWithCustomToken } from 'firebase/auth';
 import  app  from '../firebase/firebaseConfig'; // Firebase 앱 초기화 모듈
 
 // Firebase Auth 인스턴스를 가져옵니다.
@@ -20,4 +20,10 @@ const signInWithGoogle = async () => {
     throw error;
   }
 };
-export { signInWithGoogle };
+
+const logoutGoogle = async () => {
+  const auth = getAuth();
+  await signOut(auth);
+};
+
+export { signInWithGoogle, logoutGoogle };
