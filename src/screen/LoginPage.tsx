@@ -14,12 +14,12 @@ import { RootState } from '../stores/type'; // 상태 타입 임포트
 const LoginPage = () => {
 
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   useEffect(() => {
     // 사용자가 로그인한 상태라면 홈 페이지로 리다이렉트
     if (isLoggedIn) {
-      navigate('/check'); 
+      navigate('/calendar'); 
     }
   }, [isLoggedIn, navigate]);
 

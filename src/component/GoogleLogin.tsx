@@ -2,11 +2,10 @@ import React, { useEffect } from 'react';
 import { signInWithGoogle } from './authService';
 import googleLoginButton from '../images/google_login.png';
 import { useDispatch } from 'react-redux';
-import { setUser, clearUser } from '../stores/userSlice'; // setUser, clearUser 액션 임포트
+import { loginUser, logoutUser } from '../stores/userSlice'; // 수정: loginUser, logoutUser 액션 임포트
 import { Box } from '@mui/material';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-// User 인터페이스는 userSlice에 정의된 UserState와 동일한 구조를 사용합니다.
 interface User {
   socialLogin: string;
   name: string;
@@ -26,18 +25,18 @@ const GoogleLoginButton: React.FC = () => {
         // 사용자가 로그인한 상태
         const user: User = {
           name: firebaseUser.displayName || '익명',
-          email: firebaseUser.email || '익명',
-          number: '익명',
-          part: '익명',
-          platform: 'google',
+          email: firebaseUser.email || '',
+          number: '익명', // 이 필드는 실제 어플리케이션에 맞게 조정 필요
+          part: '익명', // 이 필드는 실제 어플리케이션에 맞게 조정 필요
+          platform: 'Google', // 'google' 대신 'Google'로 변경될 수 있음
           socialLogin: 'Google', // socialLogin 필드 추가
         };
-        dispatch(setUser(user)); // setUser 액션으로 변경
+        dispatch(loginUser(user)); // loginUser 액션으로 변경
         console.log('자동 로그인 성공:', user);
       } else {
         // 사용자가 로그아웃한 상태 혹은 로그인하지 않은 상태
         console.log('사용자가 로그인하지 않았습니다.');
-        dispatch(clearUser()); // clearUser 액션을 사용하여 사용자 정보 초기화
+        dispatch(logoutUser()); // logoutUser 액션을 사용하여 사용자 정보 초기화
       }
     });
   }, [dispatch]);

@@ -1,47 +1,49 @@
 // features/user/userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserState {
+// 통합된 상태 타입 정의
+interface User {
   socialLogin: string;
   name: string;
   number: string;
   part: string;
-  email: string;
+  email: string; 
   platform: string;
 }
 
+interface UserState {
+  user: User | null;
+  isLoggedIn: boolean;
+}
+
 const initialState: UserState = {
-  socialLogin: '',
-  name: '',
-  number: '',
-  part: '',
-  email: '', 
-  platform: ''
+  user: null,
+  isLoggedIn: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      state.socialLogin = action.payload.socialLogin;
-      state.name = action.payload.name;
-      state.number = action.payload.number;
-      state.part = action.payload.part;
-      state.email = action.payload.email;
-      state.platform = action.payload.platform;
+    // 로그인 액션: 사용자 정보를 상태에 설정하고, 로그인 상태를 true로 변경
+    loginUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.isLoggedIn = true; 
+      console.log("로그인 성공");
     },
-    clearUser: (state) => {
-      state.socialLogin = '';
-      state.name = '';
-      state.number = '';
-      state.part = '';
-      state.email = '';
-      state.platform = '';
+    // 로그아웃 액션: 사용자 정보를 초기화하고, 로그인 상태를 false로 변경
+    logoutUser: (state) => {
+      state.user = null;
+      state.isLoggedIn = false; 
+      console.log("로그아웃 성공");
+    },
+    // 사용자 정보 업데이트 액션: 사용자 정보를 업데이트
+    updateUser: (state, action: PayloadAction<User>) => {
+      state.user = { ...state.user, ...action.payload };
     },
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { loginUser, logoutUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

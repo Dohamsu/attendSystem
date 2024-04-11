@@ -24,7 +24,7 @@ export const NavBar = (): JSX.Element | null => {
   const [activeIcon, setActiveIcon] = useState<string>("");
 
   const icons = [
-    { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer, path: "/home" },
+    { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer, path: "/calendar" },
     { name: "check", defaultIcon: IconCheck, activeIcon: IconCheckPer, path: "/check" },
     { name: "alarm", defaultIcon: IconAlarm, activeIcon: IconAlarmPer, path: "/notice" },
     { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer, path: "/myinfo" },
@@ -38,7 +38,7 @@ export const NavBar = (): JSX.Element | null => {
     }
   }, [location.pathname]); // location.pathname이 변경될 때마다 이 로직을 실행합니다.
 
-  if (location.pathname === "/") {
+  if (location.pathname === "/" || location.pathname === "/login" ) {
     return null; // 인트로 페이지에서는 NavBar를 렌더링하지 않음
   }
 
