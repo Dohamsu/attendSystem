@@ -11,6 +11,7 @@ interface User {
 export interface UserState {
   user: User | null;
   isLoggedIn: boolean;
+  loginChecked: boolean;
 }
   export interface RootState {
     user: UserState;

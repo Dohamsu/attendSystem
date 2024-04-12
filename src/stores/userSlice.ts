@@ -14,11 +14,13 @@ interface User {
 interface UserState {
   user: User | null;
   isLoggedIn: boolean;
+  loginChecked: boolean; //로그인 처리 중 상태
 }
 
 const initialState: UserState = {
   user: null,
   isLoggedIn: false,
+  loginChecked: false,
 };
 
 export const userSlice = createSlice({
@@ -41,9 +43,12 @@ export const userSlice = createSlice({
     updateUser: (state, action: PayloadAction<User>) => {
       state.user = { ...state.user, ...action.payload };
     },
+    setLoginChecked(state, action: PayloadAction<boolean>) {
+      state.loginChecked = action.payload;
+    },
   },
 });
 
-export const { loginUser, logoutUser, updateUser } = userSlice.actions;
+export const { loginUser, logoutUser, updateUser, setLoginChecked } = userSlice.actions;
 
 export default userSlice.reducer;

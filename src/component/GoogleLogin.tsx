@@ -1,7 +1,7 @@
 // AuthComponents.tsx
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser, logoutUser } from '../stores/userSlice';
+import { loginUser, logoutUser, setLoginChecked } from '../stores/userSlice';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { signInWithGoogle, logoutGoogle } from './authService';
 import googleLoginButton from '../images/google_login.png';
@@ -28,6 +28,8 @@ const AutoLoginCheck: React.FC = () => {
         dispatch(logoutUser());
         console.log('사용자가 로그인하지 않았습니다.');
       }
+      dispatch(setLoginChecked(true));
+
     });
   }, [dispatch]);
 
