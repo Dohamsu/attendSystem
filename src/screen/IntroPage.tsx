@@ -67,14 +67,14 @@ const IntroPage = () => {
   }, [loginChecked, isLoggedIn, navigate]);
 
   const renderAutoLoginCheck = () => {
-    const lastPlatform = localStorage.getItem('last_platform');
+    const lastPlatform = localStorage.getItem('last_login_platform');
     switch (lastPlatform) {
       case 'google':
         return <AutoLoginCheck />;
       case 'kakao':
         return <AutoKakaoLoginCheck />;
       default:       
-        return <AutoLoginNull />; // No auto-login check if no platform is recorded
+        return <AutoLoginNull />;
     }
   };
 

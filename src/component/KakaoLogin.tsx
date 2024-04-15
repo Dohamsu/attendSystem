@@ -33,8 +33,8 @@ const AutoKakaoLoginCheck: React.FC = () => {
         const user = {
           name: response.data.properties.nickname,
           email: response.data.kakao_account.email,
-          platform: 'Kakao',
-          socialLogin: 'Kakao',
+          platform: 'kakao',
+          socialLogin: 'kakao',
           number: '익명',
           part: '익명',
         };
