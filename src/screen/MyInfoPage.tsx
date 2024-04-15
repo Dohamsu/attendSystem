@@ -5,6 +5,7 @@ import axios from 'axios';
 import "../css/myInfoPage.css";
 import { RootState } from '../stores/store';
 import {GoogleLogoutButton } from '../component/GoogleLogin';
+import {KakaoLogoutButton } from '../component/KakaoLogin';
 interface User {
   socialLogin: string;
   name: string;
@@ -16,6 +17,7 @@ interface User {
 
 const MyInfoPage: React.FC = () => {
   const userInfo = useSelector((state: RootState) => state.user.user);
+  console.log(userInfo);
   const dispatch = useDispatch();
 
   // 로컬 상태로 기수와 파트를 관리합니다.
@@ -77,7 +79,8 @@ const MyInfoPage: React.FC = () => {
             )}
           </div>
           <div className="info-item-center">
-            <GoogleLogoutButton></GoogleLogoutButton>
+            {userInfo?.platform === 'google' && <GoogleLogoutButton />}
+            {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
           </div>
         </div>
       </div>

@@ -20,10 +20,11 @@ const AutoLoginCheck: React.FC = () => {
           email: firebaseUser.email || '',
           number: '익명', // 실제 어플리케이션에 맞게 조정 필요
           part: '익명', // 실제 어플리케이션에 맞게 조정 필요
-          platform: 'Google',
-          socialLogin: 'Google',
+          platform: 'google',
+          socialLogin: 'google',
         }));
         console.log('자동 로그인 성공:', firebaseUser.displayName);
+        localStorage.setItem('last_login_platform', 'google');
       } else {
         dispatch(logoutUser());
         console.log('사용자가 로그인하지 않았습니다.');
@@ -38,9 +39,12 @@ const AutoLoginCheck: React.FC = () => {
 
 // GoogleLoginButton 컴포넌트
 const GoogleLoginButton: React.FC = () => {
+  const dispatch = useDispatch();
+
   const handleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithGoogle(dispatch);
+      localStorage.setItem('last_login_platform', 'google');
       console.log('로그인 성공');
     } catch (error) {
       console.error('로그인 실패:', error);

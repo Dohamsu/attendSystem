@@ -7,6 +7,7 @@ import CalendarPage from './screen/CalendarPage';
 import CheckPage from './screen/CheckPage';
 import MyInfoPage from './screen/MyInfoPage';
 import NoticePage from './screen/NoticePage';
+import KakaoCallback from './screen/KaKaoCallBackPage';
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
           <Route path="/check" element={<CheckPage />} />
           <Route path="/myinfo" element={<MyInfoPage />} />
           <Route path="/notice" element={<NoticePage />} />
+          <Route path="/kakaoCallback" element={<KakaoCallback />} />
         </Route>
       </Routes>
     </>

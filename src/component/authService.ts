@@ -1,28 +1,34 @@
 // authService.ts
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, signInWithCustomToken } from 'firebase/auth';
 import  app  from '../firebase/firebaseConfig'; // Firebase 앱 초기화 모듈
+import { useDispatch } from 'react-redux';
+import { loginUser, logoutUser, setLoginChecked } from '../stores/userSlice';
 
-// Firebase Auth 인스턴스를 가져옵니다.
 const auth = getAuth(app);
 
-// Google 로그인 함수
-const signInWithGoogle = async () => {
-  
+const signInWithGoogle = async (dispatch: any) => {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    // 로그인 성공: 사용자 정보 처리
     console.log(result.user);
+    dispatch(loginUser({
+      name: result.user.displayName || '익명',
+      email: result.user.email || '',
+      number: '익명', // 실제 어플리케이션에 맞게 조정 필요
+      part: '익명', // 실제 어플리케이션에 맞게 조정 필요
+      platform: 'google',
+      socialLogin: 'google',
+    }));
+    console.log('로그인 성공:', result.user.displayName);
+
     return result.user;
   } catch (error) {
-    // 로그인 오류 처리
     console.error(error);
     throw error;
   }
 };
 
 const logoutGoogle = async () => {
-  const auth = getAuth();
   await signOut(auth);
 };
 
