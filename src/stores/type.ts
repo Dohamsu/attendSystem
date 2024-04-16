@@ -1,3 +1,6 @@
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from './userSlice';
+
 // src/store/types.ts
 interface User {
   socialLogin: string;
@@ -7,6 +10,17 @@ interface User {
   email: string; 
   platform: string;
 }
+
+
+
+export const store = configureStore({
+  reducer: {
+    user: userReducer
+  },
+});
+
+export type AppDispatch = typeof store.dispatch;
+
 
 export interface UserState {
   user: User | null;

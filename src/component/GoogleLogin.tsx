@@ -1,21 +1,22 @@
 // AuthComponents.tsx
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser, logoutUser, setLoginChecked } from '../stores/userSlice';
+import { login, logoutUser, setLoginChecked } from '../stores/userSlice';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { signInWithGoogle, logoutGoogle } from './authService';
 import googleLoginButton from '../images/google_login.png';
 import { Button, Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
 
 // AutoLoginCheck 컴포넌트
 const AutoLoginCheck: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); // 여기에 AppDispatch 타입을 사용
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
-        dispatch(loginUser({
+        dispatch(login({
           name: firebaseUser.displayName || '익명',
           email: firebaseUser.email || '',
           number: '익명', // 실제 어플리케이션에 맞게 조정 필요
@@ -60,7 +61,7 @@ const GoogleLoginButton: React.FC = () => {
 
 const GoogleLogoutButton: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); // 여기에 AppDispatch 타입을 사용
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -72,7 +73,7 @@ const GoogleLogoutButton: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await logoutGoogle();
+      await logoutGoogle(dispatch);
       dispatch(logoutUser());
       console.log('로그아웃 성공');
       handleClose(); // 로그아웃 성공 후 대화 상자 닫기

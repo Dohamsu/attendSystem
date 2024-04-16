@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUser } from '../stores/userSlice';
+// import { updateUser } from '../stores/userSlice';
 import axios from 'axios';
 import "../css/myInfoPage.css";
 import { RootState } from '../stores/store';
@@ -20,13 +20,12 @@ const MyInfoPage: React.FC = () => {
   console.log(userInfo);
   const dispatch = useDispatch();
 
-  // 로컬 상태로 기수와 파트를 관리합니다.
   const [editMode, setEditMode] = useState(false);
   const [number, setNumber] = useState(userInfo?.number || '');
   const [part, setPart] = useState(userInfo?.part || '');
+  const UPDATE_USER_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/update_user`;
 
   const handleSave = async () => {
-    // 새로운 사용자 정보 객체를 생성합니다.
     const updatedUserInfo = {
       ...userInfo,
       number,
@@ -34,11 +33,11 @@ const MyInfoPage: React.FC = () => {
     };
 
     // Redux 스토어 업데이트
-    dispatch(updateUser(updatedUserInfo as User));
+    console.log(updatedUserInfo);
 
     // 백엔드로 사용자 정보 업데이트 요청 보내기
     try {
-      await axios.post('http://localhost:4000/update-user', updatedUserInfo);
+      await axios.post(UPDATE_USER_API_URL, updatedUserInfo);
       console.log('사용자 정보 업데이트 성공');
     } catch (error) {
       console.error('사용자 정보 업데이트 실패', error);

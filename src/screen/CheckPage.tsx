@@ -1,42 +1,38 @@
 // MyInfoPage.tsx
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
+
 import "../css/checkPage.css"; // Make sure to create a corresponding CSS file
 
+// 공지사항 데이터 타입 정의
+interface Schedule {
+  time: string;
+  title: string;
+  description: string;
+  type: string;
+}
+
 const CheckPage: React.FC = () => {
-  // This data would likely come from props or a state in a real app
-  const tasks = [
-    {
-      time: "5월 1일 /  10:00-13:00",
-      title: "파트 배정 및 오리엔테이션",
-      description: "한성대학교 대강당",
-      type: "main"
-    },
-    {
-      time: "5월 11일 /  10:00-13:00",
-      title: "정기 연습 1회차",
-      description: "한성대학교 미래관 3층 301",
-      type: "main"
-    },
-    {
-      time: "5월 18일 /  10:00-13:00",
-      title: "정기 연습 2회차",
-      description: "한성대학교 공학관 지하1층 101",
-      type: "main"
-    },
-    {
-      time: "5월 25일 /  10:00-13:00",
-      title: "정기 연습 3회차",
-      description: "한성대학교 공학관 지하1층 101",
-      type: "main"
-    },
-    {
-      time: "5월 18일 /  10:00-13:00",
-      title: "정기 연습 2회차",
-      description: "한성대학교 공학관 지하1층 101",
-      type: "main"
-    },
-    // More tasks can be added here...
-  ];
+
+  const [schedules, setSchedules] = useState<Schedule[]>([ ]);
+  const GET_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule`;
+
+  useEffect(() => {
+    const fetchschedules = async () => {
+      try {
+        const response = await axios.get<Schedule[]>(GET_SCHEDULE_API_URL);
+        const formattedschedules = response.data.map(schedule => ({
+          ...schedule,
+          time: new Date(schedule.time).toLocaleDateString() // 날짜 포맷을 'yyyy-MM-dd' 형식으로 변경
+        }));
+        setSchedules(formattedschedules);
+      } catch (error) {
+        console.error('출석 일정  불러오기 실패:', error);
+      }
+    };
+
+    fetchschedules();
+  }, []);
 
     // '출석예정' 버튼 클릭 핸들러
     const handleAttendanceClick = useCallback((title: string) => {
@@ -51,16 +47,15 @@ const CheckPage: React.FC = () => {
       <header className="my-info-header">
           <h1 className="user-name">연습 일정</h1>
       </header>
-      
       <main className="tasks-list">
-        {tasks.map((task, index) => (
+        {schedules.map((schedule, index) => (
           <div className="task" key={index}>
-            <h2 className="task-title">{task.title}</h2>
-            <span className="task-time">{task.time}</span>
-            <p className="task-description">{task.description}</p>
+            <h2 className="task-title">{schedule.title}</h2>
+            <span className="task-time">{schedule.time}</span>
+            <p className="task-description">{schedule.description}</p>
             <button
               className="attendance-button"
-              onClick={() => handleAttendanceClick(task.title)}
+              onClick={() => handleAttendanceClick(schedule.title)}
             >
               출석예정
             </button>

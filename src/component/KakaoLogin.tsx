@@ -5,10 +5,11 @@ import CONST from '../common/const';
 import { useDispatch } from 'react-redux';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import axios from 'axios';
-import { loginUser, logoutUser, setLoginChecked } from '../stores/userSlice';
+import { login, logoutUser, setLoginChecked } from '../stores/userSlice';
+import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
 
 const AutoKakaoLoginCheck: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); // 여기에 AppDispatch 타입을 사용
 
   useEffect(() => {
     const accessToken = localStorage.getItem('kakao_token');
@@ -38,7 +39,7 @@ const AutoKakaoLoginCheck: React.FC = () => {
           number: '익명',
           part: '익명',
         };
-        dispatch(loginUser(user));
+        dispatch(login(user));
         const accessToken = localStorage.getItem('kakao_token');
         localStorage.setItem('last_login_platform', 'kakao');
 
@@ -94,10 +95,11 @@ const KakaoLogoutButton: React.FC = () => {
 
   const handleLogout = async () => {
     const accessToken = localStorage.getItem('kakao_token'); // 저장된 토큰을 사용
+    const LOGOUT_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/logout-kakao`;
 
     try {
       // 서버에 로그아웃 요청을 보냄
-      const response = await axios.post('http://localhost:4000/logout-kakao', { access_token: accessToken });
+      const response = await axios.post(LOGOUT_API_URL, { access_token: accessToken });
       if (response.data.success) {
         console.log('서버 로그아웃 성공');
         localStorage.setItem('kakao_token', ''); // 토큰 초기화

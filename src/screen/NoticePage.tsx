@@ -1,25 +1,41 @@
 // NoticePage.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import "../css/noticePage.css"; // 기존 CSS 파일 사용
 
+// 공지사항 데이터 타입 정의
+interface Notice {
+  date: string;
+  title: string;
+  description: string;
+  scheduleNumber: string;
+}
+
 const NoticePage: React.FC = () => {
-  const notices = [
-    {
-      date: "2024-04-08", // 일자 정보를 추가
-      title: "파트 배정 및 오리엔테이션",
-      description: "해당 일자에 파트 배정과 오리엔테이션이 있을 예정입니다. \n 자꾸 연습 안해오면 맴매 ",
-    },
-    {
-      date: "2024-04-06", // 일자 정보를 추가
-      title: "공지사항 필독",
-      description: "안녕하세요 여러분 추카추카 야호야호 \n 무야호 \n 기타 연습해   ",
-    },
-    
-    // 추가 공지사항...
-  ];
+  // Notice 배열로 상태를 관리
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const GET_NOTICE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/notice`;
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const response = await axios.get<Notice[]>(GET_NOTICE_API_URL);
+        const formattedNotices = response.data.map(notice => ({
+          ...notice,
+          date: new Date(notice.date).toLocaleDateString() // 날짜 포맷을 'yyyy-MM-dd' 형식으로 변경
+        }));
+        setNotices(formattedNotices);
+      } catch (error) {
+        console.error('공지사항 불러오기 실패:', error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
 
   return (
     <div className="notice-page">
@@ -35,13 +51,13 @@ const NoticePage: React.FC = () => {
               aria-controls={`notice-content-${index}`}
               id={`notice-header-${index}`}
             >
-              <Typography  variant="body1" color="" className="notice-heading">{notice.title}</Typography>
+              <Typography variant="body1" className="notice-heading">{notice.title}</Typography>
               <Typography className="notice-date">{notice.date}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-            <div className="notice-description">
-              {notice.description}
-            </div>
+              <div className="notice-description">
+                {notice.description}
+              </div>
             </AccordionDetails>
           </Accordion>
         ))}

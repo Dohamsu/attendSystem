@@ -2,47 +2,32 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../stores/userSlice'; // 변경된 경로와 액션 이름
-
-interface User {
-  socialLogin: string;
-  name: string;
-  number: string;
-  part: string;
-  email: string; 
-  platform: string;
-}
+import { login } from '../stores/userSlice'; // AsyncThunk import
+import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
 
 const KakaoCallBackpage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); // 여기에 AppDispatch 타입을 사용
 
   useEffect(() => {
     const handleKakaoAuth = async () => {
       const code = new URLSearchParams(window.location.search).get('code');
-      
+      const KAKAO_LOGIN_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/verify-kakao-token`;
+
       if (code) {
         try {
-          const response = await axios.post('http://localhost:4000/verify-kakao-token', { code });
+          const response = await axios.post(KAKAO_LOGIN_API_URL, { code });
           if (response.data.success) {
-            const {  data } = response.data;
-            console.log( response.data);
-    
-            localStorage.setItem('kakao_token', data.access_token); // 액세스 토큰을 로컬 스토리지에 저장
-    
             const user = {
-              name: data.properties.nickname || '익명',
-              email: data.kakao_account.email || '',
+              name: response.data.data.properties.nickname || '익명',
+              email: response.data.data.kakao_account.email || '',
               number: '익명',
               part: '익명',
               platform: 'kakao',
               socialLogin: 'kakao'
             };
-    
-            console.log('카카오 로그인 성공:', user);
-            localStorage.setItem('last_login_platform', 'kakao');
 
-            dispatch(loginUser(user));
+            dispatch(login(user)); // login()을 호출하여 그 결과를 dispatch
           } else {
             alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
           }
@@ -52,14 +37,11 @@ const KakaoCallBackpage = () => {
         }
       }
     };
-    
 
     handleKakaoAuth();
   }, [navigate, dispatch]); // useEffect 의존성 배열에 navigate와 dispatch 추가
-  
-  return (
-    <div>카카오 로그인 처리 중...</div>
-  );
+
+  return <div>카카오 로그인 처리 중...</div>;
 };
 
 export default KakaoCallBackpage;
