@@ -6,9 +6,10 @@ interface User {
   _id?: string;
   socialLogin: string;
   name: string;
+  nickName: string;
   number: string;
   part: string;
-  email: string; 
+  email: string;
   platform: string;
 }
 

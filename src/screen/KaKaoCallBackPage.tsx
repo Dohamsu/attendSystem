@@ -21,13 +21,18 @@ const KakaoCallBackpage = () => {
             const user = {
               name: response.data.data.properties.nickname || '익명',
               email: response.data.data.kakao_account.email || '',
-              number: '익명',
-              part: '익명',
+              number: '미정',
+              nickName: '닉네임',
+              part: '미정',
               platform: 'kakao',
               socialLogin: 'kakao'
             };
 
             dispatch(login(user)); // login()을 호출하여 그 결과를 dispatch
+            localStorage.setItem('kakao_token', response.data.data.access_token);
+            localStorage.setItem('last_login_platform', 'kakao');
+    
+
           } else {
             alert('로그인에 실패했습니다. 잠시 후 다시 시도해주세요.');
           }

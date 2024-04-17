@@ -19,8 +19,9 @@ const AutoLoginCheck: React.FC = () => {
         dispatch(login({
           name: firebaseUser.displayName || '익명',
           email: firebaseUser.email || '',
-          number: '익명', // 실제 어플리케이션에 맞게 조정 필요
-          part: '익명', // 실제 어플리케이션에 맞게 조정 필요
+          number: '미정',
+          nickName: '닉네임',
+          part: '미정',
           platform: 'google',
           socialLogin: 'google',
         }));

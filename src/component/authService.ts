@@ -14,9 +14,10 @@ const signInWithGoogle = async (dispatch: AppDispatch) => {
     if (result.user) {
       const user = {
         name: result.user.displayName || '익명',
+        nickName: result.user.displayName || '닉네임',
         email: result.user.email || '',
-        number: '익명', // 이 부분은 구현에 따라 달라질 수 있습니다.
-        part: '익명',
+        number: '미정',
+        part: '미정',
         platform: 'google',
         socialLogin: 'google',
       };
@@ -37,6 +38,7 @@ const logoutGoogle = async (dispatch: AppDispatch) => {
     await signOut(auth);
     dispatch(logoutUser()); // 로그아웃 액션 디스패치
     console.log('로그아웃 성공');
+    alert('정상적으로 로그아웃 되었습니다.');
   } catch (error) {
     console.error('로그아웃 실패:', error);
     throw error;

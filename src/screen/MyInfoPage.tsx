@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
+import "../css/myInfoPage.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser } from '../stores/userSlice';
-import axios from 'axios';
-import "../css/myInfoPage.css";
 import { RootState } from '../stores/store';
 import {GoogleLogoutButton } from '../component/GoogleLogin';
 import {KakaoLogoutButton } from '../component/KakaoLogin';
 import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
 
+import kakaoIcon from "../images/kakao_icon.png";
+import googleIcon from "../images/google_icon.png";
 
 interface User {
   _id?: string;
   socialLogin: string;
   name: string;
+  nickName: string;
   number: string;
   part: string;
-  email: string; 
+  email: string;
   platform: string;
 }
 
@@ -25,14 +27,16 @@ const MyInfoPage: React.FC = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [number, setNumber] = useState(userInfo?.number || '');
-  const [part, setPart] = useState(userInfo?.part || '');
+  const [part, setPart] = useState(userInfo?.part || '미정');
+  const [nickName, setNickName] = useState(userInfo?.nickName || '');
 
   const handleSave = async () => {
     if (userInfo && userInfo._id) {
       const updatedUserInfo = {
         ...userInfo,
         number: number,
-        part: part
+        part: part,
+        nickName: nickName
       };
 
       // Redux Thunk를 사용하여 사용자 정보 업데이트
@@ -49,7 +53,9 @@ const MyInfoPage: React.FC = () => {
           {/* 기존 정보 출력 부분 */}
           <div className="info-item">
             <span className="info-title">로그인 플랫폼:</span>
-            <span className="info">{userInfo?.socialLogin}</span>
+            {/* <span className="info">{userInfo?.socialLogin}</span> */}
+            <img width={30} src={userInfo?.platform === 'google' ? googleIcon : kakaoIcon} alt={userInfo?.platform} />
+
           </div>
           <div className="info-item">
             <span className="info-title">이름:</span>
@@ -57,9 +63,19 @@ const MyInfoPage: React.FC = () => {
           </div>
           {/* 기수와 파트 정보를 인풋창으로 변환 */}
           <div className="info-item">
+            <span className="info-title">닉네임:</span>
+            {editMode ? (
+              <input className="input-field"
+              value={nickName} onChange={(e) => setNickName(e.target.value)} />
+            ) : (
+              <span className="info">{nickName}</span>
+            )}
+          </div>
+          <div className="info-item">
             <span className="info-title">기수:</span>
             {editMode ? (
-              <input value={number} onChange={(e) => setNumber(e.target.value)} />
+              <input className="input-field"
+              value={number} onChange={(e) => setNumber(e.target.value)} />
             ) : (
               <span className="info">{number}</span>
             )}
@@ -67,7 +83,14 @@ const MyInfoPage: React.FC = () => {
           <div className="info-item">
             <span className="info-title">파트:</span>
             {editMode ? (
-              <input value={part} onChange={(e) => setPart(e.target.value)} />
+              <select className="input-field" value={part} onChange={(e) => setPart(e.target.value)}>
+                <option value="미정">미정</option>
+                <option value="1th">1th</option>
+                <option value="2th">2th</option>
+                <option value="3th">3th</option>
+                <option value="4th">4th</option>
+                <option value="base">base</option>
+              </select>
             ) : (
               <span className="info">{part}</span>
             )}

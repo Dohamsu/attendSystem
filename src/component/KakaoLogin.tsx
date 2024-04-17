@@ -4,7 +4,7 @@ import kakaoLoginImage from '../images/kakao_login.png';
 import CONST from '../common/const';
 import { useDispatch } from 'react-redux';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { login, logoutUser, setLoginChecked } from '../stores/userSlice';
 import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
 
@@ -35,12 +35,16 @@ const AutoKakaoLoginCheck: React.FC = () => {
           name: response.data.properties.nickname,
           email: response.data.kakao_account.email,
           platform: 'kakao',
+          nickName: response.data.properties.nickname,
           socialLogin: 'kakao',
-          number: '익명',
-          part: '익명',
+          number: '미정',
+          part: '미정',
         };
-        dispatch(login(user));
-        const accessToken = localStorage.getItem('kakao_token');
+        // dispatch(login(user));
+
+        console.log(response);
+        localStorage.setItem('kakao_res', response.data);
+        localStorage.setItem('kakao_token', response.data.access_token);
         localStorage.setItem('last_login_platform', 'kakao');
 
         console.log('카카오 자동로그인 성공');
@@ -105,13 +109,27 @@ const KakaoLogoutButton: React.FC = () => {
         localStorage.setItem('kakao_token', ''); // 토큰 초기화
         localStorage.setItem('last_login_platform', '');
 
-        dispatch(logoutUser());
+        dispatch(logoutUser());        
         handleClose();
+        alert('정상적으로 로그아웃 되었습니다.');
       } else {
         console.error('로그아웃 실패:', response.data.message);
       }
     } catch (error) {
-      console.error('서버 에러:', error);
+      if (axios.isAxiosError(error)) {
+        // AxiosError 타입인 경우
+        if (error.response && error.response.data && error.response.data.reason && error.response.data.reason.code === -401) {
+          // 에러 코드가 "-401"일 때 로그아웃 처리
+          console.log('토큰 만료로 인한 로그아웃 처리');
+          dispatch(logoutUser());
+        } else {
+          // 다른 에러 메시지를 콘솔에 출력
+          console.error('서버 에러:', error.response ? error.response.data : 'No response data');
+        }
+      } else {
+        // Axios 에러가 아닌 다른 종류의 에러 처리
+        console.error('Unexpected error:', error);
+      }
     }
   };
 

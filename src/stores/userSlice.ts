@@ -9,6 +9,7 @@ interface User {
   part: string;
   email: string;
   platform: string;
+  nickName: string;
 }
 
 interface UserState {
