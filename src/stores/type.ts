@@ -3,6 +3,7 @@ import userReducer from './userSlice';
 
 // src/store/types.ts
 interface User {
+  _id?: string;
   socialLogin: string;
   name: string;
   number: string;

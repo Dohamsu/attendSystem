@@ -2,9 +2,10 @@
 
 import axios from 'axios';
 
-const API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/users/`;
+const API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/user/`;
 
 interface User {
+  _id?: string;
   name: string;
   email: string;
   password?: string;

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface User {
+  _id?: string;
   socialLogin: string;
   name: string;
   number: string;
@@ -25,7 +26,7 @@ const initialState: UserState = {
   status: 'idle',
   error: null,
 };
-const LOGIN_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/login`;
+const LOGIN_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/user`;
 
 // 비동기 로그인 처리를 위한 Thunk
 export const login = createAsyncThunk(
@@ -39,6 +40,19 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (userData: { id: string, data: User }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${LOGIN_API_URL}/${userData.id}`, userData.data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -69,6 +83,15 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.isLoggedIn = false;
         state.loginChecked = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'idle';
+        console.log('사용자 정보 업데이트 성공');
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.error = action.error.message || 'Failed to update user';
+        state.status = 'failed';
       });
   },
 });

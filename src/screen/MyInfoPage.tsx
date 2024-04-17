@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { updateUser } from '../stores/userSlice';
+import { updateUser } from '../stores/userSlice';
 import axios from 'axios';
 import "../css/myInfoPage.css";
 import { RootState } from '../stores/store';
 import {GoogleLogoutButton } from '../component/GoogleLogin';
 import {KakaoLogoutButton } from '../component/KakaoLogin';
+import { AppDispatch } from '../stores/store'; // AppDispatch 타입 import
+
+
 interface User {
+  _id?: string;
   socialLogin: string;
   name: string;
   number: string;
@@ -16,34 +20,25 @@ interface User {
 }
 
 const MyInfoPage: React.FC = () => {
-  const userInfo = useSelector((state: RootState) => state.user.user);
-  console.log(userInfo);
-  const dispatch = useDispatch();
+ const userInfo = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [editMode, setEditMode] = useState(false);
   const [number, setNumber] = useState(userInfo?.number || '');
   const [part, setPart] = useState(userInfo?.part || '');
-  const UPDATE_USER_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/update_user`;
 
   const handleSave = async () => {
-    const updatedUserInfo = {
-      ...userInfo,
-      number,
-      part,
-    };
+    if (userInfo && userInfo._id) {
+      const updatedUserInfo = {
+        ...userInfo,
+        number: number,
+        part: part
+      };
 
-    // Redux 스토어 업데이트
-    console.log(updatedUserInfo);
-
-    // 백엔드로 사용자 정보 업데이트 요청 보내기
-    try {
-      await axios.post(UPDATE_USER_API_URL, updatedUserInfo);
-      console.log('사용자 정보 업데이트 성공');
-    } catch (error) {
-      console.error('사용자 정보 업데이트 실패', error);
+      // Redux Thunk를 사용하여 사용자 정보 업데이트
+      dispatch(updateUser({ id: userInfo._id, data: updatedUserInfo }));
     }
-
-    setEditMode(false); // 편집 모드 종료
+    setEditMode(false);
   };
 
   return (
@@ -87,7 +82,7 @@ const MyInfoPage: React.FC = () => {
         {editMode ? (
           <button className='settings-btn' onClick={handleSave}>확인</button>
         ) : (
-          <button className='settings-btn' onClick={() => setEditMode(true)}>설정</button>
+          <button className='settings-btn' onClick={() => setEditMode(true)}>내정보 수정</button>
         )}
       </div>
     </div>
