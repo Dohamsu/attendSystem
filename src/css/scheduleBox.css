@@ -66,3 +66,53 @@
   padding: 10px; /* 클릭 영역 확장 */
   cursor: pointer; /* 마우스 오버 시 포인터 표시 */
 }
+
+.attendance-status {
+  width: 50px;
+  height: 24px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  font-size: 0.725rem;
+  position: absolute;
+  top: 25px;
+  right: 128px;
+}
+
+.options-popup {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.option-button {
+  display: block;
+  padding: 8px 12px;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+  text-align: left;
+}
+
+.option-button:hover {
+  background-color: #f0f0f0;
+}
+
+.attending {
+  background-color: #00B383; /* 참석 - 초록색 */
+}
+
+.pending {
+  background-color: #FFA500; /* 미정 - 주황색 */
+}
+
+.not-attending {
+  background-color: #FF6347; /* 불참 - 빨간색 */
+}

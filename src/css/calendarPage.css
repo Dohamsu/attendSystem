@@ -1,0 +1,16 @@
+.calendar-container {
+    /* Enables vertical scrolling */
+    overflow-y: scroll;
+    /* Sets the height to limit the view to one calendar at a time */
+    height: 100vh; /* Adjust based on your design needs */
+  
+    /* Enables scroll snapping */
+    scroll-snap-type: y mandatory;
+  }
+  
+  .calendar-item {
+    /* Each calendar will snap aligning to the start of the container */
+    scroll-snap-align: start;
+    height: 100vh; /* Each calendar takes the full height of the container */
+  }
+  

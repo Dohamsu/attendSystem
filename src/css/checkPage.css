@@ -1,5 +1,15 @@
 /* myInfoPage.css */
+
+@font-face {
+  font-family: 'KCC-Hanbit';
+  src: url('../fonts/hanbit/KCC-Hanbit.otf') format('opentype'),
+       url('../fonts/hanbit/KCC-Hanbit.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .my-info-page {
+    font-family: 'KCC-Hanbit', sans-serif !important;
     background-color: #f0f4f8; /* Background color of the page */
     min-height: 100vh; /* Full viewport height */
     padding: 20px; /* Padding around the content */
@@ -28,17 +38,17 @@
     /* Add more styling for the name text */
   }
   
-  .tasks-list {
-    margin-top: 20px; /* Space between the header and tasks list */
-    /* Add more styling for the tasks list */
+  .schedules-list {
+    margin-top: 20px; /* Space between the header and schedules list */
+    font-family: 'KCC-Hanbit', sans-serif !important;
   }
   
-  .task {
-    background-color: #fff; /* Task card background color */
+  .schedule {
+    background-color: #fff; /* schedule card background color */
     box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Card shadow */
     border-radius: 10px; /* Card corner rounding */
     padding: 15px; /* Card padding */
-    margin-bottom: 15px; /* Space between tasks */
+    margin-bottom: 15px; /* Space between schedules */
     position: relative;
   }
   
@@ -66,4 +76,35 @@
 
 .attendance-button:hover {
   background-color: #45a045; /* 호버 상태의 배경색 변경 */
+}
+
+
+.schedule {
+  position: relative;
+  /* 기존 스타일 ... */
+}
+
+.attendance-status {
+  width: 50px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  font-size: 0.725rem;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.attending {
+  background-color: #00B383; /* 참석 - 초록색 */
+}
+
+.pending {
+  background-color: #FFA500; /* 미정 - 주황색 */
+}
+
+.not-attending {
+  background-color: #FF6347; /* 불참 - 빨간색 */
 }

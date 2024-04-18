@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { ScheduleBox } from './ScheduleBox';
+import  ScheduleBox  from './ScheduleBox';
 
 import "../css/calendar.css";
 
@@ -140,9 +140,7 @@ const Calendar: React.FC = () => {
             </div>
             {selectedEvents.length > 0 && (
                 <div className="schedule-boxes">
-                {selectedEvents.map((event, index) => (
-                    <ScheduleBox key={index} type={event.type} time={event.time} title={event.title} description={event.description} />
-                ))}
+                    <ScheduleBox month={1}/>
                 </div>
             )}
         </>

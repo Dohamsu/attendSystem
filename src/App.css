@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.scroll-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  height: 100vh;
+}
+
+.scroll-page {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 100vw;  
+  height: 100vh;
+}
