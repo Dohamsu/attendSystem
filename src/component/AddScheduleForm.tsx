@@ -1,13 +1,70 @@
-/* myInfoPage.css */
+import * as React from "react";
 
-@font-face {
-  font-family: 'KCC-Hanbit';
-  src: url('../fonts/hanbit/KCC-Hanbit.otf') format('opentype'),
-       url('../fonts/hanbit/KCC-Hanbit.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+interface CategoryProps {
+  icon: string;
+  label: string;
+  color: string;
 }
 
+const Category: React.FC<CategoryProps> = ({ icon, label, color }) => (
+  <div className={`category ${color}`}>
+    <img src={icon} alt={label} className="category-icon" />
+    <div className="category-label">{label}</div>
+  </div>
+);
+
+const categories: CategoryProps[] = [
+  {
+    icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/477e3581c6c6b96d42b34277792d3277803fb4277670b188ddb6cf60ec935ab3?apiKey=fffec69be78842fd9cca1f6306b98f34&",
+    label: "Brainstorm",
+    color: "purple",
+  },
+  {
+    icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/cb10337a78bfe5354884a0cadbbca62d8db650cefc322137b1f8c87af69ece57?apiKey=fffec69be78842fd9cca1f6306b98f34&",
+    label: "Workout",
+    color: "blue",
+  },
+];
+
+const MyComponent: React.FC = () => {
+  return (
+    <>
+      <div className="event-form">
+        <h2 className="form-title">Add New Event</h2>
+        <div className="form-fields">
+          <div className="event-name">Event name*</div>
+          <div className="event-note">Type the note here...</div>
+          <div className="event-date">
+            <div className="date-label">Date</div>
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/3e4634b99dfa0d4ca1d31bd7853da323f191c8791769c901e30df739512eba83?apiKey=fffec69be78842fd9cca1f6306b98f34&" alt="Calendar icon" className="date-icon" />
+          </div>
+          <div className="event-time">
+            <div className="start-time">
+              <div className="time-label">Start time</div>
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/13fa645e95fc4da1eb223e6d387cb7657e7a24a9b5e37ae11d4d967498cdf23b?apiKey=fffec69be78842fd9cca1f6306b98f34&" alt="Clock icon" className="time-icon" />
+            </div>
+            <div className="reminder">Reminds me</div>
+            <div className="category-select">Select Category</div>
+            <div className="end-time">
+              <div className="time-label">End time</div>
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/23feb261b71b3785af391b329ab4cd50653f0b190bc1c286c1c6fcab06f16a69?apiKey=fffec69be78842fd9cca1f6306b98f34&" alt="Clock icon" className="time-icon" />
+            </div>
+            <div className="toggle-switch">
+              <div className="switch-handle" />
+            </div>
+          </div>
+          <div className="category-list">
+            {categories.map((category) => (
+              <Category key={category.label} {...category} />
+            ))}
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/6d1c9f55e5e90718bca5005ab8f4db229a8fd2366aa5488f14906c6a9cb04f47?apiKey=fffec69be78842fd9cca1f6306b98f34&" alt="Separator" className="separator" />
+          </div>
+          <div className="add-category">+ Add new</div>
+          <button className="create-event">Create Event</button>
+        </div>
+      </div>
+{/* 
+      <style jsx>{`
         .event-form {
           border-radius: 32px 32px 0 0;
           box-shadow: 0 3px 30px 0 rgba(0, 0, 0, 0.16);
@@ -32,18 +89,6 @@
           border: 1px solid rgba(237, 241, 247, 1);
           border-radius: 8px;
           color: #8f9bb3;
-          width: 93%;
-          padding: 20px 14px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
-
-        .event-title {
-          margin-top: 20px;
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          width: 93%;
           padding: 20px 14px;
           font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
             sans-serif;
@@ -54,7 +99,6 @@
           border-radius: 8px;
           color: #8f9bb3;
           margin-top: 16px;
-          width: 93%;
           padding: 19px 14px 56px;
           font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
             sans-serif;
@@ -72,10 +116,6 @@
           font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
             sans-serif;
         }
-        .event-date input{
-          border: 0px;
-          font-size: 0.925rem;
-        }
 
         .date-label {
           margin: auto 0;
@@ -86,7 +126,6 @@
         }
 
         .event-time {
-          justify-content: space-evenly;
           display: flex;
           gap: 14px;
           margin-top: 16px;
@@ -100,17 +139,13 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: 40%;
           padding: 16px 14px;
           font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
             sans-serif;
         }
 
         .time-label {
-          width: 70%;
-          font-size: 0.925rem;
           font-family: SF UI Text, sans-serif;
-          border: 0px;
         }
 
         .time-icon {
@@ -130,6 +165,7 @@
           font: 500 17px/112% SF UI Text, -apple-system, Roboto, Helvetica,
             sans-serif;
           margin-top: 27px;
+          text-align: right;
         }
 
         .toggle-switch {
@@ -158,23 +194,17 @@
           border-radius: 11px;
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 14px 13px;
+          gap: 7px;
+          padding: 16px 13px;
           white-space: nowrap;
-          font-family: 'KCC-Hanbit', sans-serif !important;
-
         }
 
         .category.purple {
-          background-color: #a697f540;
+          background-color: #735bf2;
         }
 
         .category.blue {
-          background-color: #0095ff40;
-        }
-
-        .category.green {
-          background-color: #00B38340;
+          background-color: #0095ff;
         }
 
         .category-icon {
@@ -183,6 +213,8 @@
 
         .category-label {
           color: #222b45;
+          font: 500 14px/121% SF UI Text, -apple-system, Roboto, Helvetica,
+            sans-serif;
           letter-spacing: 0.88px;
         }
 
@@ -192,6 +224,8 @@
 
         .add-category {
           color: #735bf2;
+          font: 500 14px/121% SF UI Text, -apple-system, Roboto, Helvetica,
+            sans-serif;
           letter-spacing: 0.88px;
           margin-top: 13px;
         }
@@ -202,11 +236,16 @@
           border-radius: 7px;
           color: #fff;
           cursor: pointer;
-          font-size: 1rem;
+          font: 600 16px/137.5% SF UI Text, -apple-system, Roboto, Helvetica,
+            sans-serif;
           margin-top: 24px;
           padding: 19px 60px;
           text-align: center;
           width: 100%;
-          font-family: 'KCC-Hanbit', sans-serif !important;
-
         }
+      `}</style> */}
+    </>
+  );
+};
+
+export default MyComponent;
