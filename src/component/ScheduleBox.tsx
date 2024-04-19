@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useRef, useEffect, MouseEvent } from 'react';
 import "../css/scheduleBox.css";
 import { useSelector } from 'react-redux';
 import { RootState } from '../stores/store'; // 상태 관리 경로 확인 필요
@@ -8,58 +7,65 @@ import IconClockPerMain from "../images/scheduleBoxCircle1.svg";
 import IconClockPerSub from "../images/scheduleBoxCircle2.svg";
 import IconClockPerAdd from "../images/scheduleBoxCircle3.svg";
 import moreIconUrl from "../images/scheduleMoreUrl.svg";
+import { Schedule, ScheduleBoxProps } from '../stores/type';
+import { fetchSchedules, updateAttendance } from '../common/scheduleService';
 
-interface Schedule {
-  scheduleNumber: string;
-  time: string;
-  title: string;
-  description: string;
-  type: string;
-  isAttending: boolean;
-}
-
-const ScheduleBox: React.FC<{ month: number }> = ({ month }) => {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, selectedEvents, setSelectedEvents, month, day }) => {
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [openOption, setOpenOption] = useState<string | null>(null);
-  const GET_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule`;
-  const ATTEND_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/attend`;
+  const popupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (userInfo?.name) {
-      axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?userName=${userInfo.name}`)
-        .then(response => {
-          setSchedules(response.data.map(schedule => ({
-            ...schedule,
-            time: new Date(schedule.time).toLocaleString('ko-KR')
-          })));
-        })
-        .catch(error => console.error('일정 불러오기 실패:', error));
-    }
-  }, [userInfo?.name]);
-
-  // 출석 체크 기능
-  const toggleAttendance = async (scheduleNumber: string) => {
-    const scheduleToUpdate = schedules.find(schedule => schedule.scheduleNumber === scheduleNumber);
-    if (!scheduleToUpdate || !userInfo?.name) return;
-
-    const updatedIsAttending = !scheduleToUpdate.isAttending;
-
-    axios.post(`${ATTEND_SCHEDULE_API_URL}`, {
-      scheduleNumber,
-      name: userInfo.name,
-      isAttending: updatedIsAttending
-    })
-    .then(response => {
-      if (response.data.success) {
-        setSchedules(prevSchedules => prevSchedules.map(schedule => 
-          schedule.scheduleNumber === scheduleNumber ? { ...schedule, isAttending: updatedIsAttending } : schedule
-        ));
-      } else {
-        console.error('출석 마크 실패:', response.data.message);
+    const checkOutsideClick = (event: MouseEvent) => {
+      if (openOption && popupRef.current && !popupRef.current.contains(event.target as Node)) {
+        setOpenOption(null);
       }
-    })
-    .catch(error => console.error('출석 마크 중 오류 발생:', error));
+    };
+
+    document.addEventListener('mousedown', checkOutsideClick as any);
+    return () => {
+      document.removeEventListener('mousedown', checkOutsideClick as any);
+    };
+  }, [openOption]);
+
+  useEffect(() => {
+    if (selectedEvents.length > 0) {
+      let hasChanges = false;
+      const newSchedules = schedules.map(schedule => {
+        const foundEvent = selectedEvents.find(event => event.scheduleNumber === schedule.scheduleNumber);
+        if (foundEvent && JSON.stringify(schedule) !== JSON.stringify(foundEvent)) {
+          hasChanges = true;
+          return { ...schedule, ...foundEvent };
+        }
+        return schedule;
+      });
+
+      if (hasChanges || newSchedules.length !== schedules.length) {
+        setSchedules(newSchedules);
+      }
+    }
+  }, [selectedEvents]);
+
+  // 출석 체크 기능 간소화 및 서비스 로직 활용
+  const toggleAttendance = async (scheduleNumber: string, status: number) => {
+    if (!userInfo?.name) return;
+    setOpenOption(null);
+
+     try {
+      await updateAttendance(scheduleNumber, userInfo.name, status);
+      const updatedSchedules = schedules.map(schedule => 
+        schedule.scheduleNumber === scheduleNumber ? { ...schedule, isAttending: status } : schedule
+      );
+      setSchedules(updatedSchedules);
+
+      const updatedSelectedEvents = selectedEvents.map(event => 
+        event.scheduleNumber === scheduleNumber ? { ...event, isAttending: status } : event
+      );
+      setSelectedEvents(updatedSelectedEvents);
+
+    } catch (error) {
+      console.error('Error updating attendance:', error);
+    }
   };
 
   const handleMoreIconClick = (scheduleNumber: string) => {
@@ -78,18 +84,19 @@ const ScheduleBox: React.FC<{ month: number }> = ({ month }) => {
             <img src="clock-icon-url" alt="" className="clock-icon" />
             <time className="time">{schedule.time}</time>
           </div>
-        <img src={moreIconUrl} alt="more options" className="more-icon"
+          <img src={moreIconUrl} alt="more options" className="more-icon"
             onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />
           {openOption === schedule.scheduleNumber && (
-            <div className="options-popup">
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber)} className="option-button">출석예정</button>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber)} className="option-button">불참예정</button>
+            <div className="options-popup" ref={popupRef}>
+              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">미정</button>
+              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 2)} className="option-button">출석</button>
+              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 3)} className="option-button">불참</button>
             </div>
           )}
           <h3 className="title">{schedule.title}</h3>
           <p className="description">{schedule.description}</p>
-          <div className={`attendance-status ${schedule.isAttending ? 'attending' : 'pending'}`}>
-            {schedule.isAttending ? '출석예정' : '미정'}
+          <div className={`attendance-status ${schedule.isAttending === 2 ? 'attending' : schedule.isAttending === 3 ? 'not-attending' : 'pending'}`}>
+            {schedule.isAttending === 2 ? '출석예정' : schedule.isAttending === 3 ? '불참예정' : '미정'}
           </div>
         </article>
       ))}

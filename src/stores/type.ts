@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 
-// src/store/types.ts
 interface User {
   _id?: string;
   socialLogin: string;
@@ -11,6 +10,25 @@ interface User {
   part: string;
   email: string;
   platform: string;
+}
+
+export interface Schedule {
+  color?: string;
+  scheduleNumber: string;
+  time: string;
+  title: string;
+  description: string;
+  type: string;
+  isAttending: number;
+}
+
+export interface ScheduleBoxProps {
+  selectedEvents: Schedule[];
+  schedules: Schedule[];
+  setSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
+  setSelectedEvents: React.Dispatch<React.SetStateAction<Schedule[]>>;
+  month: number;
+  day: number;
 }
 
 
