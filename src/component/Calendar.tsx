@@ -81,19 +81,54 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
     setEvents(eventsMap);
   }, [schedules]);
 
+  useEffect(() => {
+    filterEventsForMonth(currentMonth, currentYear);
+  }, [schedules, currentMonth, currentYear]);
+
+  const filterEventsForMonth = (month: number, year: number) => {
+    const eventsMap: EventsMap = {};
+    schedules.forEach(schedule => {
+      const scheduleDate = new Date(schedule.time);
+      const scheduleMonth = scheduleDate.getMonth();
+      const scheduleYear = scheduleDate.getFullYear();
+      if (scheduleMonth === month && scheduleYear === year) {
+        const day = scheduleDate.getDate();
+        const eventColor = colorMapping[schedule.type] || "#000000";
+        const updatedSchedule = { ...schedule, color: eventColor };
+
+        if (!eventsMap[day]) {
+          eventsMap[day] = [];
+        }
+        eventsMap[day].push(updatedSchedule);
+      }
+    });
+    setEvents(eventsMap);
+  };
+
   const prevMonth = () => {
-    setCurrentMonth(prev => prev === 0 ? 11 : prev - 1);
-    if (currentMonth === 0) setCurrentYear(prev => prev - 1);
+    const newMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const newYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    filterEventsForMonth(newMonth, newYear);
+    setSelectedEvents([]);
+    setSelectedDate(null);
   };
 
   const nextMonth = () => {
-    setCurrentMonth(prev => prev === 11 ? 0 : prev + 1);
-    if (currentMonth === 11) setCurrentYear(prev => prev + 1);
+    const newMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+    const newYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+    filterEventsForMonth(newMonth, newYear);
+    setSelectedEvents([]);
+    setSelectedDate(null);
   };
 
   const selectDay = (day: number) => {
     setSelectedDate(new Date(currentYear, currentMonth, day));
     const dayEvents = events[day];
+    console.log(dayEvents);
     setSelectedEvents(dayEvents || []);
   };
 

@@ -49,10 +49,11 @@ export const getCalendarEvents = (schedules: Schedule[]): EventsMap => {
 const GET_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule`;
 const ATTEND_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/attend`;
 
-export const fetchSchedules = async (name: string): Promise<Schedule[]> => {
-  const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${name}`);
+export const fetchSchedules = async (name: string, month?: number, year?: number): Promise<Schedule[]> => {
+  const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${name}&month=${month}&year=${year}`);
   return response.data;
 };
+
 
 export const updateAttendance = async (scheduleNumber: string, name: string, isAttending: number): Promise<void> => {
   await axios.post(`${ATTEND_SCHEDULE_API_URL}`, {
