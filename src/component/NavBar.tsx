@@ -4,6 +4,8 @@ import "../css/navBar.css";
 
 import WhiteNav from "../images/nav/white-nav.svg";
 import CenterButton from "../images/nav/centerButton.png";
+import ScheduleRegiPopup from './ScheduleRegiPopup';
+
 // 기본 아이콘
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
@@ -22,6 +24,12 @@ export const NavBar = (): JSX.Element | null => {
   const navigate = useNavigate();
 
   const [activeIcon, setActiveIcon] = useState<string>("");
+  const [showPopup, setShowPopup] = useState(false);
+
+  const togglePopup = () => {
+    console.log('버튼 클릭');
+    setShowPopup(!showPopup);
+  };
 
   const icons = [
     { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer, path: "/calendar" },
@@ -48,22 +56,25 @@ export const NavBar = (): JSX.Element | null => {
   };
 
   return (
-    <div className="NavBar">
-        <div className="centerButton">
-            <div className="centerButtonShadow"> </div>
-            <img width={100} alt="Center Button" src={CenterButton} />
-        </div>
-        <div className="iconBox">
-          {icons.map((icon) => (
-            <img
-              key={icon.name}
-              alt={`${icon.name} icon`}
-              src={activeIcon === icon.name ? icon.activeIcon : icon.defaultIcon}
-              onClick={() => handleIconClick(icon.name, icon.path)}
-            />
-          ))}
-        </div>
-        <img className="navBarBackground" alt="White Navigation Bar" src={WhiteNav} />
-    </div>
+    <>
+      <div className="NavBar">
+        <div className="centerButton"  onClick={togglePopup}>
+              <div className="centerButtonShadow"> </div>
+              <img width={100} alt="Center Button" src={CenterButton} />
+          </div>
+          <div className="iconBox">
+            {icons.map((icon) => (
+              <img
+                key={icon.name}
+                alt={`${icon.name} icon`}
+                src={activeIcon === icon.name ? icon.activeIcon : icon.defaultIcon}
+                onClick={() => handleIconClick(icon.name, icon.path)}
+              />
+            ))}
+          </div>
+          <img className="navBarBackground" alt="White Navigation Bar" src={WhiteNav} />
+      </div>
+      {showPopup && <ScheduleRegiPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />}
+    </>
   );
 };
