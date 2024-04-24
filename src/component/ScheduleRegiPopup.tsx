@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
 import IconClock from "../images/nav/clock.svg";
 import "../css/scheduleRegiPopup.css";
+import ReactDOM from 'react-dom';
 
 interface CategoryProps {
   icon: string;
@@ -59,13 +60,19 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
   });
 
   // 팝업 표시 여부에 따라 애니메이션 실행
-  React.useEffect(() => {
+  useEffect(() => {
     if (isVisible) {
       api.start({ y: 10 });
+        // 팝업이 보일 때 body의 스크롤을 비활성화
+        document.body.style.overflow = 'hidden';
+    }else {
+      // 팝업이 숨겨질 때 body의 스크롤을 다시 활성화
+      document.body.style.overflow = 'auto';
     }
   }, [isVisible, api]);
 
-  return (
+  return ReactDOM.createPortal(
+    (
     <animated.div className="event-form-container" style={{ display: isVisible ? 'flex' : 'none' }}>
       <animated.div className="event-form" style={style} {...bind()}>
         <h2 className="form-title">일정 등록하기</h2>
@@ -96,7 +103,10 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
         </div>
       </animated.div>
     </animated.div>
-  );
+  ),
+  document.body // 포털의 목표 요소
+
+  )
 };
 
 export default ScheduleRegiPopup;
