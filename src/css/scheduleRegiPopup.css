@@ -23,15 +23,15 @@
 }
 
 .event-form {
-  width: 90%;
+  width: 100%;
   max-width: 400px;
   border-radius: 20px 20px 0 0;
   background-color: #fff;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   pointer-events: auto; /* 포인터 이벤트 활성화 */
-  transform: translateY(100vh); /* 초기 위치 설정 */
-  transition: transform 10ms ease-in-out;
+  /* transform: translateY(100vh); */
+  /* transition: transform 50ms ease-in-out; */
   z-index: 999;
 }
 .drag-handle {

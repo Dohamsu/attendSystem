@@ -39,6 +39,14 @@ const categories: CategoryProps[] = [
 
 const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
   const [{ y }, api] = useSpring(() => ({ y: 800 }));
+  const style = useSpring({
+    transform: y.to(y => `translateY(${y}px)`),
+    config: {
+      duration: 100, // 애니메이션 지속 시간
+      tension: 500, // 스프링 텐션, 더 높은 값은 더 빠른 "강성"
+      friction: 5 // 마찰, 더 높은 값은 더 천천히 멈춤
+    }
+  });
 
   const bind = useDrag(({ down, movement: [, my], cancel }) => {
     console.log(my);
@@ -46,7 +54,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
       cancel && cancel();
       api.start({ y: 800, onRest: onClose }); // 드래그로 팝업을 닫을 때
     } else {
-      api.start({ y: down ? my : 0 }); // 드래그 중이거나 원래 위치로 복귀
+      // api.start({ y: down ? my : 0 }); // 드래그 중이거나 원래 위치로 복귀
     }
   });
 
@@ -59,7 +67,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
 
   return (
     <animated.div className="event-form-container" style={{ display: isVisible ? 'flex' : 'none' }}>
-      <animated.div className="event-form" style={{ transform: y.to(y => `translateY(${y}px)`) }} {...bind()}>
+      <animated.div className="event-form" style={style} {...bind()}>
         <h2 className="form-title">일정 등록하기</h2>
         <div className="form-fields">
           <input className="event-name" placeholder='일정 제목' />
