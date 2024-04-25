@@ -1,45 +1,82 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { animated, useSpring } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
 import IconClock from "../images/nav/clock.svg";
+import { registerEvent } from '../services/EventRegistrationService';
+
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ko'
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+
 import "../css/scheduleRegiPopup.css";
 import ReactDOM from 'react-dom';
 
-interface CategoryProps {
-  icon: string;
-  label: string;
-  color: string;
-}
-
-const Category: React.FC<CategoryProps> = ({ icon, label, color }) => (
-  <div className={`category ${color}`}>
-    <img src={icon} alt={label} className="category-icon" />
-    <div className="category-label">{label}</div>
-  </div>
-);
-
-const categories: CategoryProps[] = [
-  {
-    icon: IconUser,
-    label: "연습",
-    color: "purple",
-  },
-  {
-    icon: IconUser,
-    label: "행사",
-    color: "blue",
-  },
-  {
-    icon: IconUser,
-    label: "공지",
-    color: "green",
-  },
-];
-
 const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
   const [{ y }, api] = useSpring(() => ({ y: 800 }));
+  const [title, setTitle] = useState('');
+  const [place, setPlace] = useState('');
+  const [description, setDescription] = useState('');
+  const [type, setType] = useState('');
+  const [startDate, setStartDate] = useState<Dayjs>(dayjs());
+  const [startTime, setStartTime] = useState<Dayjs>(dayjs());
+  const [endTime, setEndTime] = useState<Dayjs>(dayjs());
+  const [pickerOpen, setPickerOpen] = useState(false);  // 날짜 및 시간 선택기의 열림 상태를 추적
+
+  const handleSelectCategory = (label: string) => {
+    setType(label);
+  };
+
+  interface CategoryProps {
+    icon: string;
+    label: string;
+    color: string;
+    selected: boolean;  // Include 'selected' property in the interface
+    onSelect: (label: string) => void;
+  }
+  
+  const Category: React.FC<CategoryProps> = ({ icon, label, color, selected, onSelect }) => (
+    <div className={`category ${color} ${selected ? 'selected' : ''}`} onClick={() => onSelect(label)}>
+      <img src={icon} alt={label} className="category-icon" />
+      <div className="category-label">{label}</div>
+    </div>
+  );
+  
+  const categories: CategoryProps[] = [
+    {
+      icon: IconUser,
+      label: "연습",
+      color: "purple",
+      selected: type === "연습",
+      onSelect: handleSelectCategory
+    },
+    {
+      icon: IconUser,
+      label: "행사",
+      color: "blue",
+      selected: type === "행사",
+      onSelect: handleSelectCategory
+    },
+    {
+      icon: IconUser,
+      label: "공지",
+      color: "green",
+      selected: type === "공지",
+      onSelect: handleSelectCategory
+    },
+  ];
+  
   const style = useSpring({
     transform: y.to(y => `translateY(${y}px)`),
     config: {
@@ -50,7 +87,9 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
   });
 
   const bind = useDrag(({ down, movement: [, my], cancel }) => {
-    console.log(my);
+    // console.log(my);
+    if (pickerOpen) return;
+
     if (my > 19 && !down) {
       cancel && cancel();
       api.start({ y: 800, onRest: onClose }); // 드래그로 팝업을 닫을 때
@@ -71,35 +110,98 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
     }
   }, [isVisible, api]);
 
+  const handleTimeChange = (setter: React.Dispatch<React.SetStateAction<Dayjs>>) => (newTime: Dayjs | null) => {
+    if (newTime) {
+      setter(newTime);
+    }
+    // 필요한 경우 null인 경우의 처리 로직 추가
+  };
+
+  const handleEndTimeChange = (newTime: Dayjs | null) => {
+    if (newTime) {
+      if (newTime.isBefore(startTime)) {
+        alert('시간 설정이 잘못되었습니다. 다시 확인해주세요.');
+        setEndTime(startTime);
+      } else {
+        setEndTime(newTime);
+      }
+    }
+  };
+  
+  const submitForm = async () => {
+    const eventData = { title, place, description, startDate, type, startTime,  endTime };
+    console.log(eventData);
+    await registerEvent(eventData);
+    onClose(); // Close the popup on successful registration
+  };
+
+
   return ReactDOM.createPortal(
     (
     <animated.div className="event-form-container" style={{ display: isVisible ? 'flex' : 'none' }}>
       <animated.div className="event-form" style={style} {...bind()}>
         <h2 className="form-title">일정 등록하기</h2>
         <div className="form-fields">
-          <input className="event-name" placeholder='일정 제목' />
-          <input className="event-title" placeholder='장소' />
-          <input className="event-note" placeholder='내용' />
+        <input value={title} onChange={e => setTitle(e.target.value)} className="event-name" placeholder='일정 제목' />
+          <input value={place} onChange={e => setPlace(e.target.value)} className="event-title" placeholder='장소' />
+          <input value={description} onChange={e => setDescription(e.target.value)} className="event-note" placeholder='내용' />
           <div className="event-date">
-            <input className="date-label" placeholder='2024-01-01' />
+              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+                <div>
+                <MobileDatePicker  
+                  className="mui_datePicker"  
+                  format="YYYY-MM-DD"  
+                  onOpen={() => setPickerOpen(true)}
+                  onClose={() => setPickerOpen(false)}
+                  onChange={handleTimeChange(setStartDate)}
+                  defaultValue={dayjs()} 
+                  slotProps={{
+                    toolbar: {  hidden:true },
+                  }}
+                  sx={{border:0}}
+                  />
+                </div>
+              </LocalizationProvider>
             <img src={IconCal} alt="Calendar icon" className="date-icon" />
           </div>
           <div className="event-time">
-            <div className="start-time">
-              <input className="time-label" placeholder='Start Time' />
+          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <div>
+              <TimePicker
+                value={startTime}
+                label="시작 시간"
+                onOpen={() => setPickerOpen(true)}
+                onClose={() => setPickerOpen(false)}
+                onChange={handleTimeChange(setStartTime)}
+                slotProps={{
+                  toolbar: { hidden:false },
+                }}
+                viewRenderers={{
+                  hours: renderTimeViewClock,
+                  minutes: renderTimeViewClock,
+                  seconds: renderTimeViewClock,
+                }}
+                />
               <img src={IconClock} alt="Clock icon" className="time-icon" />
             </div>
-            <div className="end-time">
-              <input className="time-label" placeholder='End Time' />
+            <div>
+              <MobileTimePicker
+                value={endTime}
+                label="종료 시간"
+                onOpen={() => setPickerOpen(true)}
+                onClose={() => setPickerOpen(false)}
+                onChange={handleEndTimeChange}
+                />
               <img src={IconClock} alt="Clock icon" className="time-icon" />
-            </div>        
-          </div>        
+            </div>
+            </LocalizationProvider>
+          </div>
           <div className="category-select">일정 종류 선택</div>         
           <div className="category-list">
             {categories.map(category => <Category key={category.label} {...category} />)}
           </div>
           <div className="add-category">+ Add new</div>
-          <button className="create-event">등록하기</button>
+          <button className="create-event"  onClick={submitForm}>등록하기</button>
         </div>
       </animated.div>
     </animated.div>

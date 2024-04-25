@@ -18,7 +18,7 @@
   align-items: flex-end;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
+  z-index: 2;
   pointer-events: none; /* 이벤트 전파 방지 */
 }
 
@@ -27,12 +27,12 @@
   max-width: 400px;
   border-radius: 20px 20px 0 0;
   background-color: #fff;
-  padding: 20px;
+  padding: 0px 0px 20px 0px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   pointer-events: auto; /* 포인터 이벤트 활성화 */
   /* transform: translateY(100vh); */
   /* transition: transform 50ms ease-in-out; */
-  z-index: 999;
+  z-index: 1;
 }
 .drag-handle {
   display: flex;
@@ -43,197 +43,272 @@
 }
 
 
-        .form-title {
-          color: #222b45;
-          text-align: center;
-          font: 600 20px/110% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
+.form-title {
+  color: #222b45;
+  text-align: center;
+  font: 600 20px/110% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .form-fields {
-          margin-top: 25px;
-          padding: 0 16px;
-        }
+.form-fields {
+  margin-top: 25px;
+  padding: 0 16px;
+}
 
-        .event-name {
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          width: 93%;
-          padding: 20px 14px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
+.event-name {
+ border: 1px solid rgba(196, 196, 196, 1);
+  border-radius: 8px;
+  color: #8f9bb3;
+  width: 93%;
+  padding: 20px 14px;
+  font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .event-title {
-          margin-top: 20px;
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          width: 93%;
-          padding: 20px 14px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
+.event-title {
+  margin-top: 20px;
+ border: 1px solid rgba(196, 196, 196, 1);
+  border-radius: 8px;
+  color: #8f9bb3;
+  width: 93%;
+  padding: 20px 14px;
+  font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .event-note {
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          margin-top: 16px;
-          width: 93%;
-          padding: 19px 14px 56px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
+.event-note {
+ border: 1px solid rgba(196, 196, 196, 1);
+  border-radius: 8px;
+  color: #8f9bb3;
+  margin-top: 16px;
+  width: 93%;
+  padding: 19px 14px 56px;
+  font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .event-date {
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-top: 15px;
-          padding: 16px 14px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
-        .event-date input{
-          border: 0px;
-          font-size: 0.925rem;
-        }
+.event-date {
+  display: flex;
+  padding: 15px 10px 0px 0px;
+  font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .date-label {
-          margin: auto 0;
-        }
+.event-date .mui_datePicker{
+  width: 92vw;
+}
 
-        .date-icon {
-          width: 16px;
-        }
+.event-date .date-icon{
+  position: absolute;
+  margin-left: 75%;
+  margin-top: 17px;
+}
 
-        .event-time {
-          justify-content: space-evenly;
-          display: flex;
-          gap: 14px;
-          margin-top: 16px;
-        }
+.event-date input{
+  border: 0px;
+  font-size: 0.925rem;
+}
 
-        .start-time,
-        .end-time {
-          border: 1px solid rgba(237, 241, 247, 1);
-          border-radius: 8px;
-          color: #8f9bb3;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 40%;
-          padding: 16px 14px;
-          font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-        }
+.date-label {
+  margin: auto 0;
+}
 
-        .time-label {
-          width: 70%;
-          font-size: 0.925rem;
-          font-family: SF UI Text, sans-serif;
-          border: 0px;
-        }
+.date-icon {
+  width: 16px;
+}
 
-        .time-icon {
-          width: 18px;
-        }
+.event-time {
+  justify-content: space-evenly;
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
 
-        .reminder {
-          color: #222b45;
-          font: 400 14px/136% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-          margin-top: 20px;
-          text-align: right;
-        }
+.start-time,
+.end-time {
+ border: 1px solid rgba(196, 196, 196, 1);
+  border-radius: 8px;
+  color: #8f9bb3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
+  padding: 16px 14px;
+  font: 400 15px/133% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+}
 
-        .category-select {
-          color: #222b45;
-          font: 500 17px/112% SF UI Text, -apple-system, Roboto, Helvetica,
-            sans-serif;
-          margin-top: 27px;
-        }
+.time-label {
+  width: 70%;
+  font-size: 0.925rem;
+  font-family: SF UI Text, sans-serif;
+  border: 0px;
+}
 
-        .toggle-switch {
-          background-color: #ced3de;
-          border-radius: 13px;
-          margin-top: 15px;
-          padding: 4px 0;
-          width: 44px;
-        }
+/* 첫 번째 시계 아이콘 스타일 */
+.event-time > div:nth-child(1) .time-icon {
+  width: 18px;
+  position: absolute;
+  right: 240px;
+  padding-top: 17px;
+}
 
-        .switch-handle {
-          background-color: #fff;
-          border-radius: 50%;
-          height: 16px;
-          width: 16px;
-        }
+/* 두 번째 시계 아이콘 스타일 */
+.event-time > div:nth-child(2) .time-icon {
+  width: 18px;
+  position: absolute;
+  right: 50px;
+  padding-top: 17px;
+}
+.mui_datePicker{
+  border: 0px !important;
+}
 
-        .category-list {
-          display: flex;
-          gap: 16px;
-          margin-top: 17px;
-          padding: 0 1px;
-        }
+.reminder {
+  color: #222b45;
+  font: 400 14px/136% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+  margin-top: 20px;
+  text-align: right;
+}
 
-        .category {
-          border-radius: 11px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 14px 13px;
-          white-space: nowrap;
-          font-family: 'KCC-Hanbit', sans-serif !important;
+.category-select {
+  color: #222b45;
+  font: 500 17px/112% SF UI Text, -apple-system, Roboto, Helvetica,
+    sans-serif;
+  margin-top: 27px;
+}
 
-        }
+.toggle-switch {
+  background-color: #ced3de;
+  border-radius: 13px;
+  margin-top: 15px;
+  padding: 4px 0;
+  width: 44px;
+}
 
-        .category.purple {
-          background-color: #a697f540;
-        }
+.switch-handle {
+  background-color: #fff;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+}
 
-        .category.blue {
-          background-color: #0095ff40;
-        }
+.category-list {
+  display: flex;
+  gap: 16px;
+  margin-top: 17px;
+  padding: 0 1px;
+}
 
-        .category.green {
-          background-color: #00B38340;
-        }
+.category {
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 13px;
+  white-space: nowrap;
+  font-family: 'KCC-Hanbit', sans-serif !important;
 
-        .category-icon {
-          width: 11px;
-        }
+}
 
-        .category-label {
-          color: #222b45;
-          letter-spacing: 0.88px;
-        }
+.category.purple {
+  background-color: #a697f540;
+}
 
-        .separator {
-          width: 94px;
-        }
+.category.blue {
+  background-color: #0095ff40;
+}
 
-        .add-category {
-          color: #735bf2;
-          letter-spacing: 0.88px;
-          margin-top: 13px;
-        }
+.category.green {
+  background-color: #00B38340;
+}
 
-        .create-event {
-          background-color: #735bf2;
-          border: none;
-          border-radius: 7px;
-          color: #fff;
-          cursor: pointer;
-          font-size: 1rem;
-          margin-top: 24px;
-          padding: 19px 60px;
-          text-align: center;
-          width: 100%;
-          font-family: 'KCC-Hanbit', sans-serif !important;
+.category-icon {
+  width: 11px;
+}
 
-        }
+.category-label {
+  color: #222b45;
+  letter-spacing: 0.88px;
+}
+
+.separator {
+  width: 94px;
+}
+
+.add-category {
+  color: #735bf2;
+  letter-spacing: 0.88px;
+  margin-top: 13px;
+}
+
+.create-event {
+  background-color: #735bf2;
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 24px;
+  padding: 19px 60px;
+  text-align: center;
+  width: 100%;
+  font-family: 'KCC-Hanbit', sans-serif !important;
+
+}
+
+.category.selected {
+  border: 2px solid #004BA8; /* 선택된 카테고리에 테두리 추가 */
+}
+
+/* ScheduleRegiPopup.css - 일정 등록 팝업에 대한 스타일 */
+
+/* DatePicker 커스텀 스타일 */
+.react-datepicker {
+  font-family: 'Open Sans', sans-serif; /* 폰트 변경 */
+  border: none; /* 테두리 제거 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 추가 */
+}
+
+.react-datepicker__input-container input {
+  width: 100%; /* 전체 너비 */
+  padding: 8px 10px; /* 패딩 조정 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+}
+
+/* TimePicker 커스텀 스타일 */
+.react-time-picker {
+  display: block;
+  width: 100%;
+}
+
+.react-time-picker__wrapper {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 4px;
+  background: white;
+  box-shadow: inset 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.react-time-picker__inputGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.react-time-picker__inputGroup__input {
+  min-width: 32px;
+  border: none;
+}
+
+.react-time-picker__button {
+  border: none;
+  background: none;
+  color: #666;
+}
+
+.react-time-picker__button:enabled:hover,
+.react-time-picker__button:enabled:focus {
+  color: #333;
+}

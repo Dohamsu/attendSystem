@@ -4,6 +4,7 @@ import { getCalendarEvents } from '../common/scheduleService';
 import { Schedule, ScheduleBoxProps } from '../stores/type';
 import PrevBtn from "../images/PrevBtn.png";
 import NextBtn from "../images/NextBtn.svg";
+import dayjs, { Dayjs } from 'dayjs';
 
 import "../css/calendar.css";
 
@@ -20,9 +21,9 @@ type EventsMap = {
 };
 
 const colorMapping: { [key: string]: string } = {
-  "practice": "#00B383",
-  "notice": "#735BF2",
-  "etc": "#0095FF"
+  "연습": "#00B383",
+  "공지": "#735BF2",
+  "행사": "#0095FF"
 };
 
 const CalendarDay: React.FC<CalendarDayProps> = ({ day, isToday, isSelected, events, onClick }) => {
@@ -88,21 +89,25 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
   const filterEventsForMonth = (month: number, year: number) => {
     const eventsMap: EventsMap = {};
     schedules.forEach(schedule => {
-      const scheduleDate = new Date(schedule.time);
-      const scheduleMonth = scheduleDate.getMonth();
-      const scheduleYear = scheduleDate.getFullYear();
-      if (scheduleMonth === month && scheduleYear === year) {
-        const day = scheduleDate.getDate();
-        const eventColor = colorMapping[schedule.type] || "#000000";
-        const updatedSchedule = { ...schedule, color: eventColor };
+      // const scheduleDate = new Date(schedule.time);
+      // const scheduleMonth = scheduleDate.getMonth();
+      // const scheduleYear = scheduleDate.getFullYear();
+      const scheduleDate = dayjs(schedule.startDate);
+      const scheduleMonth = scheduleDate.month(); // month()는 0부터 시작 (0=1월)
+      const scheduleYear = scheduleDate.year();
+      
+    if (scheduleMonth === month && scheduleYear === year) {
+      const day = scheduleDate.date(); // getDate() 대신 date() 사용
+      const eventColor = colorMapping[schedule.type] || "#000000";
+      const updatedSchedule = { ...schedule, color: eventColor };
 
-        if (!eventsMap[day]) {
-          eventsMap[day] = [];
-        }
-        eventsMap[day].push(updatedSchedule);
+      if (!eventsMap[day]) {
+        eventsMap[day] = [];
       }
-    });
-    setEvents(eventsMap);
+      eventsMap[day].push(updatedSchedule);
+    }
+  });
+  setEvents(eventsMap);
   };
 
   const prevMonth = () => {

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, MouseEvent } from 'react';
 import "../css/scheduleBox.css";
 import { useSelector } from 'react-redux';
 import { RootState } from '../stores/store'; // 상태 관리 경로 확인 필요
+import dayjs, { Dayjs } from 'dayjs';
 
 import IconClockPerMain from "../images/scheduleBoxCircle1.svg";
 import IconClockPerSub from "../images/scheduleBoxCircle2.svg";
@@ -14,7 +15,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [openOption, setOpenOption] = useState<string | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-
+  console.log(schedules);
   useEffect(() => {
     const checkOutsideClick = (event: MouseEvent) => {
       if (openOption && popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -80,9 +81,9 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
             schedule.type === "main" ? IconClockPerMain :
             schedule.type === "sub" ? IconClockPerSub : IconClockPerAdd
           } alt="" className="scheduleBoxCircle" />
-          <div className="time-container">
+         <div className="time-container">
             <img src="clock-icon-url" alt="" className="clock-icon" />
-            <time className="time">{schedule.time}</time>
+            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD / HH:mm')}</time>
           </div>
           <img src={moreIconUrl} alt="more options" className="more-icon"
             onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />

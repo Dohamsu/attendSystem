@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface User {
   _id?: string;
@@ -16,8 +17,12 @@ export interface Schedule {
   color?: string;
   scheduleNumber: string;
   time: string;
+  place: string;
   title: string;
   description: string;
+  startDate: Dayjs;
+  startTime: Dayjs;
+  endTime: Dayjs;
   type: string;
   isAttending: number;
 }

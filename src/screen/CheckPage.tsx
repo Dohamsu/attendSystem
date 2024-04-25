@@ -7,7 +7,7 @@ import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
 import IconClock from "../images/nav/clock.svg";
 
-import "../css/checkPage.css"; // Make sure to create a corresponding CSS file
+// import "../css/checkPage.css"; // Make sure to create a corresponding CSS file
 
 interface CategoryProps {
   icon: string;
