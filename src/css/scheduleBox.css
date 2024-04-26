@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: start;
   max-width: 357px;
-  padding: 10px 14px; /* 우측 패딩 감소 */
+  padding: 13px 25px; /* 우측 패딩 감소 */
   overflow: visible; /* 오버플로 hidden 제거 */
   color: #8f9bb3;
   font-size: 12px;
@@ -36,6 +36,7 @@
   .time {
     font-family: SF UI Text, sans-serif;
     flex: 1;
+    padding-left: 15px;
   }
 
   .title {

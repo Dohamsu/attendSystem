@@ -77,11 +77,10 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
       {schedules.map((schedule, index) => (
         <article key={index} className="task-card">
           <img src={
-            schedule.type === "main" ? IconClockPerMain :
-            schedule.type === "sub" ? IconClockPerSub : IconClockPerAdd
+            schedule.type === "연습" ? IconClockPerMain :
+            schedule.type === "일정" ? IconClockPerSub : IconClockPerAdd
           } alt="" className="scheduleBoxCircle" />
          <div className="time-container">
-            <img src="clock-icon-url" alt="" className="clock-icon" />
             <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / "+ dayjs(schedule.startTime).format('HH:mm') }</time>
           </div>
           <img src={moreIconUrl} alt="more options" className="more-icon"
