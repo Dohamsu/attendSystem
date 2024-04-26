@@ -98,7 +98,7 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
       timer = setTimeout(() => {
         selectDay(today.getDate());
         setTimerSet(true); // Ensure the logic runs only once
-      }, 100);
+      }, 300);
     }
 
     return () => {
