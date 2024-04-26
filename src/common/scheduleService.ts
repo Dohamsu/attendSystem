@@ -52,7 +52,6 @@ const ATTEND_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/att
 
 export const fetchSchedules = async (name: string, month?: number, year?: number): Promise<Schedule[]> => {
   const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${name}&month=${month}&year=${year}`);
-  console.log(response.data);
   const filteredSchedules = response.data.filter(schedule => schedule.type !== '공지');
   return filteredSchedules;
 };
