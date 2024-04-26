@@ -66,10 +66,17 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
   
   const days = useMemo(() => getDaysInMonth(currentMonth, currentYear), [currentMonth, currentYear]);
 
+  const selectDay = (day: number) => {
+    setSelectedDate(new Date(currentYear, currentMonth, day));
+    const dayEvents = events[day];
+    setSelectedEvents(dayEvents || []);
+  };
+
   useEffect(() => {
     const eventsMap: EventsMap = {};
     schedules.forEach(schedule => {
-      const day = new Date(schedule.time).getDate();
+      const scheduleDate = dayjs(schedule.startDate);  // startDate를 Dayjs 객체로 사용합니다.
+      const day = scheduleDate.date();  // getDate() 대신 Dayjs의 date() 메서드를 사용합니다.
       const eventColor = colorMapping[schedule.type] || "#000000";
 
       const updatedSchedule = { ...schedule, color: eventColor };
@@ -82,16 +89,32 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
     setEvents(eventsMap);
   }, [schedules]);
 
+
+  const [timerSet, setTimerSet] = useState(false);
+
   useEffect(() => {
-    filterEventsForMonth(currentMonth, currentYear);
-  }, [schedules, currentMonth, currentYear]);
+    let timer: string | number | NodeJS.Timeout | undefined;
+    if (!timerSet && today.getMonth() === currentMonth && today.getFullYear() === currentYear) {
+      timer = setTimeout(() => {
+        selectDay(today.getDate());
+        setTimerSet(true); // Ensure the logic runs only once
+      }, 100);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [events]);
+
+  useEffect(() => {
+    filterEventsForMonth(currentMonth, currentYear);    
+  }, [schedules]);
 
   const filterEventsForMonth = (month: number, year: number) => {
     const eventsMap: EventsMap = {};
     schedules.forEach(schedule => {
-      // const scheduleDate = new Date(schedule.time);
-      // const scheduleMonth = scheduleDate.getMonth();
-      // const scheduleYear = scheduleDate.getFullYear();
       const scheduleDate = dayjs(schedule.startDate);
       const scheduleMonth = scheduleDate.month(); // month()는 0부터 시작 (0=1월)
       const scheduleYear = scheduleDate.year();
@@ -105,9 +128,9 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
         eventsMap[day] = [];
       }
       eventsMap[day].push(updatedSchedule);
-    }
-  });
-  setEvents(eventsMap);
+      }
+    });
+    setEvents(eventsMap);
   };
 
   const prevMonth = () => {
@@ -128,13 +151,6 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
     filterEventsForMonth(newMonth, newYear);
     setSelectedEvents([]);
     setSelectedDate(null);
-  };
-
-  const selectDay = (day: number) => {
-    setSelectedDate(new Date(currentYear, currentMonth, day));
-    const dayEvents = events[day];
-    console.log(dayEvents);
-    setSelectedEvents(dayEvents || []);
   };
 
   const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];

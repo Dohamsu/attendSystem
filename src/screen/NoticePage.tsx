@@ -4,31 +4,29 @@ import axios from 'axios';
 
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Schedule } from '../stores/type';
+import dayjs, { Dayjs } from 'dayjs';
 
 import "../css/noticePage.css"; // 기존 CSS 파일 사용
 
-// 공지사항 데이터 타입 정의
-interface Notice {
-  date: string;
-  title: string;
-  description: string;
-  scheduleNumber: string;
-}
-
 const NoticePage: React.FC = () => {
   // Notice 배열로 상태를 관리
-  const [notices, setNotices] = useState<Notice[]>([]);
+  const [notices, setNotices] = useState<Schedule[]>([]);
   const GET_NOTICE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/notice`;
+
+    // 예시로 API 통신하는 기능도 유지하면서 스케줄 업데이트와 출석 업데이트 함수도 유지
+    const GET_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule`;
+
+  
+
 
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await axios.get<Notice[]>(GET_NOTICE_API_URL);
-        const formattedNotices = response.data.map(notice => ({
-          ...notice,
-          date: new Date(notice.date).toLocaleDateString() // 날짜 포맷을 'yyyy-MM-dd' 형식으로 변경
-        }));
-        setNotices(formattedNotices);
+        const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${''}&month=${0}&year=${0}`);
+        console.log(response.data);
+        const filteredSchedules = response.data.filter(schedule => schedule.type == '공지');
+        setNotices(filteredSchedules);
       } catch (error) {
         console.error('공지사항 불러오기 실패:', error);
       }
@@ -52,7 +50,7 @@ const NoticePage: React.FC = () => {
               id={`notice-header-${index}`}
             >
               <Typography variant="body1" className="notice-heading">{notice.title}</Typography>
-              <Typography className="notice-date">{notice.date}</Typography>
+              <Typography className="notice-date">{dayjs(notice.startDate).format('YYYY-MM-DD')}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <div className="notice-description">

@@ -16,7 +16,6 @@ interface User {
 export interface Schedule {
   color?: string;
   scheduleNumber: string;
-  time: string;
   place: string;
   title: string;
   description: string;

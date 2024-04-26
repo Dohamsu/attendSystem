@@ -1,6 +1,7 @@
 // src/services/scheduleService.ts
 import axios from 'axios';
 import { Schedule } from '../stores/type';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface EventDetail {
   color: string;
@@ -24,12 +25,12 @@ const colorMapping: { [key: string]: string } = {
 // 스케줄 배열을 받아서 EventsMap 형식으로 변환하는 함수
 export const getCalendarEvents = (schedules: Schedule[]): EventsMap => {
   const transformedData = schedules.reduce((acc: EventsMap, item: Schedule) => {
-    const eventDay = new Date(item.time).getDate();
-    const eventColor = colorMapping[item.type] || "#000"; // 기본 색상은 검정
+    const eventDate = dayjs(item.startDate);  // Dayjs 객체로 startDate를 처리
+    const eventDay = eventDate.date();  // 해당 날짜의 일(day) 부분을 추출
 
     const eventDetail: EventDetail = {
-      color: eventColor,
-      time: item.time,
+      color: colorMapping[item.type] || "#000",  // 타입에 따른 색상 할당
+      time: eventDate.format('YYYY-MM-DD HH:mm'),  // Dayjs 포맷을 사용하여 문자열로 변환
       title: item.title,
       description: item.description,
       type: item.type
@@ -51,7 +52,9 @@ const ATTEND_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/att
 
 export const fetchSchedules = async (name: string, month?: number, year?: number): Promise<Schedule[]> => {
   const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${name}&month=${month}&year=${year}`);
-  return response.data;
+  console.log(response.data);
+  const filteredSchedules = response.data.filter(schedule => schedule.type !== '공지');
+  return filteredSchedules;
 };
 
 

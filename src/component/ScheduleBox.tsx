@@ -15,7 +15,6 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [openOption, setOpenOption] = useState<string | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-  console.log(schedules);
   useEffect(() => {
     const checkOutsideClick = (event: MouseEvent) => {
       if (openOption && popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -83,7 +82,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
           } alt="" className="scheduleBoxCircle" />
          <div className="time-container">
             <img src="clock-icon-url" alt="" className="clock-icon" />
-            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD / HH:mm')}</time>
+            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / "+ dayjs(schedule.startTime).format('HH:mm') }</time>
           </div>
           <img src={moreIconUrl} alt="more options" className="more-icon"
             onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />
