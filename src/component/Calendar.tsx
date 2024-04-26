@@ -7,6 +7,7 @@ import NextBtn from "../images/NextBtn.svg";
 import dayjs, { Dayjs } from 'dayjs';
 
 import "../css/calendar.css";
+import { isEmpty } from "lodash";
 
 type CalendarDayProps = {
   day: number;
@@ -90,22 +91,16 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
   }, [schedules]);
 
 
-  const [timerSet, setTimerSet] = useState(false);
+  const [todayEventSelect, setTodayEventSelect] = useState(false);
 
   useEffect(() => {
-    let timer: string | number | NodeJS.Timeout | undefined;
-    if (!timerSet && today.getMonth() === currentMonth && today.getFullYear() === currentYear) {
-      timer = setTimeout(() => {
+    if(isEmpty(events)){      
+    }else{
+      if(!todayEventSelect &&today.getMonth() === currentMonth && today.getFullYear() === currentYear){
         selectDay(today.getDate());
-        setTimerSet(true); // Ensure the logic runs only once
-      }, 300);
-    }
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
+        setTodayEventSelect(true);
       }
-    };
+    }
   }, [events]);
 
   useEffect(() => {
