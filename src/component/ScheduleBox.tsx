@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, MouseEvent } from 'react';
+import React, { useState, useRef, useEffect, MouseEvent, useCallback } from 'react';
 import "../css/scheduleBox.css";
 import { useSelector } from 'react-redux';
 import { RootState } from '../stores/store'; // 상태 관리 경로 확인 필요
@@ -47,30 +47,55 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
   }, [selectedEvents]);
 
   // 출석 체크 기능 간소화 및 서비스 로직 활용
-  const toggleAttendance = async (scheduleNumber: string, status: number) => {
+  // const toggleAttendance = async (scheduleNumber: string, status: number) => {
+  //   if (!userInfo?.name) return;
+  //   setOpenOption(null);
+
+  //    try {
+  //     await updateAttendance(scheduleNumber, userInfo.name, status);
+  //     const updatedSchedules = schedules.map(schedule => 
+  //       schedule.scheduleNumber === scheduleNumber ? { ...schedule, isAttending: status } : schedule
+  //     );
+  //     setSchedules(updatedSchedules);
+
+  //     const updatedSelectedEvents = selectedEvents.map(event => 
+  //       event.scheduleNumber === scheduleNumber ? { ...event, isAttending: status } : event
+  //     );
+  //     setSelectedEvents(updatedSelectedEvents);
+
+  //   } catch (error) {
+  //     console.error('Error updating attendance:', error);
+  //   }
+  // };
+
+  // const handleMoreIconClick = (scheduleNumber: string) => {
+  //   setOpenOption(prev => prev === scheduleNumber ? null : scheduleNumber);
+  // };
+  const handleMoreIconClick = useCallback((scheduleNumber: string) => {
+    setOpenOption(prev => prev === scheduleNumber ? null : scheduleNumber);
+  }, []);
+  
+  const toggleAttendance = useCallback(async (scheduleNumber: string, status: number) => {
     if (!userInfo?.name) return;
     setOpenOption(null);
-
-     try {
+  
+    try {
       await updateAttendance(scheduleNumber, userInfo.name, status);
       const updatedSchedules = schedules.map(schedule => 
         schedule.scheduleNumber === scheduleNumber ? { ...schedule, isAttending: status } : schedule
       );
       setSchedules(updatedSchedules);
-
+  
       const updatedSelectedEvents = selectedEvents.map(event => 
         event.scheduleNumber === scheduleNumber ? { ...event, isAttending: status } : event
       );
       setSelectedEvents(updatedSelectedEvents);
-
+  
     } catch (error) {
       console.error('Error updating attendance:', error);
     }
-  };
-
-  const handleMoreIconClick = (scheduleNumber: string) => {
-    setOpenOption(prev => prev === scheduleNumber ? null : scheduleNumber);
-  };
+  }, [userInfo, schedules, setSchedules, selectedEvents, setSelectedEvents]);
+  
 
   return (
     <div className="schedule-container">
