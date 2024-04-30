@@ -31,7 +31,7 @@ const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx
       style={style}
       sx={{ ...sx, backgroundColor: colorMap[status] }}
     >
-      {occupant ? occupant : "X"}
+      {occupant ? occupant : ""}
     </Button>
   );
 };
