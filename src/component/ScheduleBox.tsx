@@ -120,7 +120,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
           <h3 className="title">{schedule.title}</h3>
           <p className="description">{schedule.description}</p>
           <div className={`attendance-status ${schedule.isAttending === 2 ? 'attending' : schedule.isAttending === 3 ? 'not-attending' : 'pending'}`}>
-            {schedule.isAttending === 2 ? '출석예정' : schedule.isAttending === 3 ? '불참예정' : '미정'}
+            {schedule.isAttending === 2 ? '출석예정' : schedule.isAttending === 3 ? '불참' : '미정'}
           </div>
         </article>
       ))}

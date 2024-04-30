@@ -6,7 +6,7 @@ const CheckSeatLegend: React.FC = () => {
   return (
     <Box sx={{ 
       position: 'absolute',
-      top: '85%',
+      top: '90%',
       display: 'flex',
       justifyContent: 'center',
       gap: '20px',

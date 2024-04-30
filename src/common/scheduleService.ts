@@ -1,18 +1,7 @@
 // src/services/scheduleService.ts
 import axios from 'axios';
-import { Schedule } from '../stores/type';
+import { Schedule, Attendance, Attendee } from '../stores/type';  // 'Attendance' 타입도 필요하면 추가
 import dayjs, { Dayjs } from 'dayjs';
-
-type Attendee = {
-  name: string;       // 참석자의 이름
-  nickName: string;       // 참석자의 이름
-  isAttending: number; // 참석 여부, 예를 들면 0은 불참, 1은 참석, 2는 미정 등의 값이 될 수 있습니다.
-};
-
-type Attendance = {
-  scheduleNumber: string; // 스케줄 식별 번호
-  attendees: Attendee[];  // 참석자 목록
-};
 
 interface EventDetail {
   color: string;

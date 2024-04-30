@@ -21,42 +21,51 @@ type SeatStatus = '0' |'1' | '2' | '3';
 interface Seat {
   id: string;
   status: SeatStatus;
+  occupant?: string;
 }
+
 dayjs.extend(isSameOrAfter); // 플러그인 확장
 
 let rows = 4;
 let seatsPerRow = 6;
 // 가로 6줄, 세로 4줄의 좌석을 생성하는 함수
-const createInitialSeats = (): Seat[][] => {
-  let seats: Seat[][] = [];
-
-  for (let row = 0; row < rows; row++) {
-    let seatRow: Seat[] = [];
-    for (let seat = 0; seat < seatsPerRow; seat++) {
-      seatRow.push({
-        id: `seat-${row}-${seat}`,
-        status: '0', // 초기 상태 설정
-      });
-    }
-    seats.push(seatRow);
-  }
-  return seats;
-};
-
 const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList }) => {
-  const [seats, setSeats] = useState<Seat[][]>(createInitialSeats());
-  console.log(attendanceList);
+  const [seats, setSeats] = useState<Seat[][]>([]);
 
+  useEffect(() => {
+    initializeSeats();
+  }, [attendanceList]);
 
-  const toggleSeatStatus = (seatId: string) => {
-    setSeats(seats.map(row =>
-      row.map(seat => 
-        seat.id === seatId ?
-          { ...seat, status: seat.status} :
-          seat
-      )
-    ));
+  const initializeSeats = () => {
+    // 모든 좌석을 기본 상태로 초기화
+    let newSeats: Seat[][] = Array.from({ length: rows }, () =>
+      Array.from({ length: seatsPerRow }, (_, col) => ({
+        id: `seat-${rows}-${col}`, 
+        status: '0', 
+        occupant: undefined
+      }))
+    );
+
+    // attendanceList를 기반으로 좌석 할당
+    attendanceList.forEach(attendee => {
+      let partIndex = parseInt(attendee.part.replace('th', '')) - 1;
+      // console.log();
+      for (let row = 0; row < rows; row++) {
+        if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
+          newSeats[row][partIndex] = {
+            ...newSeats[row][partIndex],
+            occupant: attendee.nickName,
+            status: attendee.isAttending.toString() as SeatStatus
+          };
+          break;
+        }
+      }
+    });
+    console.log(newSeats);
+    setSeats(newSeats);
   };
+
+
 
   return (
     <Box className="seating-chart-container">
@@ -78,14 +87,15 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
                 const seatAngle = (seatIndex - (seatsPerRow/ 2.4)) * 30;
                 return (
                   <CheckSeat
-                    key={seat.id}
-                    status={seat.status}
-                    className={'seat'}
-                    onToggle={() => toggleSeatStatus(seat.id)}
-                    sx={{
-                      transform: `rotate(${seatAngle}deg) translateY(-${rowRadius}px)`,
-                    }}
-                  />
+                  key={seat.id}
+                  status={seat.status}
+                  className={'seat'}
+                  onToggle={() => alert('클릭')}
+                  occupant={seat.occupant}
+                  sx={{
+                    transform: `rotate(${seatAngle}deg) translateY(-${rowRadius}px)`,
+                  }}
+                />
                 );
               })}
             </Box>

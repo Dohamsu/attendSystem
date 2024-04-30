@@ -11,9 +11,10 @@ interface SeatProps {
   className?: string;
   style?: React.CSSProperties; // 스타일 속성 추가
   sx?: SxProps<Theme>; // MUI 시스템 스타일 속성 추가 (선택적)
+  occupant?: string; // Add occupant as an optional property
 }
 
-const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx }) => {
+const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx, occupant }) => {
   // 좌석 상태에 따른 배경 색상 코드
   const colorMap: Record<SeatStatus, string> = {
     '0': '#FFA500', 
@@ -26,11 +27,11 @@ const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx
     <Button
       variant="contained"
       onClick={onToggle}
-      className={className} // className을 props로 받아서 적용합니다.
-      style={style} // style을 props로 받아서 적용합니다.
-      sx={{ ...sx, backgroundColor: colorMap[status] }} // sx를 사용하여 스타일링합니다.
+      className={className}
+      style={style}
+      sx={{ ...sx, backgroundColor: colorMap[status] }}
     >
-      {/* 좌석 번호나 기타 내용을 표시 */}
+      {occupant ? occupant : "X"}
     </Button>
   );
 };

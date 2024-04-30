@@ -14,9 +14,10 @@ interface User {
 }
 
 export interface Attendee  {
-  name: string;       // 참석자의 이름
-  nickName: string;       // 참석자의 이름
-  isAttending: number; // 참석 여부, 예를 들면 0은 불참, 1은 참석, 2는 미정 등의 값이 될 수 있습니다.
+  name: string;      
+  nickName: string;      
+  part: string;      
+  isAttending: number;
 };
 
 export interface Attendance  {
