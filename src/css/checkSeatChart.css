@@ -10,25 +10,30 @@
 .seat-row {
   position: absolute;
   width: 100%;
+  /* top: 50%; */
+  /* top: 50px; */
   display: flex;
   justify-content: center;
   transform-origin: center bottom;
 }
-
+.seatContainer{
+  position: inherit;
+  margin-top: 60%;
+}
 .seat {
   width: 30px !important;
   min-width: 20px !important;
   max-width: 20px !important;
-  height: 33px !important;
+  height: 30px !important;
   background-color: #666;
-  border-radius: 50%;
+  border-radius: 100% !important;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   position: absolute;
 }
 
 .conductorIcon{
   position: absolute;
-  top: 70%;
+  top: 65%;
   left: 45%;
   font-size: 50px; /* 아이콘의 크기를 설정합니다. */
 

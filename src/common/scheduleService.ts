@@ -3,6 +3,17 @@ import axios from 'axios';
 import { Schedule } from '../stores/type';
 import dayjs, { Dayjs } from 'dayjs';
 
+type Attendee = {
+  name: string;       // 참석자의 이름
+  nickName: string;       // 참석자의 이름
+  isAttending: number; // 참석 여부, 예를 들면 0은 불참, 1은 참석, 2는 미정 등의 값이 될 수 있습니다.
+};
+
+type Attendance = {
+  scheduleNumber: string; // 스케줄 식별 번호
+  attendees: Attendee[];  // 참석자 목록
+};
+
 interface EventDetail {
   color: string;
   time: string;
@@ -46,16 +57,22 @@ export const getCalendarEvents = (schedules: Schedule[]): EventsMap => {
   return transformedData;
 };
 
-// 예시로 API 통신하는 기능도 유지하면서 스케줄 업데이트와 출석 업데이트 함수도 유지
 const GET_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule`;
 const ATTEND_SCHEDULE_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/attend`;
+const SEAT_ATTEND_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/schedule/attendance`;
 
-export const fetchSchedules = async (name: string, month?: number, year?: number): Promise<Schedule[]> => {
+export const fetchSchedules = async (name?: string, month?: number, year?: number): Promise<Schedule[]> => {
   const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${name}&month=${month}&year=${year}`);
   const filteredSchedules = response.data.filter(schedule => schedule.type !== '공지');
   return filteredSchedules;
 };
 
+export const fetchAttendance = async (scheduleNumber: string): Promise<Attendee[]> => {
+  const response = await axios.get<Attendee[]>(`${SEAT_ATTEND_API_URL}`, {
+    params: { scheduleNumber }
+  });
+  return response.data;
+};
 
 export const updateAttendance = async (scheduleNumber: string, name: string, isAttending: number): Promise<void> => {
   await axios.post(`${ATTEND_SCHEDULE_API_URL}`, {

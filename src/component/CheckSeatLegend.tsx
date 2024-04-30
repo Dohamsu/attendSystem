@@ -4,7 +4,13 @@ import { Box, Typography } from '@mui/material';
 
 const CheckSeatLegend: React.FC = () => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', gap: '20px', margin: '10px' }}>
+    <Box sx={{ 
+      position: 'absolute',
+      top: '85%',
+      display: 'flex',
+      justifyContent: 'center',
+      gap: '20px',
+      width:'100%' }}>
       {/* 범례 항목을 배열로 만들어서 map을 사용하여 표시할 수 있습니다. */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Box sx={{ width: '20px', height: '20px', backgroundColor: '#00b38360'}} />

@@ -3,7 +3,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import { SxProps, Theme } from '@mui/system';
 
-type SeatStatus = 'available' | 'occupied' | 'selected';
+type SeatStatus = '0'|'1' | '2' | '3';
 
 interface SeatProps {
   status: SeatStatus;
@@ -16,9 +16,10 @@ interface SeatProps {
 const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx }) => {
   // 좌석 상태에 따른 배경 색상 코드
   const colorMap: Record<SeatStatus, string> = {
-    available: '#4caf50', // 이용 가능 - 녹색
-    occupied: '#f44336', // 이용 중 - 빨간색
-    selected: '#2196f3', // 선택됨 - 파란색
+    '0': '#FFA500', 
+    '1': '#00b38360', 
+    '2': '#00b383', 
+    '3': '#FF6347',
   };
 
   return (
