@@ -61,7 +61,6 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
         }
       }
     });
-    console.log(newSeats);
     setSeats(newSeats);
   };
 

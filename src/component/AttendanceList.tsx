@@ -1,5 +1,5 @@
 // components/AttendanceList.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -12,6 +12,7 @@ type Attendee = {
 
 type AttendanceListProps = {
   attendanceList: Attendee[];
+  updateAttendance: (index: number, status: number) => void; // 출석 상태를 업데이트하는 함수
 };
 
 
@@ -34,10 +35,14 @@ const StyledTableCell2 = styled(TableCell)({
 });
 
 
-const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList }) => {
+
+
+const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateAttendance }) => {
+  const [openPopup, setOpenPopup] = useState<number | null>(null); // 팝업을 관리할 상태
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+    <TableContainer component={Paper} sx={{ maxHeight: 320, overflow: 'auto' }}>
+      <Table stickyHeader aria-label="simple table">
         <TableHead>
           <TableRow>
             <StyledTableCell>이름</StyledTableCell>
@@ -53,35 +58,53 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList }) => {
               <StyledTableCell2>{attendee.name}</StyledTableCell2>
               <StyledTableCell2>{attendee.nickName}</StyledTableCell2>
               <StyledTableCell2>{attendee.part}</StyledTableCell2>
-              <StyledTableCell2
-              sx={{
-                textAlign:'center'
-              }}>
-                    <Box
+
+              <StyledTableCell2>
+                <Box
                     sx={{
-                      backgroundColor: attendee.isAttending === 0 ? '#FFA500' : 
+                      display: 'inline-block', // 같은 줄에 표시
+                      backgroundColor: attendee.isAttending === 0 ? '#FFA500' :
                                       attendee.isAttending === 1 ? '#00b38360' :
                                       attendee.isAttending === 2 ? '#00b383' : '#FF6347',
-                      borderRadius: '100%',
-                      margin:'10px',
-                      height:'20px',
-                      color:'white',
-                      width:'20px',
-                      marginLeft:'30%',
+                      borderRadius: '50%',
+                      height: '20px',
+                      width: '20px',
+                      verticalAlign: 'middle', // 수직 중앙 정렬
                     }}
-                    >
-                        {/* {attendee.isAttending === 0 ? '미정' :
-                        attendee.isAttending === 1 ? '출석 예정' :
-                        attendee.isAttending === 2 ? '출석' :
-                        '불참'} */}
-
-                    </Box>
+                  />
               </StyledTableCell2>
-              <StyledTableCell2>
-                <Button variant="contained" color="primary">수정</Button>
+              <StyledTableCell2 sx={{ textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
+                  {['0', '1', '2', '3'].map(status => (
+                    <Box
+                      key={status}
+                      sx={{
+                        width: 20,
+                        height: 20,
+                        color:'white',
+                        backgroundColor: status === '0' ? '#FFA500' :
+                                        status === '1' ? '#00b38360' :
+                                        status === '2' ? '#00b383' :
+                                        '#FF6347',
+                        opacity: attendee.isAttending?.toString() === status ? 1 : 0.1,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => updateAttendance(index, parseInt(status))}
+                    >
+                        {status === '0' ? '미' :
+                       status === '1' ? '예' :
+                       status === '2' ? '참' :
+                       '불'}
+                    </Box>                    
+                  ))}
+                </Box>
               </StyledTableCell2>
             </TableRow>
-          ))}          
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
