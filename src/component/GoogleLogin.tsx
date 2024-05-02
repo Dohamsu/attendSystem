@@ -24,6 +24,7 @@ const AutoLoginCheck: React.FC = () => {
           part: '미정',
           platform: 'google',
           socialLogin: 'google',
+          isAdmin: false
         }));
         console.log('자동 로그인 성공:', firebaseUser.displayName);
         localStorage.setItem('last_login_platform', 'google');

@@ -1,16 +1,24 @@
 // MyInfoPage.tsx
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CheckSeatChart from '../component/CheckSeatChart'
 import AttendanceList from '../component/AttendanceList'
-import "../css/checkPage.css"; 
+// import "../css/attendStatusPage.css"; 
 import { fetchSchedules, fetchAttendance, updateAttendance } from '../common/scheduleService';
+import AttendanceScreen from '../component/AttendanceScreen';
+import AttendanceResultScreen from '../component/AttendanceResultScreen';
+import AttendHistory from '../component/AttendHistory';
+
 import { Schedule, Attendance, Attendee } from '../stores/type';  // 'Attendance' 타입도 필요하면 추가
 import dayjs, { Dayjs } from 'dayjs';
-const CheckPage: React.FC = () => {
+import { useSelector } from 'react-redux';
+const AttendStatusPage: React.FC = () => {
   const [attendanceList, setAttendanceList] = useState<Attendee[]>([]);
   const [todaySchedule, setTodaySchedule] = useState<Schedule | null>(null);  // 상태를 Schedule 또는 null로 관리
   const [scheduleNumber, setScheduleNumber] = useState<string | null>('');  // 상태를 Schedule 또는 null로 관리
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false); // 데이터 로딩 완료 상태
+
+  const currentUser = useSelector((state: any) => state.user.user); // state 구조에 따라 수정 필요
 
   useEffect(() => {
     const initializeData = async () => {
@@ -24,36 +32,70 @@ const CheckPage: React.FC = () => {
 
       const todayOrNextSchedule = sortedSchedules.find(schedule => dayjs(schedule.startDate).isSame(now, 'day')) || sortedSchedules[0];
       setScheduleNumber(todayOrNextSchedule.scheduleNumber);
-      // console.log(todayOrNextSchedule);
       if (todayOrNextSchedule) {
         setTodaySchedule(todayOrNextSchedule);
         const fetchedAttendance = await fetchAttendance(todayOrNextSchedule.scheduleNumber);
+
+        checkAttendanceStatus(fetchedAttendance, currentUser?.name);
+
         // console.log(fetchedAttendance);
         setAttendanceList(fetchedAttendance);
+        setDataLoaded(true); // 데이터 로딩 완료
       }
+
     };
 
     initializeData();
   }, []);
 
-  const updateAttendance2 = async (attendeeIndex: number, status: number) => {
-    const attendeeToUpdate = attendanceList[attendeeIndex];
-    if (attendeeToUpdate && scheduleNumber) {
-      await updateAttendance(scheduleNumber, attendeeToUpdate.name, status);
-      const updatedList = attendanceList.map((attendee, idx) =>
-        idx === attendeeIndex ? { ...attendee, isAttending: status } : attendee
-      );
-      setAttendanceList(updatedList);
+
+  const checkAttendanceStatus = (attendance: Attendee[], userName: string) => {
+    const userAttendance = attendance.find(a => a.name === userName);
+    if (userAttendance && userAttendance.isAttending === 1) {
+      console.log('출석했네?');
+      setHasAttended(true);
     }
   };
 
+
+
+  const [hasAttended, setHasAttended] = useState<boolean>(false); // 출석 상태 관리
+
+  const handleAttend = async () => {
+    if (currentUser && scheduleNumber) {
+      await updateAttendance(scheduleNumber, currentUser.name, 1);
+      const updatedList = attendanceList.map(attendee =>
+        attendee.name === currentUser.name ? { ...attendee, isAttending: 1 } : attendee
+      );
+      setAttendanceList(updatedList);
+      setHasAttended(true);
+    }
+  };
+
+  if (!dataLoaded) { // 데이터가 로드되기 전에는 로딩 인디케이터 또는 아무것도 렌더링하지 않음
+    return <Typography>Loading...</Typography>;
+  }
+
   return (
     <>
-      <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
-      <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
+      <Box>
+      <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
+       {`${dayjs(todaySchedule?.startDate).format('MM월 DD일')}`}
+      </Typography>
+      <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
+       {`${todaySchedule?.title}`}
+      </Typography>
+      {hasAttended ? (
+        <AttendanceResultScreen />
+      ) : (
+        <AttendanceScreen onAttend={handleAttend} />
+      )}
+      <hr></hr>
+      <AttendHistory/>
+    </Box>
 
     </>
   );
 };
 
-export default CheckPage;
+export default AttendStatusPage;

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';  // useSelector 훅 추가
 import { useLocation, useNavigate } from "react-router-dom";
+import { RootState } from '../stores/store';
 import "../css/navBar.css";
 
 import WhiteNav from "../images/nav/white-nav.svg";
@@ -22,6 +24,7 @@ export const NavBar = (): JSX.Element | null => {
   
   const location = useLocation();
   const navigate = useNavigate();
+  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
 
   const [activeIcon, setActiveIcon] = useState<string>("");
   const [showPopup, setShowPopup] = useState(false);
@@ -33,7 +36,7 @@ export const NavBar = (): JSX.Element | null => {
 
   const icons = [
     { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer, path: "/calendar" },
-    { name: "check", defaultIcon: IconCheck, activeIcon: IconCheckPer, path: "/check" },
+    { name: "check", defaultIcon: IconCheck, activeIcon: IconCheckPer, path: isAdmin ? "/attend" : "/check" },
     { name: "alarm", defaultIcon: IconAlarm, activeIcon: IconAlarmPer, path: "/notice" },
     { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer, path: "/myinfo" },
   ];

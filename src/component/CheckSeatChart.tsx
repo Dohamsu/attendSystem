@@ -36,33 +36,36 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
     initializeSeats();
   }, [attendanceList]);
 
-  const initializeSeats = () => {
-    // 모든 좌석을 기본 상태로 초기화
-    let newSeats: Seat[][] = Array.from({ length: rows }, () =>
-      Array.from({ length: seatsPerRow }, (_, col) => ({
-        id: `seat-${rows}-${col}`, 
-        status: '0', 
-        occupant: undefined
-      }))
-    );
+const initializeSeats = () => {
+  // 모든 좌석을 기본 상태로 초기화
+  let newSeats: Seat[][] = Array.from({ length: rows }, () =>
+    Array.from({ length: seatsPerRow }, (_, col) => ({
+      id: `seat-${rows}-${col}`, 
+      status: '0', 
+      occupant: undefined
+    }))
+  );
 
-    // attendanceList를 기반으로 좌석 할당
-    attendanceList.forEach(attendee => {
-      let partIndex = parseInt(attendee.part.replace('th', '')) - 1;
-      // console.log();
-      for (let row = 0; row < rows; row++) {
-        if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
-          newSeats[row][partIndex] = {
-            ...newSeats[row][partIndex],
-            occupant: attendee.nickName,
-            status: attendee.isAttending.toString() as SeatStatus
-          };
-          break;
-        }
+  // attendanceList를 기반으로 좌석 할당
+  attendanceList.forEach(attendee => {
+    let rawPartIndex = parseInt(attendee.part.replace(/\D/g, '')); // 파트 번호 추출
+    let partIndex = (rawPartIndex - 1) % 6; // 6열로 나누어서 열 위치 계산
+    let startRow = rawPartIndex <= 6 ? 0 : 2; // 파트가 7 이상이면 3행(인덱스 2)부터 시작
+
+    for (let row = startRow; row < rows; row++) {
+      if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
+        newSeats[row][partIndex] = {
+          ...newSeats[row][partIndex],
+          occupant: attendee.nickName,
+          status: attendee.isAttending.toString() as SeatStatus
+        };
+        break;
       }
-    });
-    setSeats(newSeats);
-  };
+    }
+  });
+  setSeats(newSeats);
+};
+
 
 
 
@@ -78,7 +81,7 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
       className='seatContainer'>
         {seats.map((row, rowIndex) => {
           // 각 행의 반경을 조절합니다.
-          const rowRadius = 20 + rowIndex * 20;
+          const rowRadius = 20 + rowIndex * (rowIndex >= 2 ? 25 : 20);
           return (
             <Box className="seat-row" style={{ bottom: `${rowRadius}px` }} key={rowIndex}>
               {row.map((seat, seatIndex) => {

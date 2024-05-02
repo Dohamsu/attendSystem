@@ -25,6 +25,7 @@ const KakaoCallBackpage = () => {
               nickName: '닉네임',
               part: '미정',
               platform: 'kakao',
+              isAdmin: false,
               socialLogin: 'kakao'
             };
 

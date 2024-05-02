@@ -19,6 +19,7 @@ const signInWithGoogle = async (dispatch: AppDispatch) => {
         number: '미정',
         part: '미정',
         platform: 'google',
+        isAdmin: false,
         socialLogin: 'google',
       };
 

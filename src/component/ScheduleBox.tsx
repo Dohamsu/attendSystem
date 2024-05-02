@@ -87,15 +87,15 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
             onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />
           {openOption === schedule.scheduleNumber && (
             <div className="options-popup" ref={popupRef}>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">미정</button>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 2)} className="option-button">출석</button>
+              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 0)} className="option-button">미정</button>
+              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">출석</button>
               <button onClick={() => toggleAttendance(schedule.scheduleNumber, 3)} className="option-button">불참</button>
             </div>
           )}
           <h3 className="title">{schedule.title}</h3>
-          <p className="description">{schedule.description}</p>
-          <div className={`attendance-status ${schedule.isAttending === 2 ? 'attending' : schedule.isAttending === 3 ? 'not-attending' : 'pending'}`}>
-            {schedule.isAttending === 2 ? '출석예정' : schedule.isAttending === 3 ? '불참' : '미정'}
+          <p className="description">{schedule.place}</p>
+          <div className={`attendance-status ${schedule.isAttending === 1 ? 'attending' : schedule.isAttending === 3 ? 'not-attending' : 'pending'}`}>
+            {schedule.isAttending === 1 ? '출석예정' : schedule.isAttending === 3 ? '불참' : '미정'}
           </div>
         </article>
       ))}

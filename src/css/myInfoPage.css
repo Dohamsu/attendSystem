@@ -24,8 +24,12 @@
 }
 
 .info-item-center{
-  text-align: center;
+  position: fixed;
+  top: 80px;
+  right: 30px;
 }
+
+
 .info-title {
   font-weight: 600;
   color: #666;

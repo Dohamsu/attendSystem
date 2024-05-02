@@ -38,9 +38,10 @@ const AutoKakaoLoginCheck: React.FC = () => {
           nickName: response.data.properties.nickname,
           socialLogin: 'kakao',
           number: '미정',
+          isAdmin: false,
           part: '미정',
         };
-        // dispatch(login(user));
+        dispatch(login(user));
 
         console.log(response);
         localStorage.setItem('kakao_res', response.data);

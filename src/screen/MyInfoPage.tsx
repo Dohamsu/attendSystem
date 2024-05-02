@@ -29,6 +29,8 @@ const MyInfoPage: React.FC = () => {
   const [number, setNumber] = useState(userInfo?.number || '');
   const [part, setPart] = useState(userInfo?.part || '미정');
   const [nickName, setNickName] = useState(userInfo?.nickName || '');
+  
+  const partOptions = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "Base"];
 
   const handleSave = async () => {
     if (userInfo && userInfo._id) {
@@ -48,6 +50,10 @@ const MyInfoPage: React.FC = () => {
   return (
     <div className="my-info-page">
       <div className="user-info-section">
+        <div className="info-item-center">
+            {userInfo?.platform === 'google' && <GoogleLogoutButton />}
+            {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
+        </div>
         <h2>내 정보</h2>
         <div className="user-info">
           {/* 기존 정보 출력 부분 */}
@@ -84,21 +90,14 @@ const MyInfoPage: React.FC = () => {
             <span className="info-title">파트:</span>
             {editMode ? (
               <select className="input-field" value={part} onChange={(e) => setPart(e.target.value)}>
-                <option value="미정">미정</option>
-                <option value="1th">1th</option>
-                <option value="2th">2th</option>
-                <option value="3th">3th</option>
-                <option value="4th">4th</option>
-                <option value="base">base</option>
+                {partOptions.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
               </select>
             ) : (
               <span className="info">{part}</span>
             )}
-          </div>
-          <div className="info-item-center">
-            {userInfo?.platform === 'google' && <GoogleLogoutButton />}
-            {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
-          </div>
+          </div>        
         </div>
       </div>
       <div className="settings-section">
