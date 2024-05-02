@@ -38,7 +38,6 @@ const AttendStatusPage: React.FC = () => {
 
         checkAttendanceStatus(fetchedAttendance, currentUser?.name);
 
-        // console.log(fetchedAttendance);
         setAttendanceList(fetchedAttendance);
         setDataLoaded(true); // 데이터 로딩 완료
       }
@@ -52,12 +51,9 @@ const AttendStatusPage: React.FC = () => {
   const checkAttendanceStatus = (attendance: Attendee[], userName: string) => {
     const userAttendance = attendance.find(a => a.name === userName);
     if (userAttendance && userAttendance.isAttending === 1) {
-      console.log('출석했네?');
       setHasAttended(true);
     }
   };
-
-
 
   const [hasAttended, setHasAttended] = useState<boolean>(false); // 출석 상태 관리
 
@@ -88,7 +84,7 @@ const AttendStatusPage: React.FC = () => {
       {hasAttended ? (
         <AttendanceResultScreen />
       ) : (
-        <AttendanceScreen onAttend={handleAttend} />
+        <AttendanceScreen todaySchedule= {todaySchedule} onAttend={handleAttend} />
       )}
       <hr></hr>
       <AttendHistory/>
