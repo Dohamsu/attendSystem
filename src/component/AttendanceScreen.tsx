@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import SmileIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import SplashImg from '../images/splash.png';
+
+
+
 import dayjs from 'dayjs';
 import { Schedule, Attendance, Attendee } from '../stores/type';  // 'Attendance' 타입도 필요하면 추가
 
@@ -54,7 +58,8 @@ const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ onAttend, todaySche
 
   return (
     <Box sx={{ textAlign: 'center', padding: 2 }}>
-      <SmileIcon sx={{ fontSize: 60, color: 'skyblue' }} />
+      <img src={SplashImg} width="120px" alt="" />
+      <></>
       <Typography variant="h6" sx={{ my: 2 }}>스마트 출석</Typography>
       {timeLeft !== null && (
         <>
