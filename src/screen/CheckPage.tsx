@@ -32,6 +32,7 @@ const AttendStatusPage: React.FC = () => {
 
       const todayOrNextSchedule = sortedSchedules.find(schedule => dayjs(schedule.startDate).isSame(now, 'day')) || sortedSchedules[0];
       setScheduleNumber(todayOrNextSchedule.scheduleNumber);
+      console.log(todayOrNextSchedule);
       if (todayOrNextSchedule) {
         setTodaySchedule(todayOrNextSchedule);
         const fetchedAttendance = await fetchAttendance(todayOrNextSchedule.scheduleNumber);
@@ -50,7 +51,7 @@ const AttendStatusPage: React.FC = () => {
 
   const checkAttendanceStatus = (attendance: Attendee[], userName: string) => {
     const userAttendance = attendance.find(a => a.name === userName);
-    if (userAttendance && userAttendance.isAttending === 1) {
+    if (userAttendance && userAttendance.isAttending === 2) {
       setHasAttended(true);
     }
   };
@@ -59,9 +60,9 @@ const AttendStatusPage: React.FC = () => {
 
   const handleAttend = async () => {
     if (currentUser && scheduleNumber) {
-      await updateAttendance(scheduleNumber, currentUser.name, 1);
+      await updateAttendance(scheduleNumber, currentUser.name, 2);
       const updatedList = attendanceList.map(attendee =>
-        attendee.name === currentUser.name ? { ...attendee, isAttending: 1 } : attendee
+        attendee.name === currentUser.name ? { ...attendee, isAttending: 2 } : attendee
       );
       setAttendanceList(updatedList);
       setHasAttended(true);

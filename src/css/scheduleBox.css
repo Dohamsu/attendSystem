@@ -110,6 +110,10 @@
 }
 
 .attending {
+  background-color: #00B38380; /* 참석 - 초록색 */
+}
+
+.attended{
   background-color: #00B383; /* 참석 - 초록색 */
 }
 

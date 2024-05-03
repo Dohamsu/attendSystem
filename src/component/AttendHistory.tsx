@@ -39,15 +39,15 @@ const AttendHistory: React.FC = () => {
       <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         {dataLoaded ? allSchedules.map(schedule => (
           <Box key={schedule.scheduleNumber} sx={{ m: 1 }}>
-        {schedule.isAttending === 1 ? (
-            <EventAvailableIcon color="success" sx={{ fontSize: 40 }} />  // 초록색으로 표시
-            ) : schedule.isAttending === 3 ? (
-            <EventAvailableIcon color="error" sx={{ fontSize: 40 }} />     // 빨간색으로 표시
-            ) : schedule.isAttending === 2 ? (
-            <EventIcon color="disabled" sx={{ fontSize: 40 }} />           // 회색으로 표시
-            ) : (
-            <EventIcon sx={{ fontSize: 40 }} />                            // 기본 회색 (출석하지 않음)
-            )}
+     {schedule.isAttending === 2 ? (
+          <EventAvailableIcon sx={{ fontSize: 40, color: '#00B383' }} />  // 출석 완료 - 진한 초록색
+        ) : schedule.isAttending === 3 ? (
+          <EventAvailableIcon sx={{ fontSize: 40, color: '#FF6347' }} />  // 불참 - 빨간색
+        ) : schedule.isAttending === 1 ? (
+          <EventIcon sx={{ fontSize: 40, color: '#00B38380' }} />         // 출석 예정 - 연한 초록색 (반투명)
+        ) : (
+          <EventIcon sx={{ fontSize: 40, color: '#FFA500' }} />           // 미정 - 주황색
+        )}
             <Typography variant="caption" sx={{ display: 'block' }}>
               {dayjs(schedule.startDate).format('MM/DD')}
             </Typography>

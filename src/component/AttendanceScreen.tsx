@@ -12,22 +12,39 @@ interface AttendanceScreenProps {
 const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ onAttend, todaySchedule }) => {
   const [timeLeft, setTimeLeft] = useState<string | null>(null); // 초기값을 null로 설정
   const [timePassed, setTimePassed] = useState<boolean>(false);
+  const [buttonActive, setButtonActive] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTimeLeft = () => {
       const now = dayjs();
       const startTime = dayjs(todaySchedule?.startTime);
       const secondsLeft = startTime.diff(now, 'second');
-
+  
       if (secondsLeft > 0) {
-        const hours = Math.floor(secondsLeft / 3600);
-        const minutes = Math.floor((secondsLeft % 3600) / 60);
-        const seconds = secondsLeft % 60;
-        setTimeLeft(`${hours}시간 ${minutes}분 ${seconds}초`);
-        setTimePassed(false);
+        // 하루를 초과하는 경우
+        if (secondsLeft > 86400) {
+          const days = Math.floor(secondsLeft / 86400);
+          const remainder = secondsLeft % 86400;
+          const hours = Math.floor(remainder / 3600);
+          const minutes = Math.floor((remainder % 3600) / 60);
+          setTimeLeft(`${days}일 ${hours}시간 ${minutes}분`);
+        } 
+        // 1시간에서 하루 사이인 경우
+        else if (secondsLeft > 3600) {
+          const hours = Math.floor(secondsLeft / 3600);
+          const minutes = Math.floor((secondsLeft % 3600) / 60);
+          setTimeLeft(`${hours}시간 ${minutes}분`);
+        }
+        // 1시간 이내인 경우
+        else {
+          const minutes = Math.floor(secondsLeft / 60);
+          const seconds = secondsLeft % 60;
+          setTimeLeft(`${minutes}분 ${seconds}초`);
+        }
+        setButtonActive(secondsLeft <= 3600);  // 1시간 이내일 경우 버튼 활성화
       } else {
         setTimeLeft('출석 시간이 지났습니다.');
-        setTimePassed(true);
+        setButtonActive(false);
       }
     };
 
@@ -45,7 +62,7 @@ const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ onAttend, todaySche
             <Typography variant="body1">출석시간까지</Typography>
           )}
           <Typography variant="h4" sx={{ my: 2 }}>{timeLeft}</Typography>
-          <Button variant="contained" color="primary" onClick={onAttend} disabled={timePassed || timeLeft === null} sx={{ mt: 2 }}>
+          <Button variant="contained" color="primary" onClick={onAttend} disabled={!buttonActive} sx={{ mt: 2 }}>
             출석하기!
           </Button>
         </>

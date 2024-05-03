@@ -110,12 +110,22 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
     }
   }, [isVisible, api]);
 
-  const handleTimeChange = (setter: React.Dispatch<React.SetStateAction<Dayjs>>) => (newTime: Dayjs | null) => {
-    if (newTime) {
-      setter(newTime);
+  const handleTimeChange = (setter: React.Dispatch<React.SetStateAction<Dayjs>>) => (newDate: Dayjs | null) => {
+    if (newDate) {
+      setter(newDate);
+      // startDate를 설정할 때 startTime과 endTime의 날짜만 업데이트
+      if (setter === setStartDate) {
+        const updatedStartTime = startTime.year(newDate.year()).month(newDate.month()).date(newDate.date());
+        const updatedEndTime = endTime.year(newDate.year()).month(newDate.month()).date(newDate.date());
+  
+        // startTime과 endTime의 시간과 분은 유지
+        setStartTime(updatedStartTime.hour(startTime.hour()).minute(startTime.minute()));
+        setEndTime(updatedEndTime.hour(endTime.hour()).minute(endTime.minute()));
+      }
     }
     // 필요한 경우 null인 경우의 처리 로직 추가
   };
+  
 
   const handleEndTimeChange = (newTime: Dayjs | null) => {
     if (newTime) {
@@ -135,8 +145,11 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
         return;
     }
     // 날짜와 시간이 유효한지 검사
-    if (startDate.isAfter(dayjs()) || startTime.isAfter(endTime)) {
-        alert('날짜 또는 시간이 유효하지 않습니다. 다시 확인해주세요.');
+    if (startTime.isAfter(endTime)) {
+      console.log(startTime);
+
+      console.log(endTime);
+      alert('날짜 또는 시간이 유효하지 않습니다. 다시 확인해주세요.');
         return;
     }
 
