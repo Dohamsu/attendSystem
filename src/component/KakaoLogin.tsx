@@ -136,9 +136,18 @@ const KakaoLogoutButton: React.FC = () => {
 
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
+      <Button
+        onClick={handleClickOpen}
+        sx={{
+          mt: '30px', // margin-top: 30px
+          color: '#666666',
+          textDecoration: 'underline',
+          fontSize: 'small'
+        }}
+      >
         로그아웃
       </Button>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>{"로그아웃 하시겠습니까?"}</DialogTitle>
         <DialogContent>
