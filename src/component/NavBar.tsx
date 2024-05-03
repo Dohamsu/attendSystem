@@ -61,20 +61,22 @@ export const NavBar = (): JSX.Element | null => {
   return (
     <>
       <div className="NavBar">
-        <div className="centerButton"  onClick={togglePopup}>
-              <div className="centerButtonShadow"> </div>
-              <img width={100} alt="Center Button" src={CenterButton} />
+        {isAdmin&&
+          <div className="centerButton"  onClick={togglePopup}>
+                <div className="centerButtonShadow"> </div>
+                <img width={100} alt="Center Button" src={CenterButton} />
           </div>
-          <div className="iconBox">
-            {icons.map((icon) => (
-              <img
-                key={icon.name}
-                alt={`${icon.name} icon`}
-                src={activeIcon === icon.name ? icon.activeIcon : icon.defaultIcon}
-                onClick={() => handleIconClick(icon.name, icon.path)}
-              />
-            ))}
-          </div>
+        }
+        <div className="iconBox">
+          {icons.map((icon) => (
+            <img
+              key={icon.name}
+              alt={`${icon.name} icon`}
+              src={activeIcon === icon.name ? icon.activeIcon : icon.defaultIcon}
+              onClick={() => handleIconClick(icon.name, icon.path)}
+            />
+          ))}
+        </div>
           <img className="navBarBackground" alt="White Navigation Bar" src={WhiteNav} />
       </div>
       {showPopup && <ScheduleRegiPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />}
