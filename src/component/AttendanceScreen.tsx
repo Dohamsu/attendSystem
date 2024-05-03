@@ -49,6 +49,7 @@ const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ onAttend, todaySche
       } else {
         setTimeLeft('출석 시간이 지났습니다.');
         setButtonActive(false);
+        setTimePassed(true);
       }
     };
 
