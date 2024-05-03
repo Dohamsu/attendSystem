@@ -10,7 +10,7 @@ interface User {
   email: string;
   platform: string;
   nickName: string;
-  isAdmin: boolean; // 관리자 권한 속성 추가
+  isAdmin?: boolean; // 관리자 권한 속성 추가
 }
 
 interface UserState {

@@ -24,29 +24,32 @@ const AttendStatusPage: React.FC = () => {
     const initializeData = async () => {
       const schedules = await fetchSchedules();
       const now = dayjs();
-
+  
       // 당일에 일치하거나 미래의 가장 가까운 날을 찾습니다.
       const sortedSchedules = schedules
         .filter(schedule => dayjs(schedule.startDate).isSameOrAfter(now, 'day') && schedule.type === '연습')
         .sort((a, b) => dayjs(a.startDate).diff(dayjs(b.startDate)));
-
+  
       const todayOrNextSchedule = sortedSchedules.find(schedule => dayjs(schedule.startDate).isSame(now, 'day')) || sortedSchedules[0];
-      setScheduleNumber(todayOrNextSchedule.scheduleNumber);
-      console.log(todayOrNextSchedule);
+  
       if (todayOrNextSchedule) {
+        setScheduleNumber(todayOrNextSchedule.scheduleNumber);
         setTodaySchedule(todayOrNextSchedule);
         const fetchedAttendance = await fetchAttendance(todayOrNextSchedule.scheduleNumber);
-
+  
         checkAttendanceStatus(fetchedAttendance, currentUser?.name);
-
+  
         setAttendanceList(fetchedAttendance);
-        setDataLoaded(true); // 데이터 로딩 완료
+      } else {
+        setScheduleNumber(null);
+        setTodaySchedule(null);
       }
-
+      setDataLoaded(true); // 데이터 로딩 완료
     };
-
+  
     initializeData();
   }, []);
+  
 
 
   const checkAttendanceStatus = (attendance: Attendee[], userName: string) => {
@@ -73,26 +76,38 @@ const AttendStatusPage: React.FC = () => {
     return <Typography>Loading...</Typography>;
   }
 
+if (!dataLoaded) {
+  return <Typography>Loading...</Typography>; // 로딩 상태 표시
+}
+
+if (!todaySchedule) {
   return (
-    <>
-      <Box>
+    <Box sx={{ textAlign: 'center', my: 4, mt: 45 }}>
+      <Typography variant="h4">예정된 일정이 없습니다.</Typography>
+    </Box>
+  );
+}
+
+return (
+  <>
+    <Box>
       <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
-       {`${dayjs(todaySchedule?.startDate).format('MM월 DD일')}`}
+        {`${dayjs(todaySchedule.startDate).format('MM월 DD일')}`}
       </Typography>
       <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
-       {`${todaySchedule?.title}`}
+        {todaySchedule.title}
       </Typography>
       {hasAttended ? (
         <AttendanceResultScreen />
       ) : (
-        <AttendanceScreen todaySchedule= {todaySchedule} onAttend={handleAttend} />
+        <AttendanceScreen todaySchedule={todaySchedule} onAttend={handleAttend} />
       )}
       <hr></hr>
-      <AttendHistory/>
+      <AttendHistory />
     </Box>
+  </>
+);
 
-    </>
-  );
 };
 
 export default AttendStatusPage;
