@@ -1,6 +1,6 @@
 // components/AttendanceList.tsx
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 type Attendee = {
@@ -38,9 +38,30 @@ const StyledTableCell2 = styled(TableCell)({
 
 
 const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateAttendance }) => {
-  const [openPopup, setOpenPopup] = useState<number | null>(null); // 팝업을 관리할 상태
+  const [open, setOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
+  const [currentStatus, setCurrentStatus] = useState<number | null>(null);
+
+  const handleClickOpen = (index: number, status: number) => {
+    setCurrentIndex(index);
+    setCurrentStatus(status);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    if (currentIndex !== null && currentStatus !== null) {
+      updateAttendance(currentIndex, currentStatus);
+    }
+    handleClose();
+  };
+
 
   return (
+    <>
     <TableContainer component={Paper} sx={{ maxHeight: 320, overflow: 'auto' }}>
       <Table stickyHeader aria-label="simple table">
         <TableHead>
@@ -93,7 +114,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
                         justifyContent: 'center',
                         cursor: 'pointer'
                       }}
-                      onClick={() => updateAttendance(index, parseInt(status))}
+                      onClick={() => handleClickOpen(index, parseInt(status))}
                     >
                         {status === '0' ? '미' :
                        status === '1' ? '예' :
@@ -108,6 +129,28 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
         </TableBody>
       </Table>
     </TableContainer>
+    <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"출석 상태를 변경하시겠습니까?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            단원의 출석 상태가 변경됩니다.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            아니오
+          </Button>
+          <Button onClick={handleConfirm} color="primary" autoFocus>
+            예
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
