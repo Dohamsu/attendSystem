@@ -49,7 +49,6 @@ const IntroPage = () => {
 
     // 로그인 상태 체크 및 페이지 이동을 3초 후에 수행
     const loginCheckTimer = setTimeout(() => {
-      console.log(loginChecked);
       if (loginChecked) {
         if (isLoggedIn) {
           navigate('/calendar');

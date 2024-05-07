@@ -29,7 +29,7 @@ export const registerEvent = async (eventData: EventData): Promise<void> => {
 
   try {
     const response = await axios.post(POST_SCHEDULE_API_URL, formattedEventData);
-    console.log('Event registered successfully:', response.data);
+    // console.log('Event registered successfully:', response.data);
     alert('일정이 정상적으로 등록되었습니다.');
   } catch (error) {
     console.error('Failed to register event:', error);

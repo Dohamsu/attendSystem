@@ -96,7 +96,7 @@ export const userSlice = createSlice({
         state.user = action.payload;
         state.isAdmin = action.payload.isAdmin; // 관리자 권한 업데이트
         state.status = 'idle';
-        console.log('사용자 정보 업데이트 성공');
+        // console.log('사용자 정보 업데이트 성공');
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.error = action.error.message || 'Failed to update user';

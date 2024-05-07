@@ -24,7 +24,6 @@ const NoticePage: React.FC = () => {
     const fetchNotices = async () => {
       try {
         const response = await axios.get<Schedule[]>(`${GET_SCHEDULE_API_URL}?name=${''}`);
-        console.log(response.data);
         const filteredSchedules = response.data.filter(schedule => schedule.type == '공지');
         setNotices(filteredSchedules);
       } catch (error) {

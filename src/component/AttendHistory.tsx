@@ -19,7 +19,6 @@ const AttendHistory: React.FC = () => {
         const schedules = await fetchSchedules(userInfo?.name); // API 호출은 사용자 이름을 기반으로 하고 있습니다.
         setAllSchedules(schedules);
         setDataLoaded(true);
-        console.log(schedules);
       } catch (error) {
         console.error('Failed to fetch schedules:', error);
         setDataLoaded(true);
