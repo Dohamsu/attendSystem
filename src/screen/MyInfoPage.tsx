@@ -14,6 +14,7 @@ import EditUserInfoDialog from '../component/EditUserInfoDialog'; // 가정된 E
 import {GoogleLogoutButton } from '../component/GoogleLogin';
 import {KakaoLogoutButton } from '../component/KakaoLogin';
 import EditNoteIcon from '@mui/icons-material/EditNote';
+import LinkIcon from '@mui/icons-material/Link';
 import kakaoIcon from "../images/kakao_icon.png";
 import googleIcon from "../images/google_icon.png";
 import { useSelector } from 'react-redux';
@@ -66,8 +67,9 @@ const MyInfoPage: React.FC = () => {
   const settings = [
     { icon: <EmailIcon />, label: "이메일", value: userInfo?.email||'sample@naver.com' },
     { icon: <AudiotrackIcon />, label: "파트", value: userInfo?.part },
+    { icon: <AccountBoxIcon />, label: "닉네임", value: userInfo?.nickName },
     { icon: <GroupsIcon />, label: "기수", value: userInfo?.number },
-    { icon: <AccountBoxIcon />, label: "소셜 로그인", value: userInfo?.socialLogin },
+    { icon: <LinkIcon />, label: "소셜 로그인", value: userInfo?.socialLogin },
   ];
 
 
@@ -93,7 +95,7 @@ const MyInfoPage: React.FC = () => {
         <img className="profileImg" src={profileSample} alt="Profile Sample" />
         <img className="editBtn" src={editBtn} alt="Edit Button" />
         <Typography variant="h1" className="profile-name">{userInfo?.name}</Typography>
-        <Typography className="profile-email">{userInfo?.email || 'sample@naver.com'} | +{'010-123-4567'}</Typography>
+        <Typography className="profile-email">{userInfo?.email || 'sample@naver.com'}</Typography>
       </Box>
 
       <Section title="">
@@ -105,7 +107,7 @@ const MyInfoPage: React.FC = () => {
       {/* <Typography className="profile-logout"> 로그아웃</Typography> */}
 
       {userInfo?.platform === 'google' && <GoogleLogoutButton />}
-            {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
+      {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
 
     </Box>
   );
