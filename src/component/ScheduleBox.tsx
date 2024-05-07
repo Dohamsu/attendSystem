@@ -97,18 +97,15 @@ function convertScheduleToEventData(schedule: Schedule | null): EventData {
     startDate: schedule?.startDate, // Dayjs 객체를 예상하는 필드
     startTime: schedule?.startTime,
     endTime: schedule?.endTime,
+    scheduleNumber: schedule?.scheduleNumber,
     // 추가적으로 필요한 필드들을 매핑하거나 초기화
   };
 }
 
   // 일정 수정 버튼 이벤트 핸들러
   const handleEditSchedule = useCallback((schedule: Schedule) => {
-    // 여기에 ScheduleRegiPopup을 열기 위한 로직을 추가하세요
-    // 예: openScheduleEditPopup(schedule);
     setEditScheduleData(schedule); // 수정할 일정 데이터 설정
     setShowPopup(true); // 팝업 열기
-
-    console.log('Editing schedule:', schedule);
   }, []);
 
   return (

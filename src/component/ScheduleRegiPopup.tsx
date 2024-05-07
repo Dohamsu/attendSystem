@@ -39,7 +39,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
   const [title, setTitle] = useState('');
   const [place, setPlace] = useState('');
   const [description, setDescription] = useState('');
-  const [scheduleNumber, setScheduleNumber] = useState('');
+  // const [scheduleNumber, setScheduleNumber] = useState('');
   const [type, setType] = useState('연습');
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [startTime, setStartTime] = useState<Dayjs>(dayjs());
@@ -99,7 +99,6 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
   });
 
   const bind = useDrag(({ down, movement: [, my], cancel }) => {
-    // console.log(my);
     if (pickerOpen) return;
 
     if (my > 19 && !down) {
@@ -170,14 +169,13 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
       }
       onClose();
     } catch (error) {
+      console.log(error);
       alert('이벤트 등록 중 오류가 발생했습니다.');
     }
   };
 
 
   useEffect(() => {
-    console.log('이벤트 있냐');
-    console.log(eventData);
     if (eventData) {
       setTitle(eventData.title ?? '');
       setPlace(eventData.place ?? '');
@@ -186,7 +184,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
       setStartDate(dayjs(eventData.startDate));
       setStartTime(dayjs(eventData.startTime));
       setEndTime(dayjs(eventData.endTime));
-      setScheduleNumber(eventData.scheduleNumber ?? '');
+      // setScheduleNumber(eventData.scheduleNumber ?? '');
     }
   }, [eventData]);
 

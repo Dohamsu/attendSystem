@@ -30,7 +30,6 @@ export const NavBar = (): JSX.Element | null => {
   const [showPopup, setShowPopup] = useState(false);
 
   const togglePopup = () => {
-    console.log('버튼 클릭');
     setShowPopup(!showPopup);
   };
 
