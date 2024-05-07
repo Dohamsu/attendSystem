@@ -38,7 +38,7 @@ export const login = createAsyncThunk(
   async (userData: User, { rejectWithValue }) => {
     try {
       const response = await axios.post(LOGIN_API_URL, userData);
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -67,7 +67,7 @@ export const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
       state.isAdmin = false; // 로그아웃 시 관리자 권한도 초기화
-      console.log("로그아웃 성공");
+      // console.log("로그아웃 성공");
     },
     setLoginChecked: (state, action: PayloadAction<boolean>) => {
       state.loginChecked = action.payload;
