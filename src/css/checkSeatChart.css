@@ -21,6 +21,9 @@
   margin-top: 60%;
 }
 .seat {
+  line-height: normal !important;
+  writing-mode: vertical-lr !important;
+  font-size: 0.625rem !important;
   width: 30px !important;
   min-width: 20px !important;
   max-width: 20px !important;
