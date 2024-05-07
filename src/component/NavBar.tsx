@@ -79,7 +79,7 @@ export const NavBar = (): JSX.Element | null => {
         </div>
           <img className="navBarBackground" alt="White Navigation Bar" src={WhiteNav} />
       </div>
-      {showPopup && <ScheduleRegiPopup isVisible={showPopup} onClose={() => setShowPopup(false)} />}
+      {showPopup && <ScheduleRegiPopup isUpdate={false} isVisible={showPopup} onClose={() => setShowPopup(false)} />}
     </>
   );
 };

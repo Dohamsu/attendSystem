@@ -3,6 +3,7 @@ import "../css/scheduleBox.css";
 import { useSelector } from 'react-redux';
 import { RootState } from '../stores/store'; // 상태 관리 경로 확인 필요
 import dayjs, { Dayjs } from 'dayjs';
+import ScheduleRegiPopup from './ScheduleRegiPopup';
 
 import IconClockPerMain from "../images/scheduleBoxCircle1.svg";
 import IconClockPerSub from "../images/scheduleBoxCircle2.svg";
@@ -13,8 +14,23 @@ import { fetchSchedules, updateAttendance } from '../common/scheduleService';
 
 const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, selectedEvents, setSelectedEvents, month, day }) => {
   const userInfo = useSelector((state: RootState) => state.user.user);
+  const [editScheduleData, setEditScheduleData] = useState<Schedule | null>(null);
+
   const [openOption, setOpenOption] = useState<string | null>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement>(null);
+
+  interface EventData {
+    title?: string;
+    place?: string;
+    description?: string;
+    type?: string;
+    startDate?: Dayjs;
+    startTime?: Dayjs;
+    endTime?: Dayjs;
+    scheduleNumber?: string;
+  }
+
   useEffect(() => {
     const checkOutsideClick = (event: MouseEvent) => {
       if (openOption && popupRef.current && !popupRef.current.contains(event.target as Node)) {
@@ -71,9 +87,43 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
     }
   }, [userInfo, schedules, setSchedules, selectedEvents, setSelectedEvents]);
   
+// 타입 변환 함수 예시
+function convertScheduleToEventData(schedule: Schedule | null): EventData {
+  return {
+    title: schedule?.title,
+    place: schedule?.place,
+    description: schedule?.description,
+    type: schedule?.type,
+    startDate: schedule?.startDate, // Dayjs 객체를 예상하는 필드
+    startTime: schedule?.startTime,
+    endTime: schedule?.endTime,
+    // 추가적으로 필요한 필드들을 매핑하거나 초기화
+  };
+}
+
+  // 일정 수정 버튼 이벤트 핸들러
+  const handleEditSchedule = useCallback((schedule: Schedule) => {
+    // 여기에 ScheduleRegiPopup을 열기 위한 로직을 추가하세요
+    // 예: openScheduleEditPopup(schedule);
+    setEditScheduleData(schedule); // 수정할 일정 데이터 설정
+    setShowPopup(true); // 팝업 열기
+
+    console.log('Editing schedule:', schedule);
+  }, []);
 
   return (
     <div className="schedule-container">
+       {showPopup && (
+        <ScheduleRegiPopup
+          isUpdate={true}
+          isVisible={showPopup}
+          eventData={convertScheduleToEventData(editScheduleData)}  // 변환 함수를 사용하여 Schedule을 EventData로 변환
+          onClose={() => {
+            setShowPopup(false);
+            setEditScheduleData(null); // 팝업 닫을 때 수정 데이터 초기화
+          }}
+        />
+      )}
       {schedules.map((schedule, index) => (
         <article key={index} className="task-card">
           <img src={
@@ -81,7 +131,8 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
             schedule.type === "일정" ? IconClockPerSub : IconClockPerAdd
           } alt="" className="scheduleBoxCircle" />
          <div className="time-container">
-            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / "+ dayjs(schedule.startTime).format('HH:mm') }</time>
+            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / "+ dayjs(schedule.startTime).format('HH:mm') + ' ~ ' 
+            +dayjs(schedule.endTime).format('HH:mm') }</time>
           </div>
           <img src={moreIconUrl} alt="more options" className="more-icon"
             onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />
@@ -90,9 +141,12 @@ const ScheduleBox: React.FC<ScheduleBoxProps> = ({ schedules, setSchedules, sele
               <button onClick={() => toggleAttendance(schedule.scheduleNumber, 0)} className="option-button">미정</button>
               <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">출석예정</button>
               <button onClick={() => toggleAttendance(schedule.scheduleNumber, 3)} className="option-button">불참</button>
+              {/* {userInfo?.isAdmin && (
+                <button onClick={() => handleEditSchedule(schedule)} className="option-button">일정수정</button>
+              )} */}
             </div>
           )}
-          <h3 className="title">{schedule.title}</h3>
+          <h3 className="title" onClick={() => handleEditSchedule(schedule)}>{schedule.title}</h3>
           <p className="description">{schedule.place}</p>
           <div className={`attendance-status ${
             schedule.isAttending === 1 ? 'attending' :

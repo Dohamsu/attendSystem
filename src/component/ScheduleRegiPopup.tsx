@@ -4,7 +4,7 @@ import { useDrag } from 'react-use-gesture';
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
 import IconClock from "../images/nav/clock.svg";
-import { registerEvent } from '../services/EventRegistrationService';
+import { registerEvent, updateEvent } from '../services/EventRegistrationService';
 
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/ko'
@@ -23,11 +23,23 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import "../css/scheduleRegiPopup.css";
 import ReactDOM from 'react-dom';
 
-const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
+interface EventData {
+  title?: string;
+  place?: string;
+  description?: string;
+  type?: string;
+  startDate?: Dayjs;
+  startTime?: Dayjs;
+  endTime?: Dayjs;
+  scheduleNumber?: string;
+}
+
+const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isUpdate: boolean; eventData?: EventData }> = ({ isVisible, onClose, isUpdate, eventData }) => {
   const [{ y }, api] = useSpring(() => ({ y: 800 }));
   const [title, setTitle] = useState('');
   const [place, setPlace] = useState('');
   const [description, setDescription] = useState('');
+  const [scheduleNumber, setScheduleNumber] = useState('');
   const [type, setType] = useState('연습');
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [startTime, setStartTime] = useState<Dayjs>(dayjs());
@@ -45,7 +57,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
     selected: boolean;  // Include 'selected' property in the interface
     onSelect: (label: string) => void;
   }
-  
+
   const Category: React.FC<CategoryProps> = ({ icon, label, color, selected, onSelect }) => (
     <div className={`category ${color} ${selected ? 'selected' : ''}`} onClick={() => onSelect(label)}>
       <img src={icon} alt={label} className="category-icon" />
@@ -138,40 +150,52 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
     }
   };
   
+
   const submitForm = async () => {
-    // 입력 필드의 값이 비어 있는지 확인
     if (!title.trim() || !place.trim() || !description.trim()) {
-        alert('제목과 장소는 필수 입력입니다.');
-        return;
+      alert('제목과 장소는 필수 입력입니다.');
+      return;
     }
-    // 날짜와 시간이 유효한지 검사
     if (startTime.isAfter(endTime)) {
-      console.log(startTime);
-
-      console.log(endTime);
       alert('날짜 또는 시간이 유효하지 않습니다. 다시 확인해주세요.');
-        return;
+      return;
     }
 
-
-    const eventData = { title, place, description, startDate, type, startTime, endTime };
-    console.log(eventData);
-
+    const newEventData = { title, place, description, startDate, type, startTime, endTime, scheduleNumber: eventData?.scheduleNumber };
     try {
-        await registerEvent(eventData);
-        onClose(); // 등록 성공 후 팝업 닫기
+      if (isUpdate) {
+        await updateEvent(newEventData);
+      } else {
+        await registerEvent(newEventData);
+      }
+      onClose();
     } catch (error) {
-        alert('이벤트 등록 중 오류가 발생했습니다.');
+      alert('이벤트 등록 중 오류가 발생했습니다.');
     }
-};
+  };
 
+
+  useEffect(() => {
+    console.log('이벤트 있냐');
+    console.log(eventData);
+    if (eventData) {
+      setTitle(eventData.title ?? '');
+      setPlace(eventData.place ?? '');
+      setDescription(eventData.description ?? '');
+      setType(eventData.type ?? '');
+      setStartDate(dayjs(eventData.startDate));
+      setStartTime(dayjs(eventData.startTime));
+      setEndTime(dayjs(eventData.endTime));
+      setScheduleNumber(eventData.scheduleNumber ?? '');
+    }
+  }, [eventData]);
 
 
   return ReactDOM.createPortal(
     (
     <animated.div className="event-form-container" style={{ display: isVisible ? 'flex' : 'none' }}>
       <animated.div className="event-form" style={style} {...bind()}>
-        <h2 className="form-title">일정 등록하기</h2>
+        <h2 className="form-title">일정 {isUpdate ? '수정하기' : '등록하기'}</h2>
         <div className="form-fields">
         <input value={title} onChange={e => setTitle(e.target.value)} className="event-name" placeholder='일정 제목*' />
           <input value={place} onChange={e => setPlace(e.target.value)} className="event-title" placeholder='장소*' />
@@ -232,8 +256,9 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void }> =
             {categories.map(category => <Category key={category.label} {...category} />)}
           </div>
           {/* <div className="add-category">+ Add new</div> */}
-          <button className="create-event"  onClick={submitForm}>등록하기</button>
-        </div>
+          <button className="create-event" onClick={submitForm}>
+          {isUpdate ? '수정하기' : '등록하기'}
+      </button>        </div>
       </animated.div>
     </animated.div>
   ),

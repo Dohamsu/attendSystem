@@ -85,8 +85,7 @@
 .options-popup {
   position: absolute;
   top: 8px;
-  right: 0px;
-  background: white;
+  right: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 2;
