@@ -6,3 +6,7 @@ src/common/.DS_Store
 src/.DS_Store
 /node_modules
 .DS_Store
+src/fonts/.DS_Store
+.DS_Store
+/node_modules
+/node_modules/.cache
