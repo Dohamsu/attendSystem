@@ -15,6 +15,7 @@
 - **프론트엔드**: React, TypeScript, MUI, HTML, CSS
 - **백엔드**: Node.js
 - **디자인**: Figma
+- **배포**: Vercel, 카페24
 - **AI 서포트**: Chat GPT 4
   
 
