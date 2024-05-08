@@ -23,7 +23,7 @@
 <img src="readmeImg/1.PNG" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/2.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/3.PNG" width="300" height="600" alt="스크린샷">
-<img src="readmeImg/4.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/4.PNG" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/5.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/6.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/7.png" width="300" height="600" alt="스크린샷">
