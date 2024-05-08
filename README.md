@@ -16,6 +16,7 @@
 - **백엔드**: Node.js
 - **디자인**: Figma
 - **배포**: Vercel, 카페24
+- **소셜 로그인**: Firebase (Google), Kakao
 - **AI 서포트**: Chat GPT 4
   
 
