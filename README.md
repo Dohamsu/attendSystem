@@ -14,9 +14,22 @@
 ## 기술 스택
 - **프론트엔드**: React, TypeScript, MUI, HTML, CSS
 - **백엔드**: Node.js
+- **DB**: MongoDB
 - **디자인**: Figma
 - **배포**: Vercel, 카페24
 - **소셜 로그인**: Firebase (Google), Kakao
 - **AI 서포트**: Chat GPT 4
+
+<img src="readmeImg/1.PNG" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/2.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/3.PNG" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/4.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/5.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/6.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/7.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/8.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/9.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/10.png" width="300" height="600" alt="스크린샷">
+
   
 
