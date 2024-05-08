@@ -18,17 +18,17 @@ type AttendanceListProps = {
 
 const StyledTableCell = styled(TableCell)({
   width: '20%',
-  padding: '10px',
-  fontSize: '1rem',
+  padding: '5px',
+  fontSize: '0.7rem',
   textAlign: 'center',
 });
 
 const StyledTableCell2 = styled(TableCell)({
-  width: '17%',
+  width: '15%',
   padding: '5px',
   fontSize: '0.8rem',
   textAlign: 'center',
-  maxWidth: '90px', // 셀의 최대 너비를 설정합니다.
+  maxWidth: '60px', // 셀의 최대 너비를 설정합니다.
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap'
@@ -62,7 +62,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
 
   return (
     <>
-    <TableContainer component={Paper} sx={{ maxHeight: 320, overflow: 'auto' }}>
+    <TableContainer component={Paper} sx={{ maxHeight: 280, overflow: 'auto' }}>
       <Table stickyHeader aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -94,7 +94,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
                     }}
                   />
               </StyledTableCell2>
-              <StyledTableCell2 sx={{ textAlign: 'center' }}>
+              <StyledTableCell2 sx={{ textAlign: 'center', maxWidth:'100px !important', marginRight:'5px !important' }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
                   {['0', '1', '2', '3'].map(status => (
                     <Box
