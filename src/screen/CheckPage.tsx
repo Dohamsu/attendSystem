@@ -1,9 +1,9 @@
-// MyInfoPage.tsx
+// CheckPage.tsx
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import CheckSeatChart from '../component/CheckSeatChart'
 import AttendanceList from '../component/AttendanceList'
-// import "../css/attendStatusPage.css"; 
+import "../css/checkPage.css"; 
 import { fetchSchedules, fetchAttendance, updateAttendance } from '../common/scheduleService';
 import AttendanceScreen from '../component/AttendanceScreen';
 import AttendanceResultScreen from '../component/AttendanceResultScreen';
