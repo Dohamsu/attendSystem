@@ -41,7 +41,10 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [currentStatus, setCurrentStatus] = useState<number | null>(null);
+  const [sortedAttendanceList, setSortedAttendanceList] = useState<Attendee[]>([]);
+  const partOptions = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "Bass", "Conductor", "Etc"];
 
+  console.log(attendanceList);
   const handleClickOpen = (index: number, status: number) => {
     setCurrentIndex(index);
     setCurrentStatus(status);
@@ -59,6 +62,14 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
     handleClose();
   };
 
+  useEffect(() => {
+    const sortedList = [...attendanceList].sort((a, b) => {
+      const indexA = partOptions.indexOf(a.part || "Etc"); // 'Etc'를 기본값으로 사용
+      const indexB = partOptions.indexOf(b.part || "Etc");
+      return indexA - indexB; // partOptions 배열의 인덱스에 따라 정렬
+    });
+    setSortedAttendanceList(sortedList);
+  }, [attendanceList]); // attendanceList가 변경될 때마다 정렬
 
   return (
     <>
@@ -74,7 +85,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
           </TableRow>
         </TableHead>
         <TableBody>
-          {attendanceList.map((attendee, index) => (
+          {sortedAttendanceList.map((attendee, index) => (
             <TableRow key={index}>
               <StyledTableCell2>{attendee.name}</StyledTableCell2>
               <StyledTableCell2>{attendee.nickName}</StyledTableCell2>
