@@ -1,6 +1,6 @@
 // components/AttendanceList.tsx
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 type Attendee = {
@@ -73,7 +73,27 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
 
   return (
     <>
-    <TableContainer component={Paper} sx={{ maxHeight: 280, overflow: 'auto' }}>
+    {/* <Box
+      sx={{
+        height:20
+      }}
+    > */}
+      <Typography variant="h6" sx={{ textAlign: 'center', mt:2}}>
+        전체 명단
+      </Typography>
+
+      {/* </Box> */}
+    <TableContainer component={Paper} 
+      sx={{ 
+      maxHeight: 600,
+      mt: 10,
+      margin:'auto',
+      padding:1,
+      width:'95%',
+      overflow: 'auto',
+      textAlign:'center',
+    }}
+      >
       <Table stickyHeader aria-label="simple table">
         <TableHead>
           <TableRow>

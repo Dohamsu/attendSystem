@@ -49,9 +49,13 @@ const CheckPage: React.FC = () => {
 
   return (
     <>
-    <div className="main-container">
-      <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
-      <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
+    <div className="calendar-container">
+      <div className="calendar-item">
+        <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
+      </div>
+      <div className="calendar-item">
+        <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
+      </div>
     </div>
     </>
   );
