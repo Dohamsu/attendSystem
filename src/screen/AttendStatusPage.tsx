@@ -49,9 +49,10 @@ const CheckPage: React.FC = () => {
 
   return (
     <>
+    <div className="main-container">
       <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
       <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
-
+    </div>
     </>
   );
 };

@@ -90,7 +90,7 @@ if (!todaySchedule) {
 
 return (
   <>
-    <Box>
+    <Box className="mainBody">
       <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
         {`${dayjs(todaySchedule.startDate).format('MM월 DD일')}`}
       </Typography>
