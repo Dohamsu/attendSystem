@@ -15,6 +15,10 @@ type AttendanceListProps = {
   updateAttendance: (index: number, status: number) => void; // 출석 상태를 업데이트하는 함수
 };
 
+type SortConfig = {
+  field: keyof Attendee; // 'nickName', 'part', 'isAttending' 중 하나
+  direction: 'asc' | 'desc';
+};
 
 const StyledTableCell = styled(TableCell)({
   width: '20%',
@@ -43,8 +47,42 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
   const [currentStatus, setCurrentStatus] = useState<number | null>(null);
   const [sortedAttendanceList, setSortedAttendanceList] = useState<Attendee[]>([]);
   const partOptions = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "Bass", "Conductor", "Etc"];
+  const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
 
-  console.log(attendanceList);
+  const handleSort = (field: keyof Attendee) => {
+    const isAsc = sortConfig?.field === field && sortConfig?.direction === 'asc';
+    setSortConfig({ field, direction: isAsc ? 'desc' : 'asc' });
+  };
+  
+  useEffect(() => {
+    if (sortConfig !== null) {  // sortConfig가 null이 아닌 경우에만 정렬 로직 수행
+      let sorted = [...attendanceList];
+      sorted.sort((a, b) => {
+        let valA = String(a[sortConfig.field]);  // sortConfig가 null이 아닌 것을 확인했으므로 안전하게 접근 가능
+        let valB = String(b[sortConfig.field]);
+  
+        const extractNumber = (text: string) => {
+          const numericPart = text.match(/\d+/);
+          return numericPart ? parseInt(numericPart[0], 10) : 0;
+        };
+  
+        const numA = extractNumber(valA);
+        const numB = extractNumber(valB);
+        const textA = valA.replace(/\d+/, '');
+        const textB = valB.replace(/\d+/, '');
+  
+        if (textA === textB) {
+          return (numA < numB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1);
+        } else {
+          return (textA < textB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1);
+        }
+      });
+      setSortedAttendanceList(sorted);
+    }
+  }, [attendanceList, sortConfig]);  // sortConfig의 변경을 감지하여 useEffect를 다시 실행
+  
+  
+  
   const handleClickOpen = (index: number, status: number) => {
     setCurrentIndex(index);
     setCurrentStatus(status);
@@ -73,16 +111,16 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
 
   return (
     <>
-    {/* <Box
+    <Box
       sx={{
-        height:20
+        height:50
       }}
-    > */}
-      <Typography variant="h6" sx={{ textAlign: 'center', mt:2}}>
+    >
+      <Typography variant="h6" sx={{ textAlign: 'center', pt:1.5}}>
         전체 명단
       </Typography>
 
-      {/* </Box> */}
+      </Box>
     <TableContainer component={Paper} 
       sx={{ 
       maxHeight: 600,
@@ -95,19 +133,26 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
     }}
       >
       <Table stickyHeader aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>이름</StyledTableCell>
-            <StyledTableCell>닉네임</StyledTableCell>
-            <StyledTableCell>파트</StyledTableCell>
-            <StyledTableCell>상태</StyledTableCell>
-            <StyledTableCell>수정</StyledTableCell>
-          </TableRow>
-        </TableHead>
+      <TableHead>
+        <TableRow>
+        <StyledTableCell onClick={() => handleSort('nickName')}>
+          닉네임 {sortConfig?.field === 'nickName' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+        </StyledTableCell>
+          <StyledTableCell onClick={() => handleSort('part')}>
+            파트 {sortConfig?.field === 'part' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+          </StyledTableCell>
+          <StyledTableCell onClick={() => handleSort('isAttending')}>
+            상태 {sortConfig?.field === 'isAttending' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
+          </StyledTableCell>
+          <StyledTableCell>
+            수정
+          </StyledTableCell>
+        </TableRow>
+      </TableHead>
+
         <TableBody>
           {sortedAttendanceList.map((attendee, index) => (
             <TableRow key={index}>
-              <StyledTableCell2>{attendee.name}</StyledTableCell2>
               <StyledTableCell2>{attendee.nickName}</StyledTableCell2>
               <StyledTableCell2>{attendee.part}</StyledTableCell2>
 
@@ -149,7 +194,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
                     >
                         {status === '0' ? '미' :
                        status === '1' ? '예' :
-                       status === '2' ? '참' :
+                       status === '2' ? '출' :
                        '불'}
                     </Box>                    
                   ))}

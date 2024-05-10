@@ -1,13 +1,12 @@
 // SeatingChart.tsx
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Divider, styled, Typography } from '@mui/material';
 import CheckSeat from './CheckSeat';
-import CheckSeatLegend from './CheckSeatLegend';
 import { fetchSchedules, fetchAttendance } from '../common/scheduleService';
 import { Schedule, Attendance , Attendee} from '../stores/type';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'; // 미래 날짜 비교를 위해 필요한 플러그인
-import '../css/checkSeatChart.css'; // CSS 파일 임포트
+import '../css/checkSeatChart.css';
 import PersonIcon from '@mui/icons-material/Person';
 
 // Props 타입 정의
@@ -24,6 +23,27 @@ interface Seat {
   occupant?: string;
 }
 
+const Circle = styled(Box)(({ theme }) => ({
+  borderRadius: '100%',
+  width: 60,
+  height: 60,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom:'10px',
+  color: 'white',
+  fontSize: '1.25rem',
+  fontWeight: 'bold',
+  boxShadow: ' 2px 2px 10px 0px rgba(0, 0, 0, 0.3)'
+}));
+
+const VerticalDivider = styled(Divider)(({ theme }) => ({
+  height: 'auto',
+  alignSelf: 'stretch',
+  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
+}));
+
 dayjs.extend(isSameOrAfter); // 플러그인 확장
 
 let rows = 4;
@@ -31,9 +51,33 @@ let seatsPerRow = 6;
 // 가로 6줄, 세로 4줄의 좌석을 생성하는 함수
 const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList }) => {
   const [seats, setSeats] = useState<Seat[][]>([]);
+  const [statusCounts, setStatusCounts] = useState({ pending: 0, planned: 0, attended: 0, absent: 0 });
+
 
   useEffect(() => {
     initializeSeats();
+    const counts = { pending: 0, planned: 0, attended: 0, absent: 0 };
+  
+    attendanceList.forEach(attendee => {
+      switch (attendee.isAttending) {
+        case 0:
+          counts.pending += 1;
+          break;
+        case 1:
+          counts.planned += 1;
+          break;
+        case 2:
+          counts.attended += 1;
+          break;
+        case 3:
+          counts.absent += 1;
+          break;
+        default:         
+          break;
+      }
+    });
+  
+    setStatusCounts(counts);
   }, [attendanceList]);
 
 const initializeSeats = () => {
@@ -52,29 +96,33 @@ const initializeSeats = () => {
     let partIndex = (rawPartIndex - 1) % 6; // 6열로 나누어서 열 위치 계산
     let startRow = rawPartIndex <= 6 ? 0 : 2; // 파트가 7 이상이면 3행(인덱스 2)부터 시작
 
-    for (let row = startRow; row < rows; row++) {
-      if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
-        newSeats[row][partIndex] = {
-          ...newSeats[row][partIndex],
-          occupant: attendee.nickName,
-          status: attendee.isAttending.toString() as SeatStatus
-        };
-        break;
+      for (let row = startRow; row < rows; row++) {
+        if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
+          newSeats[row][partIndex] = {
+            ...newSeats[row][partIndex],
+            occupant: attendee.nickName,
+            status: attendee.isAttending.toString() as SeatStatus
+          };
+          break;
+        }
       }
-    }
-  });
-  setSeats(newSeats);
-};
-
-
-
+    });
+    setSeats(newSeats);
+  };
+  const colors = {
+    pending: '#A9A9A970',   
+    planned: '#00b38360', // 예정: 연두
+    attended: '#00b383',  // 출석: 녹색
+    absent: '#FF6347'     // 불참: 빨강
+  };
 
   return (
+    <>
     <Box className="seating-chart-container">
       <Typography variant="h6" sx={{ my: 2, textAlign: 'center' }}>
        {`${dayjs(todaySchedule?.startDate).format('MM월 DD일')} ${todaySchedule?.title}`}
       </Typography>
-      <Typography variant="h6" sx={{ my: 2, textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2, mb:2 , textAlign: 'center' }}>
         출석 현황
       </Typography>
       <Box
@@ -105,13 +153,60 @@ const initializeSeats = () => {
         })}
 
       </Box>
+      {/* <Box className='seatContainer' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+          {seats.slice().reverse().map((row, rowIndex) => (
+              <Box 
+              className="seat-row" 
+              key={rowIndex} 
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                gap: '1rem',
+                marginTop: rowIndex === 2 ? '20px' : '0'
+              }}
+            >
+              {row.map((seat, seatIndex) => (
+                <CheckSeat
+                  key={seat.id}
+                  status={seat.status}
+                  className={'seat'}
+                  onToggle={() => alert('클릭')}
+                  occupant={seat.occupant}
+                />
+              ))}
+            </Box>
+          ))}
+      </Box> */}
       <Box
       className="conductorIcon">
         <PersonIcon
         fontSize='inherit'/>
       </Box>
-      <CheckSeatLegend />
     </Box>
+      <Box sx={{ pt: 7, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
+        <Box 
+          className='legendBox'
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+          {/* <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.planned }}>{statusCounts.planned}</Circle>
+            <Typography variant="caption">예정</Typography>
+          </Box> */}
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
+            <Typography variant="caption">참석</Typography>
+          </Box>
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
+            <Typography variant="caption">불참</Typography>
+          </Box>
+          {/* <VerticalDivider orientation="vertical" flexItem />
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.pending }}>{statusCounts.pending}</Circle>
+            <Typography variant="caption">미정</Typography>
+          </Box> */}
+        </Box>
+      </Box>
+    </>
   );
 };
 

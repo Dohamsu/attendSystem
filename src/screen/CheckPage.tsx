@@ -9,16 +9,17 @@ import AttendanceScreen from '../component/AttendanceScreen';
 import AttendanceResultScreen from '../component/AttendanceResultScreen';
 import AttendHistory from '../component/AttendHistory';
 
-import { Schedule, Attendance, Attendee } from '../stores/type';  // 'Attendance' 타입도 필요하면 추가
+import { Schedule, Attendance, Attendee } from '../stores/type';
 import dayjs, { Dayjs } from 'dayjs';
 import { useSelector } from 'react-redux';
 const AttendStatusPage: React.FC = () => {
   const [attendanceList, setAttendanceList] = useState<Attendee[]>([]);
-  const [todaySchedule, setTodaySchedule] = useState<Schedule | null>(null);  // 상태를 Schedule 또는 null로 관리
-  const [scheduleNumber, setScheduleNumber] = useState<string | null>('');  // 상태를 Schedule 또는 null로 관리
-  const [dataLoaded, setDataLoaded] = useState<boolean>(false); // 데이터 로딩 완료 상태
+  const [todaySchedule, setTodaySchedule] = useState<Schedule | null>(null);
+  const [scheduleNumber, setScheduleNumber] = useState<string | null>('');
+  const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+  const [hasAttended, setHasAttended] = useState<boolean>(false);
 
-  const currentUser = useSelector((state: any) => state.user.user); // state 구조에 따라 수정 필요
+  const currentUser = useSelector((state: any) => state.user.user);
 
   useEffect(() => {
     const initializeData = async () => {
@@ -59,7 +60,6 @@ const AttendStatusPage: React.FC = () => {
     }
   };
 
-  const [hasAttended, setHasAttended] = useState<boolean>(false); // 출석 상태 관리
 
   const handleAttend = async () => {
     if (currentUser && scheduleNumber) {
@@ -90,21 +90,29 @@ if (!todaySchedule) {
 
 return (
   <>
-    <Box className="mainBody">
-      <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
-        {`${dayjs(todaySchedule.startDate).format('MM월 DD일')}`}
-      </Typography>
-      <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
-        {todaySchedule.title}
-      </Typography>
-      {hasAttended ? (
-        <AttendanceResultScreen />
-      ) : (
-        <AttendanceScreen todaySchedule={todaySchedule} onAttend={handleAttend} />
-      )}
-      <hr></hr>
-      <AttendHistory />
-    </Box>
+   <div className="calendar-container">
+      <div className="calendar-item">
+        <Box sx={{pt:1}}>
+          <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
+            {`${dayjs(todaySchedule.startDate).format('MM월 DD일')}`}
+          </Typography>
+          <Typography variant="h4" sx={{ textAlign: 'center', my: 4 }}>
+            {todaySchedule.title}
+          </Typography>
+          {hasAttended ? (
+            <AttendanceResultScreen />
+          ) : (
+            <AttendanceScreen todaySchedule={todaySchedule} onAttend={handleAttend} />
+          )}
+          <hr></hr>
+          <AttendHistory />
+        </Box>
+      </div>
+      <div className="calendar-item">
+       <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
+      </div>
+    </div>
+
   </>
 );
 
