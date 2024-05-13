@@ -8,7 +8,9 @@ type Attendee = {
   nickName?: string;
   part?: string;
   isAttending?: number;
+  originalIndex: number; // 원본 배열에서의 인덱스를 저장
 };
+
 
 type AttendanceListProps = {
   attendanceList: Attendee[];
@@ -53,12 +55,17 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
     const isAsc = sortConfig?.field === field && sortConfig?.direction === 'asc';
     setSortConfig({ field, direction: isAsc ? 'desc' : 'asc' });
   };
-  
+
   useEffect(() => {
-    if (sortConfig !== null) {  // sortConfig가 null이 아닌 경우에만 정렬 로직 수행
-      let sorted = [...attendanceList];
+    let sorted = [...attendanceList].map((attendee, index) => ({
+      ...attendee,
+      originalIndex: index // 원본 배열의 인덱스 저장
+    }));
+  
+    if (sortConfig) {
+      // 사용자 지정 정렬 로직
       sorted.sort((a, b) => {
-        let valA = String(a[sortConfig.field]);  // sortConfig가 null이 아닌 것을 확인했으므로 안전하게 접근 가능
+        let valA = String(a[sortConfig.field]);
         let valB = String(b[sortConfig.field]);
   
         const extractNumber = (text: string) => {
@@ -71,20 +78,30 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
         const textA = valA.replace(/\d+/, '');
         const textB = valB.replace(/\d+/, '');
   
-        if (textA === textB) {
-          return (numA < numB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1);
-        } else {
-          return (textA < textB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1);
-        }
+        return textA === textB ?
+          (numA < numB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1) :
+          (textA < textB ? -1 : 1) * (sortConfig.direction === 'asc' ? 1 : -1);
       });
-      setSortedAttendanceList(sorted);
+    } else {
+      // 기본 정렬 로직 (`partOptions` 기준)
+      sorted.sort((a, b) => {
+        const indexA = partOptions.indexOf(a.part || "Etc");
+        const indexB = partOptions.indexOf(b.part || "Etc");
+        return indexA - indexB;
+      });
     }
-  }, [attendanceList, sortConfig]);  // sortConfig의 변경을 감지하여 useEffect를 다시 실행
+    setSortedAttendanceList(sorted);
+  }, [attendanceList, sortConfig]); // attendanceList 또는 sortConfig 변경 시 정렬 수행
   
-  
+  // sortConfig 초기화 (옵션에 따라)
+  useEffect(() => {
+    setSortConfig(null); // 초기에 partOptions 기준으로 정렬하도록 설정
+  }, []);
   
   const handleClickOpen = (index: number, status: number) => {
-    setCurrentIndex(index);
+    const originalIndex = sortedAttendanceList[index].originalIndex;
+    
+    setCurrentIndex(originalIndex); // 원본 배열의 인덱스 사용
     setCurrentStatus(status);
     setOpen(true);
   };
@@ -99,15 +116,6 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
     }
     handleClose();
   };
-
-  useEffect(() => {
-    const sortedList = [...attendanceList].sort((a, b) => {
-      const indexA = partOptions.indexOf(a.part || "Etc"); // 'Etc'를 기본값으로 사용
-      const indexB = partOptions.indexOf(b.part || "Etc");
-      return indexA - indexB; // partOptions 배열의 인덱스에 따라 정렬
-    });
-    setSortedAttendanceList(sortedList);
-  }, [attendanceList]); // attendanceList가 변경될 때마다 정렬
 
   return (
     <>

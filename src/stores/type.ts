@@ -18,6 +18,7 @@ export interface Attendee  {
   nickName: string;      
   part: string;      
   isAttending: number;
+  originalIndex: number; // 원본 배열에서의 인덱스를 저장
 };
 
 export interface Attendance  {
