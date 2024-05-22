@@ -92,7 +92,13 @@ const initializeSeats = () => {
 
   // attendanceList를 기반으로 좌석 할당
   attendanceList.forEach(attendee => {
-    let rawPartIndex = parseInt(attendee.part.replace(/\D/g, '')); // 파트 번호 추출
+    let rawPartIndex: number;
+
+      if (attendee.part === 'Bass') {
+          rawPartIndex = 12; // 'bass'일 경우 임시로 12번 부여
+      } else {
+          rawPartIndex = parseInt(attendee.part.replace(/\D/g, '')); // 파트 번호 추출
+      }
     let partIndex = (rawPartIndex - 1) % 6; // 6열로 나누어서 열 위치 계산
     let startRow = rawPartIndex <= 6 ? 0 : 2; // 파트가 7 이상이면 3행(인덱스 2)부터 시작
 

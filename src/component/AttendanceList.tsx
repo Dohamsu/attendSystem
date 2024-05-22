@@ -144,6 +144,9 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
       <TableHead>
         <TableRow>
         <StyledTableCell onClick={() => handleSort('nickName')}>
+          번호 
+        </StyledTableCell>
+        <StyledTableCell onClick={() => handleSort('nickName')}>
           닉네임 {sortConfig?.field === 'nickName' ? (sortConfig.direction === 'asc' ? '↑' : '↓') : ''}
         </StyledTableCell>
           <StyledTableCell onClick={() => handleSort('part')}>
@@ -161,6 +164,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
         <TableBody>
           {sortedAttendanceList.map((attendee, index) => (
             <TableRow key={index}>
+              <StyledTableCell2>{index+1}</StyledTableCell2>
               <StyledTableCell2>{attendee.nickName}</StyledTableCell2>
               <StyledTableCell2>{attendee.part}</StyledTableCell2>
 
