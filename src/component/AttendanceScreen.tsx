@@ -47,8 +47,18 @@ const AttendanceScreen: React.FC<AttendanceScreenProps> = ({ onAttend, todaySche
         }
         setButtonActive(secondsLeft <= 3600);  // 1시간 이내일 경우 버튼 활성화
       } else {
-        setTimeLeft('출석 시간이 지났습니다.');
-        setButtonActive(false);
+        // 출석 시간이 지난 경우
+        const secondsPassed = Math.abs(secondsLeft);
+        // 시간이 지난 후 1시간 이내인 경우
+        if (secondsPassed <= 3600) {
+          const minutes = Math.floor(secondsPassed / 60);
+          const seconds = secondsPassed % 60;
+          setTimeLeft(` ${minutes}분 ${seconds}초 지각`);
+          setButtonActive(true);  // 1시간 이내일 경우 버튼 활성화
+        } else {
+          setTimeLeft('출석 시간이 지났습니다.');
+          setButtonActive(false);
+        }
         setTimePassed(true);
       }
     };
