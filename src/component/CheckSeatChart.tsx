@@ -1,4 +1,4 @@
-// SeatingChart.tsx
+// CheckSeatChart.tsx
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Divider, styled, Typography } from '@mui/material';
 import CheckSeat from './CheckSeat';
@@ -107,7 +107,7 @@ const initializeSeats = () => {
           newSeats[row][partIndex] = {
             ...newSeats[row][partIndex],
             occupant: attendee.nickName,
-            status: attendee.isAttending.toString() as SeatStatus
+            status: attendee.isAttending== undefined ?  "0" : attendee.isAttending.toString() as SeatStatus
           };
           break;
         }
@@ -158,31 +158,7 @@ const initializeSeats = () => {
           );
         })}
 
-      </Box>
-      {/* <Box className='seatContainer' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-          {seats.slice().reverse().map((row, rowIndex) => (
-              <Box 
-              className="seat-row" 
-              key={rowIndex} 
-              sx={{ 
-                display: 'flex', 
-                flexDirection: 'row', 
-                gap: '1rem',
-                marginTop: rowIndex === 2 ? '20px' : '0'
-              }}
-            >
-              {row.map((seat, seatIndex) => (
-                <CheckSeat
-                  key={seat.id}
-                  status={seat.status}
-                  className={'seat'}
-                  onToggle={() => alert('클릭')}
-                  occupant={seat.occupant}
-                />
-              ))}
-            </Box>
-          ))}
-      </Box> */}
+      </Box>      
       <Box
       className="conductorIcon">
         <PersonIcon
@@ -192,11 +168,7 @@ const initializeSeats = () => {
       <Box sx={{ pt: 7, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
         <Box 
           className='legendBox'
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
-          {/* <Box sx={{ textAlign: 'center' }}>
-            <Circle sx={{ backgroundColor: colors.planned }}>{statusCounts.planned}</Circle>
-            <Typography variant="caption">예정</Typography>
-          </Box> */}
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>       
           <Box sx={{ textAlign: 'center' }}>
             <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
             <Typography variant="caption">참석</Typography>
@@ -204,12 +176,7 @@ const initializeSeats = () => {
           <Box sx={{ textAlign: 'center' }}>
             <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
             <Typography variant="caption">불참</Typography>
-          </Box>
-          {/* <VerticalDivider orientation="vertical" flexItem />
-          <Box sx={{ textAlign: 'center' }}>
-            <Circle sx={{ backgroundColor: colors.pending }}>{statusCounts.pending}</Circle>
-            <Typography variant="caption">미정</Typography>
-          </Box> */}
+          </Box>       
         </Box>
       </Box>
     </>

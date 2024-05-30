@@ -100,7 +100,7 @@ const KakaoLogoutButton: React.FC = () => {
 
   const handleLogout = async () => {
     const accessToken = localStorage.getItem('kakao_token'); // 저장된 토큰을 사용
-    const LOGOUT_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/logout-kakao`;
+    const LOGOUT_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/auth/logout-kakao`;
 
     try {
       // 서버에 로그아웃 요청을 보냄

@@ -12,7 +12,7 @@ const KakaoCallBackpage = () => {
   useEffect(() => {
     const handleKakaoAuth = async () => {
       const code = new URLSearchParams(window.location.search).get('code');
-      const KAKAO_LOGIN_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/verify-kakao-token`;
+      const KAKAO_LOGIN_API_URL = `${process.env.REACT_APP_API_SERVER_URI}/api/auth/verify-kakao-token`;
 
       if (code) {
         try {
