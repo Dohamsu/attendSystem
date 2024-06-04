@@ -146,12 +146,14 @@ function convertScheduleToEventData(schedule: Schedule | null): EventData {
           <h3 className="title" onClick={() => handleEditSchedule(schedule)}>{schedule.title}</h3>
           <p className="description">{schedule.place}</p>
           <div className={`attendance-status ${
+             schedule.isAttending === 0 ? 'pending' :
             schedule.isAttending === 1 ? 'attending' :
             schedule.isAttending === 2 ? 'attended' :
             schedule.isAttending === 3 ? 'not-attending' :
             'pending'}`}>
 
-            {schedule.isAttending === 1 ? '출석 예정' :
+            {schedule.isAttending === 0 ? '미정' :
+            schedule.isAttending === 1 ? '출석 예정' :
             schedule.isAttending === 2 ? '출석 완료' :
             schedule.isAttending === 3 ? '불참' :
             '미정'}
