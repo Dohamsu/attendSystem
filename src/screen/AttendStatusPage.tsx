@@ -1,6 +1,6 @@
 // MyInfoPage.tsx
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CheckSeatChart from '../component/CheckSeatChart'
 import AttendanceList from '../component/AttendanceList'
 import "../css/checkPage.css"; 
@@ -49,6 +49,7 @@ const CheckPage: React.FC = () => {
 
   return (
     <>
+    {todaySchedule ? (
     <div className="calendar-container">
       <div className="calendar-item">
         <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
@@ -57,6 +58,13 @@ const CheckPage: React.FC = () => {
         <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
       </div>
     </div>
+    ) : 
+      <div>
+      <Box sx={{ textAlign: 'center', my: 4, mt: 45 }}>
+      <Typography variant="h4">예정된 일정이 없습니다.</Typography>
+    </Box>
+      </div>
+    }
     </>
   );
 };
