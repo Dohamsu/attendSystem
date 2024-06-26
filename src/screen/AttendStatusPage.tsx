@@ -1,19 +1,22 @@
 // MyInfoPage.tsx
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import CheckSeatChart from '../component/CheckSeatChart'
 import AttendanceList from '../component/AttendanceList'
 import "../css/checkPage.css"; 
 import { fetchSchedules, fetchAttendance, updateAttendance } from '../common/scheduleService';
 import { Schedule, Attendance, Attendee } from '../stores/type';  // 'Attendance' 타입도 필요하면 추가
-import dayjs, { Dayjs } from 'dayjs';
-const CheckPage: React.FC = () => {
+import dayjs from 'dayjs';
+
+const AttendStatusPage: React.FC = () => {
   const [attendanceList, setAttendanceList] = useState<Attendee[]>([]);
   const [todaySchedule, setTodaySchedule] = useState<Schedule | null>(null);  // 상태를 Schedule 또는 null로 관리
-  const [scheduleNumber, setScheduleNumber] = useState<string | null>('');  // 상태를 Schedule 또는 null로 관리
+  const [scheduleNumber, setScheduleNumber] = useState<string | null>(null);  // 상태를 Schedule 또는 null로 관리
+  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태 추가
 
   useEffect(() => {
     const initializeData = async () => {
+      setLoading(true);
       const schedules = await fetchSchedules();
       const now = dayjs();
 
@@ -23,14 +26,14 @@ const CheckPage: React.FC = () => {
         .sort((a, b) => dayjs(a.startDate).diff(dayjs(b.startDate)));
 
       const todayOrNextSchedule = sortedSchedules.find(schedule => dayjs(schedule.startDate).isSame(now, 'day')) || sortedSchedules[0];
-      setScheduleNumber(todayOrNextSchedule.scheduleNumber);
-      // console.log(todayOrNextSchedule);
+      setScheduleNumber(todayOrNextSchedule?.scheduleNumber || null);
+      
       if (todayOrNextSchedule) {
         setTodaySchedule(todayOrNextSchedule);
         const fetchedAttendance = await fetchAttendance(todayOrNextSchedule.scheduleNumber);
-        // console.log(fetchedAttendance);
         setAttendanceList(fetchedAttendance);
       }
+      setLoading(false);
     };
 
     initializeData();
@@ -49,24 +52,30 @@ const CheckPage: React.FC = () => {
 
   return (
     <>
-    {todaySchedule ? (
-    <div className="calendar-container">
-      <div className="calendar-item">
-        <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
-      </div>
-      <div className="calendar-item">
-        <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
-      </div>
-    </div>
-    ) : 
-      <div>
-      <Box sx={{ textAlign: 'center', my: 4, mt: 45 }}>
-      <Typography variant="h4">예정된 일정이 없습니다.</Typography>
-    </Box>
-      </div>
-    }
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {todaySchedule ? (
+            <div className="calendar-container">
+              <div className="calendar-item">
+                <CheckSeatChart todaySchedule={todaySchedule} attendanceList={attendanceList} />
+              </div>
+              <div className="calendar-item">
+                <AttendanceList attendanceList={attendanceList} updateAttendance={updateAttendance2} />
+              </div>
+            </div>
+          ) : (
+            <Box sx={{ textAlign: 'center', my: 4, mt: 45 }}>
+              <Typography variant="h4">예정된 일정이 없습니다.</Typography>
+            </Box>
+          )}
+        </>
+      )}
     </>
   );
 };
 
-export default CheckPage;
+export default AttendStatusPage;
