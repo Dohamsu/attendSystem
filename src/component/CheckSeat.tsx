@@ -1,45 +1,52 @@
 // CheckSeat.tsx
 import React from 'react';
-import Button from '@mui/material/Button';
-import { SxProps, Theme } from '@mui/system';
+import { Box, Typography } from '@mui/material';
 
-type SeatStatus = '0'|'1' | '2' | '3';
+// SeatProps 타입 정의
+type SeatProps = {
+  status: string;
+  className: string;
+  onToggle: () => void;
+  occupant?: string;
+};
 
-interface SeatProps {
-  status: SeatStatus;
-  onToggle?: () => void;
-  className?: string;
-  style?: React.CSSProperties; // 스타일 속성 추가
-  sx?: SxProps<Theme>; // MUI 시스템 스타일 속성 추가 (선택적)
-  occupant?: string; // Add occupant as an optional property
-}
-
-const CheckSeat: React.FC<SeatProps> = ({ status, onToggle, className, style, sx, occupant }) => {
-  // 좌석 상태에 따른 배경 색상 코드
-  const colorMap: Record<SeatStatus, string> = {
-    '0': '#A9A9A970', // 주황색
-    '1': '#00b38360', // 연두색 투명
-    '2': '#00b383', // 연두색
-    '3': '#FF6347', // 토마토색
+const CheckSeat: React.FC<SeatProps> = ({ status, className, onToggle, occupant }) => {
+  const getColor = () => {
+    switch (status) {
+      case '1':
+        return '#00b38360'; // 예정
+      case '2':
+        return '#00b383'; // 참석
+      case '3':
+        return '#FF6347'; // 불참
+      default:
+        return '#A9A9A970'; // 대기
+    }
   };
 
-  const textColorMap: Record<SeatStatus, string> = {
-    '0': '#333333', // 어두운 회색 (주황색 배경에 대한 대비)
-    '1': '#33333397', // 반투명한 하얀색 (연두색 투명 배경에 대한 대비)
-    '2': '#FFFFFF', // 하얀색 (연두색 배경에 대한 대비)
-    '3': '#FFFFFF', // 하얀색 (토마토색 배경에 대한 대비)
+  const getFontWeight = () => {
+    return status === '1' ? 'bold' : 'normal';
   };
 
   return (
-    <Button
-      variant="contained"
-      // onClick={onToggle}
+    <Box
       className={className}
-      style={style}
-      sx={{ ...sx, backgroundColor: colorMap[status], color: textColorMap[status] }}
+      onClick={onToggle}
+      sx={{
+        borderRadius: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        cursor: 'pointer',
+      }}
     >
-      {occupant ? occupant : ""}
-    </Button>
+      {occupant && (
+        <Typography variant="body2" align="center" sx={{ color: getColor(), fontWeight: getFontWeight() }}>
+          {occupant}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

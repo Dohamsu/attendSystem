@@ -1,10 +1,8 @@
-// CheckSeatChart.tsx
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Divider, styled, Typography } from '@mui/material';
+import { Box, styled, Typography, Grid } from '@mui/material';
 import CheckSeat from './CheckSeat';
-import { fetchSchedules, fetchAttendance } from '../common/scheduleService';
-import { Schedule, Attendance , Attendee} from '../stores/type';
-import dayjs, { Dayjs } from 'dayjs';
+import { Schedule, Attendee } from '../stores/type';
+import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'; // 미래 날짜 비교를 위해 필요한 플러그인
 import '../css/checkSeatChart.css';
 import PersonIcon from '@mui/icons-material/Person';
@@ -15,13 +13,56 @@ type CheckSeatChartProps = {
   attendanceList: Attendee[];
 };
 
-type SeatStatus = '0' |'1' | '2' | '3';
+type SeatStatus = '0' | '1' | '2' | '3';
 
 interface Seat {
   id: string;
   status: SeatStatus;
   occupant?: string;
+  part?: string;
 }
+
+const PartBox = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  mt: 2,
+  p: 2,
+  border: '1.5px solid #ccc',
+  margin: 0,
+  borderRadius: '4px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: '0',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff',
+    padding: '0 10px',
+    zIndex: 1,
+  },
+  '&::after': {
+    content: 'attr(data-part)',
+    position: 'absolute',
+    top: '-10px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#fff',
+    padding: '0 10px',
+    zIndex: 2,
+    fontWeight: 'bold',
+    fontSize: '12px',
+    color: '#999999',
+  }
+}));
+
+const SmallPartBox = styled(PartBox)(({ theme }) => ({
+  gridColumn: 'span 6',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  height: 'auto'
+}));
 
 const Circle = styled(Box)(({ theme }) => ({
   borderRadius: '100%',
@@ -30,35 +71,63 @@ const Circle = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginBottom:'10px',
+  marginBottom: '10px',
   color: 'white',
   fontSize: '1.25rem',
   fontWeight: 'bold',
-  boxShadow: ' 2px 2px 10px 0px rgba(0, 0, 0, 0.3)'
-}));
-
-const VerticalDivider = styled(Divider)(({ theme }) => ({
-  height: 'auto',
-  alignSelf: 'stretch',
-  marginLeft: theme.spacing(2),
-  marginRight: theme.spacing(2),
+  boxShadow: '2px 2px 10px 0px rgba(0, 0, 0, 0.3)'
 }));
 
 dayjs.extend(isSameOrAfter); // 플러그인 확장
 
-let rows = 4;
-let seatsPerRow = 6;
-// 가로 6줄, 세로 4줄의 좌석을 생성하는 함수
+const partsTop = ['G7', 'G8', 'G9', 'G10', 'G11', 'G12'];
+const partsBottom = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6'];
+const parts = ['Bass', ...partsTop, ...partsBottom];
+const maxSeatsPerPart = 5;
 const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList }) => {
-  const [seats, setSeats] = useState<Seat[][]>([]);
+  const [seats, setSeats] = useState<Record<string, Seat[]>>(initializeSeats());
   const [statusCounts, setStatusCounts] = useState({ pending: 0, planned: 0, attended: 0, absent: 0 });
-
+  const [conductorStatus, setConductorStatus] = useState<SeatStatus>('0');
 
   useEffect(() => {
-    initializeSeats();
+    updateAttendance();
+  }, [attendanceList]);
+
+  function initializeSeats() {
+    const seats: Record<string, Seat[]> = {};
+
+    parts.forEach(part => {
+      seats[part] = Array.from({ length: maxSeatsPerPart }, (_, index) => ({
+        id: `${part}-${index}`,
+        status: '0',
+        occupant: undefined,
+        part: part,
+      }));
+    });
+
+    return seats;
+  }
+
+  function updateAttendance() {
     const counts = { pending: 0, planned: 0, attended: 0, absent: 0 };
-  
+    const newSeats = initializeSeats();
+    let conductorStatus: SeatStatus = '0';
+
     attendanceList.forEach(attendee => {
+      const part = attendee.part;
+      if (part === 'Conductor') {
+        conductorStatus = attendee.isAttending?.toString() as SeatStatus;
+      } else if (newSeats[part]) {
+        const seatIndex = newSeats[part].findIndex(seat => !seat.occupant);
+        if (seatIndex !== -1) {
+          newSeats[part][seatIndex] = {
+            ...newSeats[part][seatIndex],
+            occupant: attendee.nickName,
+            status: attendee.isAttending == undefined ? '0' : attendee.isAttending.toString() as SeatStatus,
+          };
+        }
+      }
+
       switch (attendee.isAttending) {
         case 0:
           counts.pending += 1;
@@ -72,51 +141,18 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
         case 3:
           counts.absent += 1;
           break;
-        default:         
+        default:
           break;
       }
     });
-  
-    setStatusCounts(counts);
-  }, [attendanceList]);
 
-const initializeSeats = () => {
-  // 모든 좌석을 기본 상태로 초기화
-  let newSeats: Seat[][] = Array.from({ length: rows }, () =>
-    Array.from({ length: seatsPerRow }, (_, col) => ({
-      id: `seat-${rows}-${col}`, 
-      status: '0', 
-      occupant: undefined
-    }))
-  );
-
-  // attendanceList를 기반으로 좌석 할당
-  attendanceList.forEach(attendee => {
-    let rawPartIndex: number;
-
-      if (attendee.part === 'Bass') {
-          rawPartIndex = 12; // 'bass'일 경우 임시로 12번 부여
-      } else {
-          rawPartIndex = parseInt(attendee.part.replace(/\D/g, '')); // 파트 번호 추출
-      }
-    let partIndex = (rawPartIndex - 1) % 6; // 6열로 나누어서 열 위치 계산
-    let startRow = rawPartIndex <= 6 ? 0 : 2; // 파트가 7 이상이면 3행(인덱스 2)부터 시작
-
-      for (let row = startRow; row < rows; row++) {
-        if (newSeats[row][partIndex] && !newSeats[row][partIndex].occupant) {
-          newSeats[row][partIndex] = {
-            ...newSeats[row][partIndex],
-            occupant: attendee.nickName,
-            status: attendee.isAttending== undefined ?  "0" : attendee.isAttending.toString() as SeatStatus
-          };
-          break;
-        }
-      }
-    });
     setSeats(newSeats);
-  };
+    setStatusCounts(counts);
+    setConductorStatus(conductorStatus);
+  }
+
   const colors = {
-    pending: '#A9A9A970',   
+    pending: '#A9A9A970',
     planned: '#00b38360', // 예정: 연두
     attended: '#00b383',  // 출석: 녹색
     absent: '#FF6347'     // 불참: 빨강
@@ -124,59 +160,74 @@ const initializeSeats = () => {
 
   return (
     <>
-    <Box className="seating-chart-container">
-      <Typography variant="h6" sx={{ my: 2, textAlign: 'center' }}>
-       {`${dayjs(todaySchedule?.startDate).format('MM월 DD일')} ${todaySchedule?.title}`}
-      </Typography>
-      <Typography variant="h6" sx={{ my: 2, mb:2 , textAlign: 'center' }}>
-        출석 현황
-      </Typography>
-      <Box
-      className='seatContainer'>
-        {seats.map((row, rowIndex) => {
-          // 각 행의 반경을 조절합니다.
-          const rowRadius = 20 + rowIndex * (rowIndex >= 2 ? 25 : 20);
-          return (
-            <Box className="seat-row" style={{ bottom: `${rowRadius}px` }} key={rowIndex}>
-              {row.map((seat, seatIndex) => {
-                // 각 좌석의 회전 각도를 계산합니다.
-                const seatAngle = (seatIndex - (seatsPerRow/ 2.4)) * 30;
-                return (
-                  <CheckSeat
-                  key={seat.id}
+      <Box className="seating-chart-container" sx={{ position: 'relative', width: '100%', height: '100%' }}>
+        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: '#fff', p: 2 }}>
+          <Typography variant="h5" sx={{ mt: 3, textAlign: 'center' }}>
+            {`${dayjs(todaySchedule?.startDate).format('M월 D일')} ${todaySchedule?.title}`}
+          </Typography>
+        </Box>
+        <Box sx={{ pt: 15, px: 2, height: 'auto', minHeight: '300px', overflow: 'scroll', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 2 }}>
+          <SmallPartBox key="Bass" data-part="Bass">
+            {seats["Bass"].map(seat => (
+              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0, height: '20px !important' }}>
+                <CheckSeat
                   status={seat.status}
                   className={'seat'}
                   onToggle={() => alert('클릭')}
                   occupant={seat.occupant}
-                  sx={{
-                    transform: `rotate(${seatAngle}deg) translateY(-${rowRadius}px)`,
-                  }}
                 />
-                );
-              })}
+              </Box>
+            ))}
+          </SmallPartBox>
+          {partsTop.map((part) => (
+            <PartBox key={part} data-part={part}>
+              {seats[part].map(seat => (
+                <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
+                  <CheckSeat
+                    status={seat.status}
+                    className={'seat'}
+                    onToggle={() => alert('클릭')}
+                    occupant={seat.occupant}
+                  />
+                </Box>
+              ))}
+            </PartBox>
+          ))}
+          {partsBottom.map((part) => (
+            <PartBox key={part} data-part={part}>
+              {seats[part].map(seat => (
+                <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
+                  <CheckSeat
+                    status={seat.status}
+                    className={'seat'}
+                    onToggle={() => alert('클릭')}
+                    occupant={seat.occupant}
+                  />
+                </Box>
+              ))}
+            </PartBox>
+          ))}
+        </Box>
+        <Box className={`conductorIcon conductor-status-${conductorStatus}`}>
+          <PersonIcon fontSize='inherit' />
+        </Box>
+        <Box sx={{ pt: 20, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
+          <Box
+            className='legendBox'
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Circle sx={{ backgroundColor: colors.planned }}>{statusCounts.planned}</Circle>
+              <Typography variant="caption">예정</Typography>
             </Box>
-          );
-        })}
-
-      </Box>      
-      <Box
-      className="conductorIcon">
-        <PersonIcon
-        fontSize='inherit'/>
-      </Box>
-    </Box>
-      <Box sx={{ pt: 7, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
-        <Box 
-          className='legendBox'
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>       
-          <Box sx={{ textAlign: 'center' }}>
-            <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
-            <Typography variant="caption">참석</Typography>
+            <Box sx={{ textAlign: 'center' }}>
+              <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
+              <Typography variant="caption">참석</Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
+              <Typography variant="caption">불참</Typography>
+            </Box>
           </Box>
-          <Box sx={{ textAlign: 'center' }}>
-            <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
-            <Typography variant="caption">불참</Typography>
-          </Box>       
         </Box>
       </Box>
     </>

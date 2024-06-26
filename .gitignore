@@ -11,3 +11,5 @@ src/fonts/.DS_Store
 /node_modules
 /node_modules/.cache
 /build
+src/component/CheckSeat_origin.tsx
+src/component/CheckSeatChart_origin.tsx
