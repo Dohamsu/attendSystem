@@ -223,10 +223,11 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
             ))}
           </SmallPartBox>
         </Box>
-        <Box className={`conductorIcon conductor-status-${conductorStatus}`}>
+        <Box className={`conductorIcon conductor-status-${conductorStatus}`} 
+        sx={{textAlign:'center',width:'100%', pt:3}}>
           <PersonIcon fontSize='inherit' />
         </Box>
-        <Box sx={{ pt: 14, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
+        <Box sx={{ pt: 2, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
           <Box
             className='legendBox'
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
