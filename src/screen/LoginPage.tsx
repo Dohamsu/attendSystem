@@ -35,12 +35,11 @@ const LoginPage = () => {
         </div>
         <img className="slider" alt="Slider" src={Slider} />
         <div className="sub-clipping-group">
-          <div className="sub">제 30회 정기 연주회</div>
+          <div className="sub">본 서비스는 로그인 후 이용 가능합니다</div>
         </div>
         <div className="tittle-clipping">
           <p className="tittle">
-            <span className="text-wrapper">본 서비스는 로그인 후 <br />
-            이용 가능합니다
+            <span className="text-wrapper">제 30회 정기 연주회
             </span>
           </p>
         </div>
