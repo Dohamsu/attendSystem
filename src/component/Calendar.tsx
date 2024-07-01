@@ -22,9 +22,9 @@ type EventsMap = {
 };
 
 const colorMapping: { [key: string]: string } = {
-  "연습": "#00B383",
-  "공지": "#735BF2",
-  "행사": "#0095FF"
+  "재학생 연습": "#00B383",
+  "전체 연습": "#735BF2",
+  "공지": "#0095FF"
 };
 
 const CalendarDay: React.FC<CalendarDayProps> = ({ day, isToday, isSelected, events, onClick }) => {
@@ -186,7 +186,7 @@ export const Calendar: React.FC<ScheduleBoxProps> = ({ schedules, selectedEvents
       </div>
       {selectedEvents.length > 0 && (
         <div className="schedule-boxes">
-          <ScheduleBox month={2} day={2} schedules={selectedEvents} setSchedules={setSelectedEvents} selectedEvents={selectedEvents} setSelectedEvents={setSelectedEvents} />
+          <ScheduleBox oneDayList={true} schedules={selectedEvents} setSchedules={setSelectedEvents} selectedEvents={selectedEvents} setSelectedEvents={setSelectedEvents} showPastEvents={false} month={0} day={0} />
         </div>
       )}
     </>

@@ -22,7 +22,7 @@ const AttendStatusPage: React.FC = () => {
 
       // 당일에 일치하거나 미래의 가장 가까운 날을 찾습니다.
       const sortedSchedules = schedules
-        .filter(schedule => dayjs(schedule.startDate).isSameOrAfter(now, 'day') && schedule.type === '연습')
+        .filter(schedule => dayjs(schedule.startDate).isSameOrAfter(now, 'day') && schedule.type.includes('연습')  )
         .sort((a, b) => dayjs(a.startDate).diff(dayjs(b.startDate)));
 
       const todayOrNextSchedule = sortedSchedules.find(schedule => dayjs(schedule.startDate).isSame(now, 'day')) || sortedSchedules[0];

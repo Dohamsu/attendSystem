@@ -40,7 +40,7 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
   const [place, setPlace] = useState('');
   const [description, setDescription] = useState('');
   // const [scheduleNumber, setScheduleNumber] = useState('');
-  const [type, setType] = useState('연습');
+  const [type, setType] = useState('재학생 연습');
   const [startDate, setStartDate] = useState<Dayjs>(dayjs());
   const [startTime, setStartTime] = useState<Dayjs>(dayjs());
   const [endTime, setEndTime] = useState<Dayjs>(dayjs());
@@ -68,16 +68,16 @@ const ScheduleRegiPopup: React.FC<{ isVisible: boolean; onClose: () => void; isU
   const categories: CategoryProps[] = [
     {
       icon: IconUser,
-      label: "연습",
+      label: "재학생 연습",
       color: "purple",
-      selected: type === "연습",
+      selected: type === "재학생 연습",
       onSelect: handleSelectCategory
     },
     {
       icon: IconUser,
-      label: "행사",
+      label: "전체 연습",
       color: "blue",
-      selected: type === "행사",
+      selected: type === "전체 연습",
       onSelect: handleSelectCategory
     },
     {
