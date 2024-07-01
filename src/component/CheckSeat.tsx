@@ -1,6 +1,6 @@
 // CheckSeat.tsx
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, SxProps } from '@mui/material';
 
 // SeatProps 타입 정의
 type SeatProps = {
@@ -8,9 +8,10 @@ type SeatProps = {
   className: string;
   onToggle: () => void;
   occupant?: string;
+  sx?: SxProps; // sx 속성 추가
 };
 
-const CheckSeat: React.FC<SeatProps> = ({ status, className, onToggle, occupant }) => {
+const CheckSeat: React.FC<SeatProps> = ({ status, className, onToggle, occupant, sx }) => {
   const getColor = () => {
     switch (status) {
       case '1':
@@ -39,6 +40,7 @@ const CheckSeat: React.FC<SeatProps> = ({ status, className, onToggle, occupant 
         justifyContent: 'center',
         height: '100%',
         cursor: 'pointer',
+        ...sx, // 커스텀 스타일 적용
       }}
     >
       {occupant && (

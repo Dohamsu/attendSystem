@@ -38,7 +38,7 @@ const CalendarPage = () => {
             onClick={() => setShowPastEvents((prev) => !prev)}
             sx={{marginRight:'10px'}}
           >
-            {showPastEvents ? "미래 일정만 보기" : "전체 일정 보기"}
+            {showPastEvents ? "예정 일정만 보기" : "전체 일정 보기"}
           </Button>
         </Box>
         <ScheduleBox

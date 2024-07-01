@@ -31,7 +31,7 @@ const EditUserInfoDialog: React.FC<EditUserInfoDialogProps> = ({ open, userInfo,
     const [number, setNumber] = React.useState(userInfo?.number || '');
     const [nickName, setNickName] = React.useState(userInfo?.nickName || '');
     const [part, setPart] = React.useState(userInfo?.part || '');
-    const partOptions = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "Bass", "Conductor", "Etc"];
+    const partOptions = ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "Bass",  "ConcertMaster", "Conductor", "Etc"];
 
     const handleSave = () => {
       if (userInfo && userInfo._id) {

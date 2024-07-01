@@ -82,7 +82,7 @@ dayjs.extend(isSameOrAfter); // 플러그인 확장
 
 const partsTop = ['G7', 'G8', 'G9', 'G10', 'G11', 'G12'];
 const partsBottom = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6'];
-const parts = ['Bass', ...partsTop, ...partsBottom];
+const parts = ['Bass', ...partsTop, ...partsBottom, 'ConcertMaster'];
 const maxSeatsPerPart = 5;
 const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList }) => {
   const [seats, setSeats] = useState<Record<string, Seat[]>>(initializeSeats());
@@ -166,15 +166,18 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
             {`${dayjs(todaySchedule?.startDate).format('M월 D일')} ${todaySchedule?.title}`}
           </Typography>
         </Box>
-        <Box sx={{ pt: 15, px: 2, height: 'auto', minHeight: '300px', overflow: 'scroll', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 2 }}>
+        <Box sx={{ pt: 14, px: 2, height: 'auto', minHeight: '350px', overflow: 'scroll', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 2 }}>
           <SmallPartBox key="Bass" data-part="Bass">
-            {seats["Bass"].map(seat => (
-              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0, height: '20px !important' }}>
+            {seats["Bass"].map((seat, index) => (
+              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0,height: '20px !important' }}>
                 <CheckSeat
                   status={seat.status}
                   className={'seat'}
-                  onToggle={() => alert('클릭')}
+                  onToggle={() => (alert('클릭'))}
                   occupant={seat.occupant}
+                  sx={{ 
+                    ...(seat.occupant && index > 0 && { ml: '10px' })
+                  }}
                 />
               </Box>
             ))}
@@ -207,11 +210,23 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
               ))}
             </PartBox>
           ))}
+          <SmallPartBox key="ConcertMaster" data-part="ConcertMaster">
+            {seats["ConcertMaster"].map(seat => (
+              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0, height: '20px !important' }}>
+                <CheckSeat
+                  status={seat.status}
+                  className={'seat'}
+                  onToggle={() => alert('클릭')}
+                  occupant={seat.occupant}
+                />
+              </Box>
+            ))}
+          </SmallPartBox>
         </Box>
         <Box className={`conductorIcon conductor-status-${conductorStatus}`}>
           <PersonIcon fontSize='inherit' />
         </Box>
-        <Box sx={{ pt: 20, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
+        <Box sx={{ pt: 14, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
           <Box
             className='legendBox'
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
