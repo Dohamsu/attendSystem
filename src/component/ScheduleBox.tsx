@@ -74,7 +74,8 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
     }
   }, [selectedEvents, showPastEvents, schedules, setSchedules]);
 
-  const handleMoreIconClick = useCallback((scheduleNumber: string) => {
+  const handleMoreIconClick = useCallback((scheduleNumber: string, isPast: boolean) => {
+    if (isPast) return; // 과거 스케줄이면 아무 작업도 하지 않음
     setOpenOption(prev => prev === scheduleNumber ? null : scheduleNumber);
   }, []);
 
@@ -156,42 +157,48 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
           }}
         />
       )}
-      {filteredSchedules.map((schedule, index) => (
-        <article key={index} className="task-card">
-          <img src={
-            schedule.type === "재학생 연습" ? IconClockPerMain :
-              schedule.type === "전체 연습" ? IconClockPerSub : IconClockPerAdd
-          } alt="" className="scheduleBoxCircle" />
-          <div className="time-container">
-            <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / " + dayjs(schedule.startTime).format('HH:mm') + ' ~ '
-              + dayjs(schedule.endTime).format('HH:mm')}</time>
-          </div>
-          <img src={moreIconUrl} alt="more options" className="more-icon"
-            onClick={() => handleMoreIconClick(schedule.scheduleNumber)} />
-          {openOption === schedule.scheduleNumber && (
-            <div className="options-popup" ref={popupRef}>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 0)} className="option-button">미정</button>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">출석예정</button>
-              <button onClick={() => toggleAttendance(schedule.scheduleNumber, 3)} className="option-button">불참</button>
-            </div>
-          )}
-          <h3 className="title" onClick={() => handleEditSchedule(schedule)}>{schedule.title}</h3>
-          <p className="description">{schedule.place}</p>
-          <div className={`attendance-status ${
-            schedule.isAttending === 0 ? 'pending' :
-              schedule.isAttending === 1 ? 'attending' :
-                schedule.isAttending === 2 ? 'attended' :
-                  schedule.isAttending === 3 ? 'not-attending' :
-                    'pending'}`}>
+      {filteredSchedules.map((schedule, index) => {
+        const isPast = dayjs(schedule.startDate).isBefore(dayjs(), 'day');
 
-            {schedule.isAttending === 0 ? '미정' :
-              schedule.isAttending === 1 ? '출석 예정' :
-                schedule.isAttending === 2 ? '출석 완료' :
-                  schedule.isAttending === 3 ? '불참' :
-                    '미정'}
-          </div>
-        </article>
-      ))}
+        return (
+          <article key={index} className="task-card">
+            <img src={
+              schedule.type === "재학생 연습" ? IconClockPerMain :
+                schedule.type === "전체 연습" ? IconClockPerSub : IconClockPerAdd
+            } alt="" className="scheduleBoxCircle" />
+            <div className="time-container">
+              <time className="time">{dayjs(schedule.startDate).format('YYYY-MM-DD') + " / " + dayjs(schedule.startTime).format('HH:mm') + ' ~ '
+                + dayjs(schedule.endTime).format('HH:mm')}</time>
+            </div>
+            {!isPast && (
+              <img src={moreIconUrl} alt="more options" className="more-icon"
+                onClick={() => handleMoreIconClick(schedule.scheduleNumber, isPast)} />
+            )}
+            {openOption === schedule.scheduleNumber && (
+              <div className="options-popup" ref={popupRef}>
+                <button onClick={() => toggleAttendance(schedule.scheduleNumber, 0)} className="option-button">미정</button>
+                <button onClick={() => toggleAttendance(schedule.scheduleNumber, 1)} className="option-button">출석예정</button>
+                <button onClick={() => toggleAttendance(schedule.scheduleNumber, 3)} className="option-button">불참</button>
+              </div>
+            )}
+            <h3 className="title" onClick={() => handleEditSchedule(schedule)}>{schedule.title}</h3>
+            <p className="description">{schedule.place}</p>
+            <div className={`attendance-status ${
+              schedule.isAttending === 0 ? 'pending' :
+                schedule.isAttending === 1 ? 'attending' :
+                  schedule.isAttending === 2 ? 'attended' :
+                    schedule.isAttending === 3 ? 'not-attending' :
+                      'pending'}`}>
+
+              {schedule.isAttending === 0 ? '미정' :
+                schedule.isAttending === 1 ? '출석 예정' :
+                  schedule.isAttending === 2 ? '출석 완료' :
+                    schedule.isAttending === 3 ? '불참' :
+                      '미정'}
+            </div>
+          </article>
+        );
+      })}
     </Box>
   );
 };

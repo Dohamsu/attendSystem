@@ -135,11 +135,11 @@ const CheckPage: React.FC = () => {
       <div className="calendar-container" ref={containerRef}>
         <div className="calendar-item">
           <Box sx={{ pt: 1 }}>
-            <Typography variant="h4" sx={{ textAlign: "center", my: 4 }}>
-              {`${dayjs(todaySchedule.startDate).format("MM월 DD일")}`}
+            <Typography variant="h4" sx={{ textAlign: "center", mt: 5 }}>
+              {todaySchedule?.title}
             </Typography>
-            <Typography variant="h4" sx={{ textAlign: "center", my: 4 }}>
-              {todaySchedule.title}
+            <Typography variant="h5" sx={{ textAlign: "center", mb: 4, mt: 2 }}>
+            {`${`${dayjs(todaySchedule.startDate).format("MM월 DD일")}`} / ${dayjs(todaySchedule?.startTime).format('HH:mm')} ~ ${dayjs(todaySchedule?.endTime).format('HH:mm')}`}
             </Typography>
             {hasAttended ? (
               <AttendanceResultScreen />
