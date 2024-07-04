@@ -1,16 +1,23 @@
+// CheckSeatChart.tsx
 import React, { useEffect, useState } from 'react';
-import { Box, styled, Typography, Grid } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import CheckSeat from './CheckSeat';
+import ArrowNavigation from './ArrowNavigation';  // ArrowNavigation 컴포넌트 임포트
 import { Schedule, Attendee } from '../stores/type';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'; // 미래 날짜 비교를 위해 필요한 플러그인
 import '../css/checkSeatChart.css';
 import PersonIcon from '@mui/icons-material/Person';
 
-// Props 타입 정의
+dayjs.extend(isSameOrAfter); // 플러그인 확장
+
 type CheckSeatChartProps = {
   todaySchedule: Schedule | null;
   attendanceList: Attendee[];
+  onPreviousSchedule: () => void;
+  onNextSchedule: () => void;
+  disablePrevious: boolean;
+  disableNext: boolean;
 };
 
 type SeatStatus = '0' | '1' | '2' | '3';
@@ -78,13 +85,12 @@ const Circle = styled(Box)(({ theme }) => ({
   boxShadow: '2px 2px 10px 0px rgba(0, 0, 0, 0.3)'
 }));
 
-dayjs.extend(isSameOrAfter); // 플러그인 확장
-
 const partsTop = ['G7', 'G8', 'G9', 'G10', 'G11', 'G12'];
 const partsBottom = ['G1', 'G2', 'G3', 'G4', 'G5', 'G6'];
 const parts = ['Bass', ...partsTop, ...partsBottom, 'ConcertMaster'];
 const maxSeatsPerPart = 5;
-const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList }) => {
+
+const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendanceList, onPreviousSchedule, onNextSchedule, disablePrevious, disableNext }) => {
   const [seats, setSeats] = useState<Record<string, Seat[]>>(initializeSeats());
   const [statusCounts, setStatusCounts] = useState({ pending: 0, planned: 0, attended: 0, absent: 0 });
   const [conductorStatus, setConductorStatus] = useState<SeatStatus>('0');
@@ -159,60 +165,37 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
   };
 
   return (
-    <>
-      <Box className="seating-chart-container" sx={{ position: 'relative', width: '100%', height: '100%' }}>
-        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: '#fff', p: 2 }}>
-          <Typography variant="h5" sx={{ mt: 3, textAlign: 'center' }}>
-            {`${dayjs(todaySchedule?.startDate).format('M월 D일')} ${todaySchedule?.title}`}
-          </Typography>
-        </Box>
-        <Box sx={{ pt: 14, px: 2, height: 'auto', minHeight: '350px', overflow: 'scroll', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 2 }}>
-          <SmallPartBox key="Bass" data-part="Bass">
-            {seats["Bass"].map((seat, index) => (
-              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0,height: '20px !important' }}>
-                <CheckSeat
-                  status={seat.status}
-                  className={'seat'}
-                  onToggle={() => (alert('클릭'))}
-                  occupant={seat.occupant}
-                  sx={{ 
-                    ...(seat.occupant && index > 0 && { ml: '10px' })
-                  }}
-                />
-              </Box>
-            ))}
-          </SmallPartBox>
-          {partsTop.map((part) => (
-            <PartBox key={part} data-part={part}>
-              {seats[part].map(seat => (
-                <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
-                  <CheckSeat
-                    status={seat.status}
-                    className={'seat'}
-                    onToggle={() => alert('클릭')}
-                    occupant={seat.occupant}
-                  />
-                </Box>
-              ))}
-            </PartBox>
+    <Box className="seating-chart-container" sx={{ position: 'relative', width: '100%', height: '100%' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff', p: 4 }}>
+        <ArrowNavigation
+          onPrevious={onPreviousSchedule}
+          onNext={onNextSchedule}
+          disablePrevious={disablePrevious}
+          disableNext={disableNext}
+          title={`${todaySchedule?.title}`} 
+          date={`${dayjs(todaySchedule?.startDate).format('M월 D일')}`}        
+        />
+      </Box>
+      <Box sx={{ pt: 1, px: 2, height: 'auto', minHeight: '350px', overflow: 'scroll', display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 2 }}>
+        <SmallPartBox key="Bass" data-part="Bass">
+          {seats["Bass"].map((seat, index) => (
+            <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0,height: '20px !important' }}>
+              <CheckSeat
+                status={seat.status}
+                className={'seat'}
+                onToggle={() => (alert('클릭'))}
+                occupant={seat.occupant}
+                sx={{ 
+                  ...(seat.occupant && index > 0 && { ml: '10px' })
+                }}
+              />
+            </Box>
           ))}
-          {partsBottom.map((part) => (
-            <PartBox key={part} data-part={part}>
-              {seats[part].map(seat => (
-                <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
-                  <CheckSeat
-                    status={seat.status}
-                    className={'seat'}
-                    onToggle={() => alert('클릭')}
-                    occupant={seat.occupant}
-                  />
-                </Box>
-              ))}
-            </PartBox>
-          ))}
-          <SmallPartBox key="ConcertMaster" data-part="ConcertMaster">
-            {seats["ConcertMaster"].map(seat => (
-              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0, height: '20px !important' }}>
+        </SmallPartBox>
+        {partsTop.map((part) => (
+          <PartBox key={part} data-part={part}>
+            {seats[part].map(seat => (
+              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
                 <CheckSeat
                   status={seat.status}
                   className={'seat'}
@@ -221,32 +204,58 @@ const CheckSeatChart: React.FC<CheckSeatChartProps> = ({ todaySchedule, attendan
                 />
               </Box>
             ))}
-          </SmallPartBox>
-        </Box>
-        <Box className={`conductorIcon conductor-status-${conductorStatus}`} 
-        sx={{textAlign:'center',width:'100%', pt:3}}>
-          <PersonIcon fontSize='inherit' />
-        </Box>
-        <Box sx={{ pt: 2, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
-          <Box
-            className='legendBox'
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
-            <Box sx={{ textAlign: 'center' }}>
-              <Circle sx={{ backgroundColor: colors.planned }}>{statusCounts.planned}</Circle>
-              <Typography variant="caption">예정</Typography>
+          </PartBox>
+        ))}
+        {partsBottom.map((part) => (
+          <PartBox key={part} data-part={part}>
+            {seats[part].map(seat => (
+              <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 1 }}>
+                <CheckSeat
+                  status={seat.status}
+                  className={'seat'}
+                  onToggle={() => alert('클릭')}
+                  occupant={seat.occupant}
+                />
+              </Box>
+            ))}
+          </PartBox>
+        ))}
+        <SmallPartBox key="ConcertMaster" data-part="ConcertMaster">
+          {seats["ConcertMaster"].map(seat => (
+            <Box key={seat.id} alignItems="center" sx={{ border: 0, pt: 0, height: '20px !important' }}>
+              <CheckSeat
+                status={seat.status}
+                className={'seat'}
+                onToggle={() => alert('클릭')}
+                occupant={seat.occupant}
+              />
             </Box>
-            <Box sx={{ textAlign: 'center' }}>
-              <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
-              <Typography variant="caption">참석</Typography>
-            </Box>
-            <Box sx={{ textAlign: 'center' }}>
-              <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
-              <Typography variant="caption">불참</Typography>
-            </Box>
+          ))}
+        </SmallPartBox>
+      </Box>
+      <Box className={`conductorIcon conductor-status-${conductorStatus}`} 
+      sx={{textAlign:'center',width:'100%', pt:3}}>
+        <PersonIcon fontSize='inherit' />
+      </Box>
+      <Box sx={{ pt: 2, pb: 4, textAlign: 'center', backgroundColor: '#fff' }}>
+        <Box
+          className='legendBox'
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.planned }}>{statusCounts.planned}</Circle>
+            <Typography variant="caption">예정</Typography>
+          </Box>
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.attended }}>{statusCounts.attended}</Circle>
+            <Typography variant="caption">참석</Typography>
+          </Box>
+          <Box sx={{ textAlign: 'center' }}>
+            <Circle sx={{ backgroundColor: colors.absent }}>{statusCounts.absent}</Circle>
+            <Typography variant="caption">불참</Typography>
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

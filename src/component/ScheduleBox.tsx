@@ -14,7 +14,6 @@ import { fetchSchedules, updateAttendance } from '../common/scheduleService';
 import { Box } from '@mui/material';
 
 const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({ schedules, setSchedules, selectedEvents, setSelectedEvents, oneDayList, showPastEvents }) => {
-  console.log(selectedEvents);
   const userInfo = useSelector((state: RootState) => state.user.user);
   const [editScheduleData, setEditScheduleData] = useState<Schedule | null>(null);
   const [openOption, setOpenOption] = useState<string | null>(null);

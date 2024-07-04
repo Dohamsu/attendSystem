@@ -37,6 +37,7 @@ export interface Schedule {
   endTime: Dayjs;
   type: string;
   isAttending: number;
+  showPastEvents: boolean;
 }
 
 export interface ScheduleBoxProps {
@@ -46,6 +47,7 @@ export interface ScheduleBoxProps {
   setSelectedEvents: React.Dispatch<React.SetStateAction<Schedule[]>>;
   month: number;
   day: number;
+  oneDayList: boolean;
 }
 
 
