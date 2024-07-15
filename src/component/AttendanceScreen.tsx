@@ -68,7 +68,7 @@ const AttendanceScreen: React.FC<AttendanceScreenProps> = ({onAttend, todaySched
     }, [todaySchedule]);
 
     return (
-        <Box sx={{textAlign: "center", padding: 0, minHeight: 250}}>
+        <Box sx={{textAlign: "center", padding: 0, minHeight: 270}}>
             {loading ? (
                 <>
                     <Box sx={{width:'100%', pt:'20%'}}>

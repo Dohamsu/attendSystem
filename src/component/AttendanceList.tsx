@@ -1,7 +1,8 @@
 // components/AttendanceList.tsx
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, makeStyles, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import DownloadButton from './DownloadButton';
 
 type Attendee = {
   name?: string;
@@ -119,20 +120,24 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
 
   return (
     <>
-    <Box
+        <Box
       sx={{
-        height:50
+        height: 50,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        p: 2
       }}
     >
-      <Typography variant="h6" sx={{ textAlign: 'center', pt:1.5}}>
+      <Typography variant="h5" sx={{ textAlign: 'center', fontWeight:'bold' }}>
         전체 명단
       </Typography>
-
-      </Box>
+     <DownloadButton/>
+    </Box>
     <TableContainer component={Paper} 
       sx={{ 
       maxHeight: 600,
-      mt: 10,
+      mt: 0,
       margin:'auto',
       padding:1,
       width:'95%',
