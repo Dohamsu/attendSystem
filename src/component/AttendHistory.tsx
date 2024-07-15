@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {Box, Typography} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Box, Typography } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
-import {fetchSchedules} from "../common/scheduleService";
-import {Schedule, RootState} from "../stores/type";
-import dayjs, {Dayjs} from "dayjs";
+import { fetchSchedules } from "../common/scheduleService";
+import { Schedule, RootState } from "../stores/type";
+import dayjs from "dayjs";
 
 const AttendHistory: React.FC = () => {
     const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
@@ -31,24 +31,24 @@ const AttendHistory: React.FC = () => {
     }, [userInfo?.name]);
 
     return (
-        <Box sx={{my: 4}}>
+        <Box sx={{ my: 4 }}>
             <Typography variant="h6" ml={3} mb={2}>
                 출석 이력
             </Typography>
-            <Box sx={{display: "flex", flexWrap: "wrap", ml: 3}}>
+            <Box sx={{ width:'85%', display: "flex", overflowX: "scroll", ml: 3, whiteSpace: "nowrap" }}>
                 {dataLoaded ? (
                     allSchedules.map((schedule) => (
-                        <Box key={schedule.scheduleNumber} sx={{m: 1}}>
+                        <Box key={schedule.scheduleNumber} sx={{ m: 1, display: "inline-block" }}>
                             {schedule.isAttending === 2 ? (
-                                <EventAvailableIcon sx={{fontSize: 40, color: "#00B383"}} /> // 출석 완료 - 진한 초록색
+                                <EventAvailableIcon sx={{ fontSize: 30, color: "#00B383" }} /> // 출석 완료 - 진한 초록색
                             ) : schedule.isAttending === 3 ? (
-                                <EventAvailableIcon sx={{fontSize: 40, color: "#FF6347"}} /> // 불참 - 빨간색
+                                <EventAvailableIcon sx={{ fontSize: 30, color: "#FF6347" }} /> // 불참 - 빨간색
                             ) : schedule.isAttending === 1 ? (
-                                <EventIcon sx={{fontSize: 40, color: "#00B38380"}} /> // 출석 예정 - 연한 초록색 (반투명)
+                                <EventIcon sx={{ fontSize: 30, color: "#00B38380" }} /> // 출석 예정 - 연한 초록색 (반투명)
                             ) : (
-                                <EventIcon sx={{fontSize: 40, color: "#FFA500"}} /> // 미정 - 주황색
+                                <EventIcon sx={{ fontSize: 30, color: "#FFA500" }} /> // 미정 - 주황색
                             )}
-                            <Typography variant="caption" sx={{display: "block"}}>
+                            <Typography variant="caption" sx={{ display: "block" }}>
                                 {dayjs(schedule.startDate).format("MM/DD")}
                             </Typography>
                         </Box>

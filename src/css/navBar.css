@@ -5,7 +5,7 @@ svg {
 .NavBar {
   position: fixed;
   bottom: -20px;
-  z-index: 1;
+  z-index: 10;
   text-align: center;
   width: 100%; /* 필요한 경우 */
   left: 3px; /* 화면 좌측과 정렬 */
