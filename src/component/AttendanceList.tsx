@@ -136,7 +136,7 @@ const AttendanceList: React.FC<AttendanceListProps> = ({ attendanceList, updateA
     </Box>
     <TableContainer component={Paper} 
       sx={{ 
-      maxHeight: 600,
+      maxHeight: 580,
       mt: 0,
       margin:'auto',
       padding:1,
