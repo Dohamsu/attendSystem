@@ -1,4 +1,4 @@
-# attendSystem
+# attendSystem - 출석체크 프로그램
 
 # https://haneum.shop/
 
