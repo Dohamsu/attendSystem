@@ -24,6 +24,7 @@
 - **소셜 로그인**: Firebase (Google), Kakao
 - **AI 서포트**: Chat GPT 4
 
+<img src="readmeImg/flow.png" width="600" height="600" alt="스크린샷">
 <img src="readmeImg/1.PNG" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/2.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/3.PNG" width="300" height="600" alt="스크린샷">
