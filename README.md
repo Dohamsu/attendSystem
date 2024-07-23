@@ -18,6 +18,7 @@
 - **프론트엔드**: React, TypeScript, MUI, HTML, CSS, Nginx
 - **백엔드**: Node.js, Express
 - **DB**: MongoDB
+- **SSL**: Zero SSL
 - **디자인**: Figma
 - **배포**: Vercel, 카페24, PM2
 - **소셜 로그인**: Firebase (Google), Kakao
