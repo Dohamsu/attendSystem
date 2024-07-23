@@ -14,3 +14,5 @@ src/fonts/.DS_Store
 src/component/CheckSeat_origin.tsx
 src/component/CheckSeatChart_origin.tsx
 /node_modules/@babel
+node_modules/.bin/ansi-html
+/node_modules
