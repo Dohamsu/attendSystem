@@ -31,6 +31,7 @@
 <img src="readmeImg/4.PNG" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/5.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/6.png" width="300" height="600" alt="스크린샷">
+<img src="readmeImg/11.PNG" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/7.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/8.png" width="300" height="600" alt="스크린샷">
 <img src="readmeImg/9.png" width="300" height="600" alt="스크린샷">
