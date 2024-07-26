@@ -11,6 +11,7 @@ interface User {
   part: string;
   email: string;
   platform: string;
+  profileImage?: string;
 }
 
 export interface Attendee  {

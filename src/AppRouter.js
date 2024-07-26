@@ -8,6 +8,7 @@ import CheckPage from './screen/CheckPage';
 import AttendPage from './screen/AttendStatusPage';
 import MyInfoPage from './screen/MyInfoPage';
 import NoticePage from './screen/NoticePage';
+import ChatPage from './screen/ChatPage';
 import KakaoCallback from './screen/KaKaoCallBackPage';
 
 const AppRoutes = () => {
@@ -23,7 +24,7 @@ const AppRoutes = () => {
           <Route path="/check" element={<CheckPage />} />
           <Route path="/attend" element={<AttendPage />} />
           <Route path="/myinfo" element={<MyInfoPage />} />
-          <Route path="/notice" element={<NoticePage />} />
+          <Route path="/notice" element={<ChatPage />} />
           <Route path="/kakaoCallback" element={<KakaoCallback />} />
         </Route>
       </Routes>
