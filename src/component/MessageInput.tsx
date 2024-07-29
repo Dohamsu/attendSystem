@@ -5,13 +5,23 @@ interface MessageInputProps {
   sendMessage: (msg: string) => void;
 }
 
+const escapeHtml = (unsafe: string): string => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
 const MessageInput: React.FC<MessageInputProps> = ({ sendMessage }) => {
   const [input, setInput] = useState<string>('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      sendMessage(input);
+      const escapedInput = escapeHtml(input);
+      sendMessage(escapedInput);
       setInput('');
     }
   };
@@ -30,7 +40,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ sendMessage }) => {
         onChange={handleChange}
         fullWidth
         autoComplete="off"
-        placeholder="Type a message..."
         inputProps={{ maxLength: 100, style: { fontSize: '14px' } }} // 최대 글자 수와 폰트 크기 설정
         sx={{
           fontSize: '14px',
