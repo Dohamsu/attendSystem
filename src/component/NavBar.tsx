@@ -12,12 +12,14 @@ import ScheduleRegiPopup from './ScheduleRegiPopup';
 import IconUser from "../images/nav/user.svg";
 import IconCal from "../images/nav/calendar.svg";
 import IconCheck from "../images/nav/check.svg";
+import IconChat from "../images/nav/chat.svg";
 import IconAlarm from "../images/nav/alarm.svg";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 // 활성화된 아이콘
 import IconUserPer from "../images/nav/user_per.svg";
 import IconCalPer from "../images/nav/calendar_per.svg";
 import IconCheckPer from "../images/nav/check_per.svg";
+import IconChatPer from "../images/nav/chat_per.svg";
 import IconAlarmPer from "../images/nav/alarm_per.svg";
 
 export const NavBar = (): JSX.Element | null => {
@@ -36,7 +38,7 @@ export const NavBar = (): JSX.Element | null => {
   const icons = [
     { name: "calendar", defaultIcon: IconCal, activeIcon: IconCalPer, path: "/calendar" },
     { name: "check", defaultIcon: IconCheck, activeIcon: IconCheckPer, path: isAdmin ? "/attend" : "/check" },
-    { name: "alarm", defaultIcon: IconAlarm, activeIcon: IconAlarmPer, path: "/notice" },
+    { name: "alarm", defaultIcon: IconChat, activeIcon: IconChatPer, path: "/notice" },
     { name: "user", defaultIcon: IconUser, activeIcon: IconUserPer, path: "/myinfo" },
   ];
 
