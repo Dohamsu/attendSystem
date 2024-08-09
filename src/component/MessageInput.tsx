@@ -54,7 +54,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ sendMessage }) => {
         }}
       />
       <Button type="submit" variant="contained" color="primary" sx={{ marginLeft: '10px', height: '40px' }}>
-        ↵
+        전송
       </Button>
     </Box>
   );

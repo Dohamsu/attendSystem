@@ -85,31 +85,31 @@ const MyInfoPage: React.FC = () => {
 
   return (
     <Box className="profile-settings">
-      <img className="profileBackground" src={profileBackground} alt="Profile Background" />
-      <Box className="moreIconBtn" onClick={handleClickOpen}>
-         <EditNoteIcon/>
-      </Box>
-      {userInfo && <EditUserInfoDialog open={open} userInfo={userInfo} onClose={handleClose} />}
-
-      <Box className="profileBox">
+    <img className="profileBackground" src={profileBackground} alt="Profile Background" />
+    <Box className="moreIconBtn" onClick={handleClickOpen}>
+      <EditNoteIcon />
+    </Box>
+    {userInfo && <EditUserInfoDialog open={open} userInfo={userInfo} onClose={handleClose} />}
+  
+    <Box className="profileBox">
+      <Box className="profileImgWrapper">
         <img className="profileImg" src={profileSample} alt="Profile Sample" />
         <img className="editBtn" src={editBtn} alt="Edit Button" />
-        <Typography variant="h1" className="profile-name">{userInfo?.name}</Typography>
-        <Typography className="profile-email">{userInfo?.email || 'sample@naver.com'}</Typography>
       </Box>
-
-      <Section title="">
-        {settings.map((setting, index) => (
-          <SettingItem key={index} {...setting} />
-        ))}
-      </Section>
-
-      {/* <Typography className="profile-logout"> 로그아웃</Typography> */}
-
-      {userInfo?.platform === 'google' && <GoogleLogoutButton />}
-      {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
-
+      <Typography variant="h1" className="profile-name">{userInfo?.name}</Typography>
+      <Typography className="profile-email">{userInfo?.email || 'sample@naver.com'}</Typography>
     </Box>
+  
+    <Section title="">
+      {settings.map((setting, index) => (
+        <SettingItem key={index} {...setting} />
+      ))}
+    </Section>
+  
+    {userInfo?.platform === 'google' && <GoogleLogoutButton />}
+    {userInfo?.platform === 'kakao' && <KakaoLogoutButton />}
+  </Box>
+  
   );
 };
 

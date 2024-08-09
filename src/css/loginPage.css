@@ -4,111 +4,24 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    height: 100vh;
+    background-image: url('../images/path-4.svg');
+    background-attachment: fixed; /* 배경 이미지 고정 */
+    background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+    background-position: 100% 100%;
   }
     
-  .onboarding .overlap {
-    height: 562px;
-    left: 0;
-    position: absolute;
-    top: 282px;
-    width: 390px;
-  }
-  
-  .onboarding .path {
-    height: 450px;
-    left: 195px;
-    position: absolute;
-    top: 99px;
-    width: 195px;
-  }
-  
-  .onboarding .sleepy-african {
-    height: 562px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 390px;
-  }
-  
-  .onboarding .slide {
-    height: 80px;
-    left: 148px;
-    opacity: 0.94;
-    position: absolute;
-    top: 448px;
-    width: 80px;
-  }
-  
-  .onboarding .overlap-group {
-    -webkit-backdrop-filter: blur(46.02px) brightness(100%);
-    backdrop-filter: blur(46.02px) brightness(100%);
-    background-color: #ffffff26;
-    border-radius: 41px;
-    height: 82px;
-    left: -1px;
-    position: relative;
-    top: -1px;
-    width: 82px;
-  }
-  
-  .onboarding .mobile {
-    height: 40px;
-    left: 14px;
-    position: relative;
-    top: 21px;
-    width: 54px;
-  }
-  
-  .onboarding .ellipse-wrapper {
-    background-image: url(../images/rectangle-18.svg);
-    background-size: 100% 100%;
-    height: 40px;
-    left: 15px;
-    position: absolute;
-    top: 0;
-    width: 24px;
-  }
-  
-  .onboarding .ellipse {
-    background-color: #735bf2;
-    border-radius: 3px;
-    height: 6px;
-    left: 9px;
-    position: relative;
-    top: 30px;
-    width: 6px;
-  }
-  
-  .onboarding .vector {
-    height: 12px;
-    left: 48px;
-    position: absolute;
-    top: 14px;
-    width: 7px;
-  }
-  
-  .onboarding .img {
-    height: 12px;
-    left: -1px;
-    position: absolute;
-    top: 14px;
-    width: 7px;
-  }
-  
-  .onboarding .slider {
-    height: 3px;
-    left: 322px;
-    position: absolute;
-    top: 54px;
-    width: 53px;
+
+  @media (min-width: 400px) {
+
   }
   
   .onboarding .sub-clipping-group {
     height: 14px;
-    left: 129px;
-    position: absolute;
+    position: relative;
     top: 115px;
-    width: 133px;
+    /* width: 133px; */
+    text-align: center;
   }
   
   .onboarding .sub {
@@ -116,11 +29,11 @@
     font-family: "SF UI  Text-Medium", Helvetica;
     font-size: 12px;
     font-weight: 500;
-    left: -1px;
+    /* left: -1px; */
     letter-spacing: 1px;
     line-height: 14px;
     opacity: 0.7;
-    position: absolute;
+    position: relative;
     text-align: center;
     top: -1px;
     white-space: nowrap;
@@ -129,8 +42,8 @@
   
   .onboarding .tittle-clipping {
     height: 78px;
-    left: 39px;
-    position: absolute;
+    /* left: 39px; */
+    position: relative;
     top: 137px;
     width: 314px;
   }
@@ -220,3 +133,6 @@
     transform: scale(1.1); /* 활성 섹션을 강조 */
   }
   
+@media (min-width: 400px) {
+
+}

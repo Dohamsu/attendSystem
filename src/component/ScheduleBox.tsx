@@ -11,7 +11,7 @@ import IconClockPerAdd from "../images/scheduleBoxCircle3.svg";
 import moreIconUrl from "../images/scheduleMoreUrl.svg";
 import { Schedule, ScheduleBoxProps } from '../stores/type';
 import { fetchSchedules, updateAttendance } from '../common/scheduleService';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 
 const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({ schedules, setSchedules, selectedEvents, setSelectedEvents, oneDayList, showPastEvents }) => {
   const userInfo = useSelector((state: RootState) => state.user.user);
@@ -127,6 +127,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
       height='70%'
       overflow='scroll'
       sx={{
+        textAlign:'-webkit-center',
         overflowX: 'hidden',
         position: 'relative',
         '&::-webkit-scrollbar': {

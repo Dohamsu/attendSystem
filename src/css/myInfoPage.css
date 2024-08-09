@@ -10,10 +10,10 @@
 }
 
 .moreIconBtn{
-  position: fixed;
+  position: sticky;
   z-index: 2;
-  top: 30px;
-  right: 20px;
+  width: 100%;
+  text-align: right;
 }
 
 .profileBackground{
@@ -22,27 +22,35 @@
   z-index: 1;
 }
 
-.profileBox{
+.profileBox {
   z-index: 2;
-  /* position: absolute; */
-  /* top: 350px; */
   margin-top: 150px;
   width: 100%;
   text-align: center;
 }
 
-.profileBox .profileImg{
-  z-index: 2;
+.profileImgWrapper {
   position: relative;
+  display: inline-block;
 }
 
-.profileBox .editBtn{
+.profileImg {
   z-index: 2;
-  position: absolute;
-  top: 250px;
-  left: 230px;
-  text-align: center;
+  position: relative;
+  width: 120px; /* 적절한 크기로 조정 */
+  height: 120px; /* 적절한 크기로 조정 */
 }
+
+.profileImgWrapper .editBtn {
+  z-index: 3;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px; /* 적절한 크기로 조정 */
+  height: 30px; /* 적절한 크기로 조정 */
+  cursor: pointer;
+}
+
 
 
 .profile-image {

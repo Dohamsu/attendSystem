@@ -4,7 +4,6 @@ import "../css/loginPage.css";
 import Path4 from "../images/path-4.svg";
 import Path6 from "../images/path-6.svg";
 import OvalCopy2 from "../images/oval-copy-2.svg";
-import Slider from "../images/slider.png";
 import { KakaoLoginButton } from '../component/KakaoLogin'
 import { GoogleLoginButton } from '../component/GoogleLogin'
 import { Box } from "@mui/material";
@@ -26,14 +25,6 @@ const LoginPage = () => {
   return (
     <div className="onboarding">
       <div className="div">
-        <div className="overlap">
-          <img className="path" alt="Path" src={Path4} />
-          <div className="slide">
-            <div className="overlap-group">             
-            </div>
-          </div>
-        </div>
-        <img className="slider" alt="Slider" src={Slider} />
         <div className="sub-clipping-group">
           <div className="sub">본 서비스는 로그인 후 이용 가능합니다</div>
         </div>
@@ -50,10 +41,8 @@ const LoginPage = () => {
           </p>
           <img className="path-2" alt="Path" src={Path6}/>
           <img className="oval-copy" alt="Oval copy" src={OvalCopy2} />
-        
-      </div>
         </div>
-        <Box 
+      <Box 
           sx={{
             position: 'relative',
             top: '510px',
@@ -62,6 +51,7 @@ const LoginPage = () => {
             <KakaoLoginButton></KakaoLoginButton>
             <GoogleLoginButton></GoogleLoginButton>
         </Box>
+        </div>
     </div>
   )
 };

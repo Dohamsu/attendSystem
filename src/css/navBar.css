@@ -24,7 +24,7 @@ svg {
 .centerButton {
   position: absolute;
   bottom: 55%; /* 중앙 버튼을 네비게이션 바 중앙에 위치시킵니다 */
-  left: 49.5%;
+  left: 50%;
   transform: translate(-50%, 50%);
 }
 
@@ -43,11 +43,11 @@ svg {
 
 .iconBox {
   display: flex; /* 아이콘들을 가로로 배열 */
-  justify-content: space-around; /* 아이콘들 사이의 공간을 균등하게 분배 */
+  justify-content: center; /* 아이콘들 사이의 공간을 균등하게 분배 */
   align-items: center; /* 아이콘들을 수직 중앙 정렬 */
   position: absolute;
   width: 100%; /* 네비게이션 바의 전체 너비를 차지하도록 */
-  bottom: 45px; /* 네비게이션 바 바닥에서의 위치 */
+  bottom: 40px; /* 네비게이션 바 바닥에서의 위치 */
 }
 
 .iconBox img {
