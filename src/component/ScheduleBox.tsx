@@ -120,14 +120,15 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
     setEditScheduleData(schedule); // 수정할 일정 데이터 설정
     setShowPopup(true); // 팝업 열기
   }, []);
-
   return (
     <Box
       className="schedule-container"
       height='70%'
       overflow='scroll'
       sx={{
-        textAlign:'-webkit-center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         overflowX: 'hidden',
         position: 'relative',
         '&::-webkit-scrollbar': {
@@ -151,16 +152,16 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
         <ScheduleRegiPopup
           isUpdate={true}
           isVisible={showPopup}
-          eventData={convertScheduleToEventData(editScheduleData)}  // 변환 함수를 사용하여 Schedule을 EventData로 변환
+          eventData={convertScheduleToEventData(editScheduleData)}  
           onClose={() => {
             setShowPopup(false);
-            setEditScheduleData(null); // 팝업 닫을 때 수정 데이터 초기화
+            setEditScheduleData(null); 
           }}
         />
       )}
       {filteredSchedules.map((schedule, index) => {
         const isPast = dayjs(schedule.startDate).isBefore(dayjs(), 'day');
-
+  
         return (
           <article key={index} className="task-card">
             <img src={
@@ -190,7 +191,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
                   schedule.isAttending === 2 ? 'attended' :
                     schedule.isAttending === 3 ? 'not-attending' :
                       'pending'}`}>
-
+  
               {schedule.isAttending === 0 ? '미정' :
                 schedule.isAttending === 1 ? '출석 예정' :
                   schedule.isAttending === 2 ? '출석 완료' :
@@ -202,6 +203,7 @@ const ScheduleBox: React.FC<ScheduleBoxProps & { showPastEvents: boolean }> = ({
       })}
     </Box>
   );
+  
 };
 
 export default ScheduleBox;

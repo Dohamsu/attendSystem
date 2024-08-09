@@ -3,17 +3,18 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  max-width: 357px;
-  padding: 13px 25px; /* 우측 패딩 감소 */
-  overflow: visible; /* 오버플로 hidden 제거 */
+  min-width: 340px;
+  padding: 13px 25px;
+  overflow: visible;
   color: #8f9bb3;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.75px;
   line-height: 117%;
-  fill: #fff;
   filter: drop-shadow(0px 3px 30px rgba(0, 0, 0, 0.06));
+  margin: 0 auto; /* 카드가 화면 중앙에 위치하도록 설정 */
 }
+
   .scheduleBoxCircle {
     position: absolute;
   }
