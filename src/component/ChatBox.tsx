@@ -27,55 +27,53 @@ const ChatBox: React.FC = () => {
   const userName = userInfo?.name || '알수없는 무지';
   const profileImage = userInfo?.profileImage || '';
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [scrollBehavior, setScrollBehavior] = useState<'auto' | 'smooth'>('auto'); // 초기에는 'auto'로 설정
 
   useEffect(() => {
-    const storedMessages = localStorage.getItem('chatMessages');
-    if (storedMessages) {
-      setMessages(JSON.parse(storedMessages));
-    }
-  
     if (userInfo) {
       socket = io(SERVER_URL, {
         query: { name: userInfo.name, profileImage: userInfo.profileImage },
       });
-  
-      socket.on('chat message', (msg: Message) => {
-        setMessages((prevMessages) => {
-          const newMessages = [...prevMessages, msg];
-          localStorage.setItem('chatMessages', JSON.stringify(newMessages));
-          return newMessages;
-        });
+
+      // 이전 메시지를 서버로부터 로드
+      socket.on('previous messages', (msgs: Message[]) => {
+        setMessages(msgs);
+        console.log('이전 메시지 로드');
         scrollToBottom();
       });
-  
+
+      // 새로운 채팅 메시지를 수신
+      socket.on('chat message', (msg: Message) => {
+        setMessages((prevMessages) => [...prevMessages, msg]);
+        console.log('최신  로드');
+
+        scrollToBottom();
+      });
+
       socket.on('user count', (count) => {
         setUserCount(count);
       });
-  
+
+      // 2초 후에 스크롤 속성을 'smooth'로 변경
+      setTimeout(() => {
+        setScrollBehavior('smooth');
+      }, 3000);
+
       return () => {
         socket.disconnect();
+        socket.off('previous messages');
         socket.off('chat message');
         socket.off('user count');
       };
     }
   }, [userInfo]);
-  
 
   const sendMessage = (text: string) => {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? '오후' : '오전';
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    const timestamp = `${ampm} ${formattedHours}:${formattedMinutes}`;
-
-    const message = { sender: userName, text, profileImage, timestamp };
+    const message = { text }; // 클라이언트에서 메시지와 보낸 사람만 전송
     socket.emit('chat message', message);
   };
 
   const clearMessages = () => {
-    localStorage.removeItem('chatMessages');
     setMessages([]);
     handleClose();
   };
@@ -89,7 +87,7 @@ const ChatBox: React.FC = () => {
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: scrollBehavior });
   };
 
   useEffect(() => {
