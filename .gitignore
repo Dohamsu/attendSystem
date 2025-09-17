@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+/node_modules/.cache
+
+# Environment variables (보안 강화)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+
+# Build output
+/build
+build.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cache
+/node_modules/.cache
+
+# Backup files
+src/component/CheckSeat_origin.tsx
+src/component/CheckSeatChart_origin.tsx

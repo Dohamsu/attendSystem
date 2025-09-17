@@ -1,0 +1,138 @@
+.onboarding {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-image: url('../images/path-4.svg');
+    background-attachment: fixed; /* 배경 이미지 고정 */
+    background-repeat: no-repeat; /* 이미지 반복하지 않음 */
+    background-position: 100% 100%;
+  }
+    
+
+  @media (min-width: 400px) {
+
+  }
+  
+  .onboarding .sub-clipping-group {
+    height: 14px;
+    position: relative;
+    top: 115px;
+    /* width: 133px; */
+    text-align: center;
+  }
+  
+  .onboarding .sub {
+    color: #01041d;
+    font-family: "SF UI  Text-Medium", Helvetica;
+    font-size: 12px;
+    font-weight: 500;
+    /* left: -1px; */
+    letter-spacing: 1px;
+    line-height: 14px;
+    opacity: 0.7;
+    position: relative;
+    text-align: center;
+    top: -1px;
+    white-space: nowrap;
+    width: 131px;
+  }
+  
+  .onboarding .tittle-clipping {
+    height: 78px;
+    /* left: 39px; */
+    position: relative;
+    top: 137px;
+    width: 314px;
+  }
+  
+  .onboarding .tittle {
+    color: #222b45;
+    font-family: "SF UI  Text-Bold", Helvetica;
+    font-size: 30px;
+    font-weight: 700;
+    left: -1px;
+    letter-spacing: 0;
+    line-height: 38px;
+    position: absolute;
+    text-align: center;
+    top: -1px;
+    width: 312px;
+  }
+  
+  .onboarding .text-wrapper {
+    color: #222b45;
+    font-family: "SF UI  Text-Bold", Helvetica;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 38px;
+  }
+  
+  .onboarding .overlap-2 {
+    height: 86px;
+    left: 0;
+    position: absolute;
+    top: 16px;
+    width: 175px;
+  }
+  
+  .onboarding .logo {
+    color: #000000;
+    font-family: "SF UI  Text-Bold", Helvetica;
+    font-size: 22px;
+    font-weight: 700;
+    left: 49px;
+    letter-spacing: 0;
+    line-height: 26px;
+    position: absolute;
+    text-align: center;
+    top: 26px;
+    white-space: nowrap;
+  }
+  
+  .onboarding .span {
+    color: #000000;
+    font-family: "SF UI  Text-Bold", Helvetica;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 26px;
+  }
+  
+  .onboarding .path-2 {
+    height: 86px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 72px;
+  }
+  
+  .onboarding .oval-copy {
+    height: 13px;
+    left: 23px;
+    position: absolute;
+    top: 34px;
+    width: 13px;
+  }
+  
+
+  .section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease;
+  }
+  
+  .active {
+    position: sticky;
+    top: 0;
+    transform: scale(1.1); /* 활성 섹션을 강조 */
+  }
+  
+@media (min-width: 400px) {
+
+}

@@ -1,0 +1,130 @@
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.moreIconBtn{
+  position: sticky;
+  z-index: 2;
+  width: 100%;
+  text-align: right;
+}
+
+.profileBackground{
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+}
+
+.profileBox {
+  z-index: 2;
+  margin-top: 150px;
+  width: 100%;
+  text-align: center;
+}
+
+.profileImgWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profileImg {
+  z-index: 2;
+  position: relative;
+  width: 120px; /* 적절한 크기로 조정 */
+  height: 120px; /* 적절한 크기로 조정 */
+}
+
+.profileImgWrapper .editBtn {
+  z-index: 3;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30px; /* 적절한 크기로 조정 */
+  height: 30px; /* 적절한 크기로 조정 */
+  cursor: pointer;
+}
+
+
+
+.profile-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  margin-top: 10px;
+  font-size: 20px !important;
+  font-weight: 600;
+  color: #333333;
+}
+
+.profile-logout {
+  margin-top: 30px !important;
+  color: #666666;
+  text-decoration: underline;
+  font-size: small;
+}
+
+.profile-email {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #666666;
+}
+
+.section {
+  width: 95%;
+  padding: 15px;
+  background-color: #f7f7f7d2 !important;
+  border-radius: 8px;
+  margin: 30px !important;
+  height: 165px !important;
+  display: block;
+  box-shadow: 0.5px 0.5px #717171d2;
+}
+
+.setting-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;  /* 아이콘과 레이블 사이에 간격 추가 */
+}
+
+
+.section-title {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333333;
+}
+
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.setting-item-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.setting-item-label,
+.setting-item-value {
+  font-size: 16px;
+}
+
+.profile-footer {
+  width: 100px;
+  height: 5px;
+  margin-top: 20px;
+  background-color: #cccccc;
+  border-radius: 10px;
+}

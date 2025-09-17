@@ -1,0 +1,127 @@
+.task-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-width: 340px;
+  padding: 13px 25px;
+  overflow: visible;
+  color: #8f9bb3;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.75px;
+  line-height: 117%;
+  filter: drop-shadow(0px 3px 30px rgba(0, 0, 0, 0.06));
+  margin: 0 auto; /* 카드가 화면 중앙에 위치하도록 설정 */
+}
+
+  .scheduleBoxCircle {
+    position: absolute;
+  }
+
+  .time-container {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .clock-icon {
+    width: 10px;
+    aspect-ratio: 1;
+    object-fit: contain;
+    object-position: center;
+    fill: #00b383;
+  }
+
+  .time {
+    font-family: SF UI Text, sans-serif;
+    flex: 1;
+    padding-left: 15px;
+  }
+
+  .title {
+    margin-top: 8px;
+    color: #222b45;
+    letter-spacing: 1px;
+  }
+
+  .description {
+    margin-top: 0px;
+    font-family: SF UI Text, sans-serif;
+    font-weight: 400;
+  }
+
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.more-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 10px; /* 클릭 영역 확장 */
+  cursor: pointer; /* 마우스 오버 시 포인터 표시 */
+  z-index: 1; /* 팝업 뒤에 위치하도록 z-index 값을 낮춤 */
+}
+
+.attendance-status {
+  width: 50px;
+  height: 24px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  line-height: 24px;
+  font-size: 0.725rem;
+  position: absolute;
+  top: 25px;
+  right: 100px;
+}
+
+
+
+.options-popup {
+  position: absolute;
+  top: 8px;
+  right:10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 2;
+  width: 75px;
+  padding: 5px 0;
+  background-color: white;
+}
+
+.option-button {
+  display: block;
+  padding: 8px 12px;
+  width: 100%; /* 너비 100% 유지 */
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.option-button:hover {
+  background-color: #f0f0f0;
+}
+
+.attending {
+  background-color: #00B38380; /* 예정 - 초록색 */
+}
+
+.attended{
+  background-color: #00B383; /* 참석 - 초록색 */
+}
+
+.pending {
+  background-color: #FFA500; /* 미정 - 주황색 */
+}
+
+.not-attending {
+  background-color: #FF6347; /* 불참 - 빨간색 */
+}

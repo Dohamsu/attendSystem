@@ -1,0 +1,65 @@
+svg {
+  image-rendering: optimizeQuality;
+}
+
+.NavBar {
+  position: fixed;
+  bottom: -20px;
+  z-index: 10;
+  text-align: center;
+  width: 100%; /* 필요한 경우 */
+  left: 3px; /* 화면 좌측과 정렬 */
+  /* 마진과 패딩 제거 */
+  margin: 0;
+  padding: 0;
+}
+
+
+.whiteNav {
+  position: absolute;
+  width: 100%; /* 백그라운드 이미지가 전체 너비를 차지하도록 */
+  bottom: 0;
+}
+
+.centerButton {
+  position: absolute;
+  bottom: 55%; /* 중앙 버튼을 네비게이션 바 중앙에 위치시킵니다 */
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+
+.centerButtonShadow {
+  position: absolute;
+  width: 43px;
+  height: 43px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+  z-index: -1;
+  top: 26px;
+  left: 30px;
+}
+
+.iconBox {
+  display: flex; /* 아이콘들을 가로로 배열 */
+  justify-content: center; /* 아이콘들 사이의 공간을 균등하게 분배 */
+  align-items: center; /* 아이콘들을 수직 중앙 정렬 */
+  position: absolute;
+  width: 100%; /* 네비게이션 바의 전체 너비를 차지하도록 */
+  bottom: 40px; /* 네비게이션 바 바닥에서의 위치 */
+}
+
+.iconBox img {
+  margin: 0 10px; /* 기본적으로 모든 아이콘에 적용되는 마진 */
+  width: 23px;
+  padding: 15px;
+}
+
+.iconBox img:nth-child(2) {
+  margin-right: 50px; /* 두 번째 아이콘의 오른쪽 마진을 넓게 설정 */
+}
+
+.iconBox img:nth-child(3) {
+  margin-left: 50px; /* 세 번째 아이콘의 왼쪽 마진을 넓게 설정 */
+}
